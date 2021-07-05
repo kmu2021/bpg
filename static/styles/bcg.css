@@ -16,7 +16,7 @@ body {
 }
 
 h2, .ui-widget h2 {
-    background: url("../../images/gui/bkg/list_divider.png") no-repeat scroll center 23px transparent;
+    background: url("../images/gui/bkg/list_divider.png") no-repeat scroll center 23px transparent;
     color: #666666;
     color: #005A9C;
     font-size: 28px;
@@ -120,7 +120,7 @@ input.text-input-large {
 
 /*---------------------------------BEGIN HEADER-BAR---------------------------------------------*/
 #header-bar {
-    background: url("../../images/gui/bkg/global/header-bar-bkg.gif") repeat-x scroll center bottom #41525C;
+    background: url("../images/gui/bkg/global/header-bar-bkg.gif") repeat-x scroll center bottom #41525C;
     height: 36px;
     padding-top: 6px;
     position: relative;
@@ -142,7 +142,7 @@ input.text-input-large {
     width: 460px;
 }
 #header-bar li {
-    background: url("../../images/gui/bkg/global/hdr_sm_pipe.gif") no-repeat scroll right top transparent;
+    background: url("../images/gui/bkg/global/hdr_sm_pipe.gif") no-repeat scroll right top transparent;
     float: left;
 }
 #header-bar .links li.last {
@@ -150,7 +150,7 @@ input.text-input-large {
 }
 #header-bar .links li a {
     background-color: transparent;
-    background-image: url("../../images/gui/bkg/global/hdr_icons_roll.gif");
+    background-image: url("../images/gui/bkg/global/hdr_icons_roll.gif");
     background-repeat: no-repeat;
     color: #FFFFFF;
     display: block;
@@ -200,7 +200,7 @@ input.text-input-large {
 /*---------------------------------END HEADER-BAR---------------------------------------------*/
 
 #main-inner {
-    background: url("../../images/gui/bkg/main-bkg.png") repeat-x scroll 0 0 #fff;
+    background: url("../images/gui/bkg/main-bkg.png") repeat-x scroll 0 0 #fff;
     background: -moz-linear-gradient(center bottom , white, #DEDEDE) repeat scroll 0 0 transparent;
     min-height: 364px;
     min-width: 960px;
@@ -301,7 +301,7 @@ ul.pageList {
     margin-left: 0;
 }
 ol.pageList li, ul.pageList li {
-    background: url("../../images/gui/bkg/list_divider.png") no-repeat scroll center top transparent;
+    background: url("../images/gui/bkg/list_divider.png") no-repeat scroll center top transparent;
     margin: 20px 0;
     padding: 6px 10px 0;
 }
@@ -364,7 +364,7 @@ ol.pageList li.straight, ul.pageList li.straight {
     width: 760px;
 }
 #results {
-    background: url("../../images/gui/bkg/global/gry_hdr_tall_sprite.png") repeat-x scroll 0 -36px transparent;
+    background: url("../images/gui/bkg/global/gry_hdr_tall_sprite.png") repeat-x scroll 0 -36px transparent;
     height: 36px;
     position: relative;
     left: 3px;
@@ -412,7 +412,7 @@ ol.pageList td, ul.pageList td {
     line-height:22px;
 }
 .result-bottom {
-    background: url("../../images/gui/bkg/global/table_footer_bg762.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/gui/bkg/global/table_footer_bg762.png") no-repeat scroll 0 0 transparent;
     height: 39px;
     margin-bottom: 10px;
     width:inherit;
@@ -425,12 +425,12 @@ ol.pageList td, ul.pageList td {
 	width: 98.7%; 
 	}
 .fav-cap {
-    background: url("../../images/gui/bkg/global/quick_tool_sprite.gif") no-repeat scroll left -214px transparent;
+    background: url("../images/gui/bkg/global/quick_tool_sprite.gif") no-repeat scroll left -214px transparent;
     height: 9px;
     width: 100%;
 }
 .cap-top-wide, .cap-bottom-wide {
-    background: url("../../images/gui/bkg/global/caps-sprite.png") repeat scroll 0 0 transparent;
+    background: url("../images/gui/bkg/global/caps-sprite.png") repeat scroll 0 0 transparent;
 }
 .cap-top-wide, .cap-bottom-wide {
     background-repeat: no-repeat;
@@ -446,21 +446,21 @@ ol.pageList td, ul.pageList td {
 }
 
 .narrow-top-cap {
-    background: url("../../images/gui/bkg/global/gry_hdr_tall_sprite.png") repeat-x scroll 0 -36px transparent;
-    background: url("../../images/gui/bkg/global/gloss-wave-vert.gif") repeat-x scroll 0px 0 transparent; /* update for story 275.5, sprint 14*/
+    background: url("../images/gui/bkg/global/gry_hdr_tall_sprite.png") repeat-x scroll 0 -36px transparent;
+    background: url("../images/gui/bkg/global/gloss-wave-vert.gif") repeat-x scroll 0px 0 transparent; /* update for story 275.5, sprint 14*/
     float: left;
     height: 36px;
     overflow: hidden;
     width: 224px;
 }
 .left-top-cap {
-    background: url("../../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll 0 0 transparent;
     float: left;
     height: 36px;
     width: 4px;
 }
 .right-top-cap {
-    background: url("../../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll -4px 0 transparent;
+    background: url("../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll -4px 0 transparent;
     float: left;
     height: 36px;
     width: 4px;
@@ -472,7 +472,7 @@ ol.pageList td, ul.pageList td {
     border-right: 1px solid #005a9c; 
 }
 .cap-middle {
-    background: url("../../images/gui/bkg/global/links-block-bkg.png") repeat-x scroll center bottom #FFFFFF;
+    background: url("../images/gui/bkg/global/links-block-bkg.png") repeat-x scroll center bottom #FFFFFF;
     border-left: 1px solid #D4D4D4;
     border-right: 1px solid #D4D4D4;
 }
@@ -528,7 +528,7 @@ ol.pageList td, ul.pageList td {
 }
 
 #results span.cap, #tabs span.cap, .tabs span.cap {
-    background: url("../../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll 0 0 transparent;
+    background: url("../images/gui/bkg/global/gry_hdr_tall_sprite.png") no-repeat scroll 0 0 transparent;
     height: 36px;
     position: absolute;
     top: 0;
@@ -614,7 +614,7 @@ ul.pageList li .messageServices p, .messageServices p, ul p {
     line-height: 22px;
 }
 .serviceIcon {
-    background-image: url("../../images/gui/bkg/icons/folder-grey45.png");
+    background-image: url("../images/gui/bkg/icons/folder-grey45.png");
     background-position: 0 0;
     height: 45px;
     margin: 5px 15px 10px 0;
@@ -623,7 +623,7 @@ ul.pageList li .messageServices p, .messageServices p, ul p {
 
 .shippingIcon { /* Shipping Services Icon */
 	float: left;
-    background-image: url("../../images/gui/bkg/icons/shipping-icon.png");
+    background-image: url("../images/gui/bkg/icons/shipping-icon.png");
     background-position: 0 0;
     height: 48px;
     margin: 5px 15px 10px 0;
@@ -631,7 +631,7 @@ ul.pageList li .messageServices p, .messageServices p, ul p {
 }
 .mailingIcon { /* Mailing Services Icon */
     float: left;
-    background-image: url("../../images/gui/bkg/icons/mailingIcon.png");
+    background-image: url("../images/gui/bkg/icons/mailingIcon.png");
     background-position: 0 0;
     height: 48px;
     margin: 5px 15px 10px 0;
@@ -644,7 +644,7 @@ ul.pageList li .messageServices p, .messageServices p, ul p {
 }
 #userInfo {
 	float:left;
-    background-image: url("../../images/gui/bkg/icons/user.png");
+    background-image: url("../images/gui/bkg/icons/user.png");
     background-position: 0 0;
     height: 32px;
     margin: 10px 20px 10px 10px;
@@ -658,7 +658,7 @@ ul.pageList li .messageServices p, .messageServices p, ul p {
 
 /*------------end Story 235:  pending style ------------*/
 .successIcon {
-    background-image: url("../../images/gui/bkg/icons/alerts-check-sm.png");
+    background-image: url("../images/gui/bkg/icons/alerts-check-sm.png");
     background-position: 0 0;
     height: 12px;
     margin: 0 8px 0 0;
@@ -744,7 +744,7 @@ div.messageContent {
 }
 
 #downloadIcon {
-    background-image: url("../../images/gui/bkg/icons/downloadIcon.png");
+    background-image: url("../images/gui/bkg/icons/downloadIcon.png");
     background-position: 0 0;
     float: left;
     height: 32px;
@@ -787,7 +787,7 @@ div.messageContent {
 } 
 #tabs-1 #dashTable {
 	margin-top:10px;
-}
+}7
 
 .vtabs .vtabs-tab-column ul a.open li , .vtabs .vtabs-tab-column ul a.closed  li {
     color: #006699; 
@@ -877,7 +877,7 @@ div.messageContent {
 }
 .business {
 	float:right;
-	background-image: url("../../images/gui/bkg/icons/businessIcon.png");
+	background-image: url("../images/gui/bkg/icons/businessIcon.png");
     background-position: 0 0;
     height: 30px;
     margin: 0 0 0 165px;
@@ -885,7 +885,7 @@ div.messageContent {
 }
 .mailers {
    	float:right;
-  	background-image: url("../../images/gui/bkg/icons/mailIcon.png");
+  	background-image: url("../images/gui/bkg/icons/mailIcon.png");
     background-position: 0 0;
     height: 30px;
     margin: 0 0 0 175px;
@@ -939,7 +939,7 @@ div.messageContent {
 
 .button-link span .buttons.orange {
     background-color: transparent;
-    background-image: url("../../images/gui/bkg/global/buttons/btn_sprite_orange.png");
+    background-image: url("../images/gui/bkg/global/buttons/btn_sprite_orange.png");
     background-repeat: no-repeat;
     border: medium none;
     cursor: pointer;
@@ -969,7 +969,7 @@ sup {
 
 /* End Inbox styles */
 .pendingIcon {
-	background-image: url("../../images/gui/bkg/icons/pendingIcon-sm.png");
+	background-image: url("../images/gui/bkg/icons/pendingIcon-sm.png");
     background-position: 0 0;
     float: left;
     height: 24px;
@@ -1050,7 +1050,7 @@ a.pending:link, a.pending:visited, a.pending:active, a.pending:hover {
   }
 .hcsIcon { /* HCS Services Icon */
   float: left;
-  background-image: url("../../images/gui/bkg/icons/hcs_icon.png");
+  background-image: url("../images/gui/bkg/icons/hcs_icon.png");
   background-position: 0 0;
   height: 45px;
   margin: 5px 15px 10px 0;

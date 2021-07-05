@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<uspsservices name="services.xml" >
+    <service id="1" serviceName="Freight Auction" serviceDescription="Suppliers have the ability to accept or decline transportation based on a set rate." accessFlag="True" />
+	<service id="2" serviceName="Contract Services" serviceDescription="Suppliers have the ability to manage their contractual relationship with the US Postal Service including manifests (schedule), invoice and payment status." accessFlag="False" />
+	<service id="3" serviceName="Transportation Procurement Services" serviceDescription="Supplier has the ability to manage Transportation Procurement Services here" accessFlag="True" />
+	<service id="4" serviceName="Automated Forms" serviceDescription="Supplier has the ability to manage . Automated Forms (Surface Transportation Automated Forms) here" accessFlag="False" />
+	<service id="5" serviceName="Transportation Visibility and Performance" serviceDescription="Supplier has the ability to manage Transportation Visibility Performance here... (refine serviceDescription)." accessFlag="False" />
+</uspsservices>

@@ -50,7 +50,9 @@ def get_user_name(request):
         print ("Graph API Returned")
         if "givenName" in graph_response:
             user_details.userName=graph_response["givenName"]
-            user_details.uid=graph_response["id"]
+            if "mail" in graph_response:
+                user_details.userName = user_details.userName + " (" + graph_response["mail"] + ")"
+            #user_details.uid=graph_response["id"]
         
         return (user_details)
         

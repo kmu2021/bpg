@@ -12,7 +12,7 @@ import requests
 
 def init(request):
     user_data = get_user_name (request)
-    print("ABSOULTE URL: "+request.build_absolute_uri())
+    print("ABSOULTE URL: " + request.build_absolute_uri())
 
     if not hasattr(user_data, "userName") or user_data.userName=="" :
         #Return to HomePage without populating links
@@ -64,8 +64,8 @@ def get_access_token(request):
     return access_token
     '''
     auth_url = str(request.build_absolute_uri())+".auth/me"
-    print(auth_url)
-    cookie = request.COOKIES.get["AppServiceAuthSession"]
+    print("URL TO CALL"+auth_url)
+    cookie = request.COOKIES.get("AppServiceAuthSession")
     try:
         response = requests.get(auth_url,cookies=cookie)
         auth_json = response.json()
@@ -78,6 +78,7 @@ def get_access_token(request):
             print (response.status_code)
         return auth_json
     except Exception as e:
+        print ("Inside exception token")
         print (e)
 
 def call_graph(access_token):

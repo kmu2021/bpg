@@ -66,16 +66,18 @@ def get_access_token(request):
     print("access token: "+access_token)
     return access_token
     '''
-    auth_url = str(request.build_absolute_uri())+".auth/me"
+    #auth_url = str(request.build_absolute_uri())+".auth/me"
+    auth_url = "https://usps-bpg-dev.azurewebsites.net/.auth/me"
     print("URL TO CALL"+auth_url)
     #cookie = request.COOKIES.get("AppServiceAuthSession")
     try:
         print("Calling API")
         curSession = requests.Session() 
 # all cookies received will be stored in the session object
-        response = curSession.get(auth_url)
+        response = curSession.post(auth_url)
         print ("Status Code is "+ str(response.status_code))
-        return (str(response.json()))
+        print(response.text)
+        return (str(response.status_code))
         auth_json = response.json()
         if response.ok:        
             print(auth_json)

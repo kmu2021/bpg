@@ -64,8 +64,8 @@ def get_user_name(request):
 
 def get_access_token(request):
 
-    #auth_url = str(request.build_absolute_uri())+".auth/me"
-    auth_url = "https://usps-bpg-dev.azurewebsites.net/.auth/me"
+    auth_url = str(request.build_absolute_uri())+".auth/me"
+    #auth_url = "https://usps-bpg-dev.azurewebsites.net/.auth/me" #Enable for localhost
     print("URL TO CALL: "+auth_url)
     
     try:

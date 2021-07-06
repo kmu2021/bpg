@@ -6,3 +6,7 @@ class UspsServices:
     serviceName : str    
     serviceDescription : str    
     accessFlag : bool
+
+class UserDetails:
+    uid: int
+    userName: str

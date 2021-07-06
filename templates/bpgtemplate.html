@@ -93,9 +93,11 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 												<a href="https://gateway.usps.com/eAdmin/action/homepage" style="display: inline">
 													<span class="navbar-text-blue"> Home </span> </a>
 											</li>
-
-											<li><span class="navbar-text-blue"> Hello
-													FRANK!</span></li>
+											{% for lst in serviceList %}
+												{% if lst.userName %}
+												<li><span class="navbar-text-blue"> Hello {{lst.userName}}</span></li>
+												{% endif %}
+											{% endfor %}	
 
 										</ul>
 									</div>
@@ -329,6 +331,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 			<!-- Go To Services box -->
 			<!-- Kishore START Dynamic Changes-->
 			{% for lst in serviceList %}
+			{% if lst.id %}
 				<div class="messageServices request" id="a1284323{{lst.id}}">
 				<div class="service-line box-shadow-services clearfix">
  					
@@ -384,6 +387,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 					
 				</div>
 			</div>
+			{% endif %}
 			{% endfor %}
 			<!-- Kishore END Dynamic Changes-->
 			

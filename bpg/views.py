@@ -75,7 +75,7 @@ def get_access_token(request):
 # all cookies received will be stored in the session object
         response = curSession.get(auth_url)
         print ("Status Code is "+ str(response.status_code))
-        return (str(response.status_code))
+        return (str(response.json()))
         auth_json = response.json()
         if response.ok:        
             print(auth_json)

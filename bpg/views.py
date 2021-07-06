@@ -68,10 +68,12 @@ def get_access_token(request):
     '''
     auth_url = str(request.build_absolute_uri())+".auth/me"
     print("URL TO CALL"+auth_url)
-    cookie = request.COOKIES.get("AppServiceAuthSession")
+    #cookie = request.COOKIES.get("AppServiceAuthSession")
     try:
         print("Calling API")
-        response = requests.get(auth_url,cookies=cookie)
+        curSession = requests.Session() 
+# all cookies received will be stored in the session object
+        response = curSession.get(auth_url)
         print ("Status Code is "+ str(response.status_code))
         return (str(response.status_code))
         auth_json = response.json()

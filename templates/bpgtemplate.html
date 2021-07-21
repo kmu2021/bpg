@@ -3,11 +3,6 @@
 <html>
 <head>
 
-<!-- FHH COMMENTED OUT
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
--->
-
 <script>
 /*
 * show and hide descriptions for services
@@ -36,7 +31,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 </script>
 
  
-<title>USPS Business Customer Gateway</title>
+<title>USPS Business Partner Gateway</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 
@@ -76,15 +71,13 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 											<img							
 											src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
 											class="img-fluid" tabindex="16"
-											title="Link to Business Customer Gateway's Home Page"
-											alt="Image for Business Customer Gateway's Home Page link"
+											title="Link to Business Partner Gateway's Home Page"
+											alt="Image for Business Partner Gateway's Home Page link"
 											height="20px" />
 										</a>
 									</div>
 								</div>
 
-
-								<!-- span class="navbar-brand mb-0 pt-4 mt-5" >Business Customer Gateway</span> -->
 								<div class="row" style="float: right; margin-right: 3%;">
 									<div class="col-12">
 										<ul class="nav navbar-nav " id="navbar-display-name"
@@ -156,10 +149,8 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 													Services </a></li>
 											<!-- end additional tools  -->
 										</ul>
+
 										<!--  begin navbar right -->
-
-
-
 										<ul class="nav navbar-nav  px-0"
 											style="height:; margin-top: 0px; padding-top: 0px; margin-right: 0%; float: right; width: 50%">
 											<li class="navbar-right-first-custom"><i
@@ -295,25 +286,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 							</div>
 						</div>
 
-<!-- FHH COMMENTED OUT - remove locations dropdown
-						
-						<div class="row">
-							<div class="col-md-12" style="margin-left: 15px;">
-
-								
-									
-										
-									
-									<h5 class="serviceHeader" style="margin-top: 0;">Your
-										Locations:</h5>
-									<select tabindex="34" name="cridBox" onchange="submit();" style="width:98%; word-wrap:break-word;" title="Your Locations" class="wrapped-select">
-										<option value="ALL" selected="selected">All Locations</option>
-										<option value="6587123">HARRINGTON SOFTWARE ASSOCIATES, INC. (6587123), 7431 WILSON RD, WARRENTON, VA 20186-7464</option><option value="3765389">MATERIALS CUSTOMER SERVICE (3765389), 500 SW GARY ORMSBY DR, TOPEKA, KS 66624-9996</option><option value="8974561">USPS - MAIL ENTRY (8974561), 475 LENFANT PLZ SW RM 3660, WASHINGTON, DC 20260-0004</option>
-									</select>
-								
-							</div>
-						</div>
--->
 						<!-- Table include -->
 						<div class="row">
 							<div class="col-md-12" style="margin-left: 15px;">
@@ -328,8 +300,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 		
 		
 
-			<!-- Go To Services box -->
-			<!-- Kishore START Dynamic Changes-->
+			<!-- Go To Services box -->			
 			{% for lst in serviceList %}
 			{% if lst.id %}
 				<div class="messageServices request" id="a1284323{{lst.id}}">
@@ -388,10 +359,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 				</div>
 			</div>
 			{% endif %}
-			{% endfor %}
-			<!-- Kishore END Dynamic Changes-->
-			
-
+			{% endfor %}			
 
 		<!-- end OTHER SERVICES -->
 	
@@ -410,10 +378,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 
 			</div>
 		<div style="display: none;"><input type="hidden" name="_sourcePage" value="6Gats09WA7E09gmaQyWl1kVkq0yXTIF2RU_pdq80UJ319uf92GkEVovPntwdcYvs1U0HS0_vKuo=" /><input type="hidden" name="__fp" value="r_clNIa3jsvuuSoZ7ddKpw==" /></div></form>
-		<!-- COMMENTED by Kishore
-		<script
-			src="{% static 'scripts/additionalservices/otherServices.js' %}"></script>
-	    -->
 		</div>
 		<!-- end page-section-->
 
@@ -429,10 +393,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 				
 	
 		<!-- Begin Footer -->
-
-<!--  FHH COMMENTED OUT
-<span class="hide-fromsighted">Begin Footer</span>
--->
 
 <!--  FHH ... set display: none for now on footer for wirefream -->
 <div class="bootstrap-iso main-footer" style="display: none;">
@@ -532,12 +492,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 			</div>
 </div>
 		<!-- End footer -->
-<!-- FHH COMMENTED OUT
-<link rel="stylesheet" href="{% static 'styles/footer.css' %}" type="text/css" media="all" />
-<script type="text/javascript" src="{% static 'scripts/support.js' %}"></script>
--->	
-
-				<!-- End footer -->
 			</div>
 		</div>
 	<div class="dijitHidden">
@@ -556,11 +510,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 	
 
 	</div>
-
-	 <!-- Bootstrap -- COMMENTED by Kishore
-	 <script src="{% static 'scripts/bootstrap/bootstrap.min.js' %}"></script>
-	 <script src="{% static 'scripts/timeout/timeout.js' %}"></script>
-	 -->
 	 
 </body>
 	</html>

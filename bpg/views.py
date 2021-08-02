@@ -9,12 +9,13 @@ import os
 from pathlib import Path
 import json
 import requests
+from django.conf import settings
 
 
 
 def init(request):    
         
-    user_data = get_user_name (request)
+    user_data = get_user_name (request)    
 
     if not hasattr(user_data, "userName") or user_data.userName=="" :
         #Return to HomePage without populating links
@@ -30,6 +31,7 @@ def init(request):
             service = UspsServices()        
             service.serviceName = child.attrib['serviceName']
             service.serviceDescription = child.attrib['serviceDescription']
+            service.url = child.attrib['url'].replace('{ENV}',settings.ENVIRONMENT).lower
             service.accessFlag = eval(child.attrib['accessFlag'].title())
             service.id = child.attrib['id']                   
             serviceList.append(service)
@@ -39,6 +41,12 @@ def init(request):
 
         
 def get_user_name(request):
+    '''
+    #For Testing in Local Only
+    user_details = UserDetails()
+    user_details.userName = "Test"
+    return(user_details)
+    '''
     try:
         user_details = UserDetails()
         access_token=get_access_token(request)[0]["access_token"] 

@@ -1,8 +1,5 @@
 <?xml version="1.0" ?>
 <uspsservices name="services.xml" >
-    <service id="1" serviceName="Freight Auction" serviceDescription="Suppliers have the ability to accept or decline transportation based on a set rate." accessFlag="True" />
-	<service id="2" serviceName="Contract Services" serviceDescription="Suppliers have the ability to manage their contractual relationship with the US Postal Service including manifests (schedule), invoice and payment status." accessFlag="False" />
-	<service id="3" serviceName="Transportation Procurement Services" serviceDescription="Supplier has the ability to manage Transportation Procurement Services here" accessFlag="True" />
-	<service id="4" serviceName="Automated Forms" serviceDescription="Supplier has the ability to manage . Automated Forms (Surface Transportation Automated Forms) here" accessFlag="False" />
-	<service id="5" serviceName="Transportation Visibility and Performance" serviceDescription="Supplier has the ability to manage Transportation Visibility Performance here... (refine serviceDescription)." accessFlag="False" />
-</uspsservices>
+	<service id="1" serviceCode="FA" serviceName="Freight Auction" serviceDescription="Suppliers have the ability to accept or decline transportation based on a set rate." url="https://ile-ba-{ENV}.usps.com/FA/" accessFlag="True" />
+	<service id="2" serviceCode="ILERPT" serviceName="Transportation Business Analytics" serviceDescription="Suppliers have the ability to run reports regarding their transportation activities with the US Postal Service." url="https://ile-ba-{ENV}.usps.com/ibmcognos/" accessFlag="False" />
+	</uspsservices>

@@ -325,16 +325,16 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 							
 								{% if lst.accessFlag %}
 								
-									<!-- begin Request Access button-->
-									<a title="Go to Service" href="https://prodp1.usps.com/adminweb/view.htm?requestPage=P1BALANCEFEES" tabindex="39">
-												<button class="btn btn-sm btn-primary service-button" alt="Go to Freight Auction service button" type="button">
+									<!-- begin Go to Service button-->
+									<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+												<button class="btn btn-sm btn-primary service-button" alt="Go to {{lst.serviceName}} service button" type="button">
 													<span class="service-link">Go to Service</span> 
 												</button>
 											</a>								
 								{% else %}
 									<!-- begin Request Access button-->
 									<span class="hasHover"> 
-										<a tabindex="49" id="Request Access" href="https://gateway.usps.com/eAdmin/action/manageservices/manageByService?securityID=1284324" title="Get Access" class="buttons"><button class="btn btn-sm btn-default service-button" type="button" alt="HCR Manifests Get Access button">
+										<a tabindex="49" id="Request Access" href="{{lst.url}}" title="Get Access" class="buttons"><button class="btn btn-sm btn-default service-button" type="button" alt="Get {{lst.serviceName}} Access button">
 														<strong>Get Access</strong>
 												</button></a>
 									</span> 

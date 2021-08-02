@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -122,3 +123,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'bpg/static')]
 STATIC_ROOT = os.path.join (BASE_DIR,'static')
+
+#Retrieve Environment Variables
+def get_env_value(env_variable):
+    try:
+      	return os.environ[env_variable]
+    except KeyError:
+        error_msg = 'Set the Environment Variable' + env_variable
+        raise ImproperlyConfigured(error_msg)
+
+#Set Environment Name
+ENVIRONMENT = get_env_value('BPG_ENVIRONMENT')

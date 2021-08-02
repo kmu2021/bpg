@@ -29,9 +29,14 @@ def init(request):
         
         for child in root:
             service = UspsServices()        
+            service.serviceName = child.attrib['serviceCode'].upper()
             service.serviceName = child.attrib['serviceName']
             service.serviceDescription = child.attrib['serviceDescription']
             service.url = child.attrib['url'].replace('{ENV}',settings.ENVIRONMENT).lower
+            if service.serviceName.upper() in user_data.ileAccessList:
+                service.accessFlag = True
+            else:
+                service.accessFlag = False
             service.accessFlag = eval(child.attrib['accessFlag'].title())
             service.id = child.attrib['id']                   
             serviceList.append(service)
@@ -41,15 +46,17 @@ def init(request):
 
         
 def get_user_name(request):
-    '''
+    
     #For Testing in Local Only
     user_details = UserDetails()
     user_details.userName = "Test"
+    user_details.ileAccess = ""
     return(user_details)
-    '''
+    
     try:
         user_details = UserDetails()
-        access_token=get_access_token(request)[0]["access_token"] 
+        auth_response = get_access_token(request)[0]
+        access_token=auth_response["access_token"]         
         print(access_token)   
  
         graph_response = call_graph (access_token)
@@ -59,7 +66,7 @@ def get_user_name(request):
             if "mail" in graph_response:
                 user_details.userName = user_details.userName + " (" + graph_response["mail"] + ")"
             #user_details.uid=graph_response["id"]
-        
+        user_details.ileAccessList=get_access_list (auth_response['user_claims'])
         return (user_details)
         
     except Exception as e:
@@ -97,3 +104,9 @@ def call_graph(access_token):
         print (response.status_code)
     return graph_json
     
+def get_access_list(user_claims):
+    ileAccessList=[]
+    for userclaims in user_claims:
+        if userclaims['typ'].startswith('ILE'):
+            ileAccessList.append(userclaims['val'].split("|")[0].upper())
+    return(ileAccessList)

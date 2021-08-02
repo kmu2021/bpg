@@ -29,15 +29,14 @@ def init(request):
         
         for child in root:
             service = UspsServices()        
-            service.serviceName = child.attrib['serviceCode'].upper()
+            service.serviceCode = child.attrib['serviceCode'].upper()
             service.serviceName = child.attrib['serviceName']
             service.serviceDescription = child.attrib['serviceDescription']
             service.url = child.attrib['url'].replace('{ENV}',settings.ENVIRONMENT).lower
-            if service.serviceName.upper() in user_data.ileAccessList:
+            if service.serviceCode in user_data.ileAccessList:
                 service.accessFlag = True
             else:
-                service.accessFlag = False
-            service.accessFlag = eval(child.attrib['accessFlag'].title())
+                service.accessFlag = False            
             service.id = child.attrib['id']                   
             serviceList.append(service)
         serviceList.append(user_data)    
@@ -48,10 +47,10 @@ def init(request):
 def get_user_name(request):
     
     #For Testing in Local Only
-    user_details = UserDetails()
+    '''user_details = UserDetails()
     user_details.userName = "Test"
     user_details.ileAccess = ""
-    return(user_details)
+    return(user_details)'''
     
     try:
         user_details = UserDetails()

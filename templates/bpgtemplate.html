@@ -48,7 +48,8 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 
 <link type="text/css" href="{% static 'styles/bootstrap-iso.css' %}" rel="Stylesheet"/>
 <link type="text/css" href="{% static 'styles/redesign.css' %}" rel="Stylesheet" />
-
+<script src="{% static 'scripts/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'scripts/bootstrap/bootstrap.min.js' %}"></script>
 </head>
 
 <body class="claro" id="pageBodyId">
@@ -96,136 +97,6 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="container-fluid pt-0 mt-0 mb-0 pb-0"
-					style="background-color: #F2F2F2; margin-top: 0px; padding-top: 0px;  display: none;">
-					<div class="container">
-						<div class="row">
-							<div class="col-12">
-								<nav class="navbar navbar-light bg-light navbar-expand-lg">
-									<button type="button" class="navbar-toggle"
-										data-toggle="collapse"
-										data-target=".bs-example-navbar-collapse-1">
-										<span class="sr-only">Toggle navigation</span> <span
-											class="icon-bar"></span> <span class="icon-bar"></span> <span
-											class="icon-bar"></span>
-									</button>
-
-
-
-									<!-- Collect the nav links, forms, and other content for toggling -->
-									<div
-										class="nav collapse bs-example-navbar-collapse-1 navbar-collapse py-0"
-										style="margin-top: 0px; padding-top: 0px; horizontal-align: top; margin-left: 1.2%; position: relative;">
-
-										<ul class="nav navbar-nav py-0 px-0"
-											style="height: 25px; margin-top: 0px; padding-top: 0px;">
-											<!-- begin mailing  -->
-											<li><a tabindex="18" title="Link to Mailing Services"
-												alt="Link to Mailing Services" class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab?tabID=2">Mailing
-													Services</a></li>
-											<!-- begin shipping -->
-											<li class="navbar-right-left"><a tabindex="19"
-												title="Link to Shipping Services"
-												alt="Link to Shipping Services" class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab?tabID=1">Shipping
-													Services</a></li>
-											<li class="navbar-right-left"><a tabindex="20"
-												title="Link to HCR Services" alt="Link to HCR Services"
-												class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab?tabID=5">HCR
-													Services</a></li>
-
-											<!-- begin additional tools  -->
-											<li class="navbar-right-left"><a tabindex="21"
-												title="Link to Additional Services"
-												alt="Link to Additional Services" class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab?tabID=3">Additional
-													Services </a></li>
-											<!-- end additional tools  -->
-										</ul>
-
-										<!--  begin navbar right -->
-										<ul class="nav navbar-nav  px-0"
-											style="height:; margin-top: 0px; padding-top: 0px; margin-right: 0%; float: right; width: 50%">
-											<li class="navbar-right-first-custom"><i
-												class="material-icons headericons">&#xE001;</i> 
-													<span title="!" alt="Alert icon" class="bcg_badge-header">!</span>
-
-												 <a tabindex="22" title="Link to Alerts"
-												alt="Link to Alerts" class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/alerts">Alerts</a>
-											</li>
-											<li class="navbar-right-custom"><i
-												class="material-icons headericons img-fluid">&#xE0E1;</i>  <a tabindex="23" title="Link to Pending Requests"
-												alt="Link to Pending Requests" class="menu-main-header"
-												href="https://gateway.usps.com/eAdmin/action/inbox">
-													Pending Requests</a></li>
-											<!--  begin manage account dropdown -->
-											<li class="dropdown navbar-right-custom"><i
-												class="material-icons manageAccount headericons img-fluid">&#xE8A6;</i>
-											<div title="View Manage Account" class="menu-main-header"
-													alt="View Manage Account"
-													style="margin-left: 11px; margin-top: 4px; text-underline: none;"
-													tabindex="23" data-toggle="dropdown"
-													class="dropdown-toggle menu-second menu-main-header">
-													Manage Account <b class="caret"></b>
-												</div>
-												<ul class="dropdown-menu ">
-
-													<li><a tabindex="24" title="Link to Manage Profile"
-														alt="Link to Manage Profile" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/action/preferences/editprofile">Manage
-															Profile</a></li>
-
-													<li><a tabindex="25" title="Link to Manage Favorites"
-														alt="Link to Manage Favorites" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/action/preferences/editfavorites">Manage
-															Favorites</a></li>
-
-													<li><a tabindex="26" title="Link to Manage Services"
-														alt="Link to Manage Services" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/action/manageservices">Manage
-															Services</a></li>
-
-													<li><a tabindex="27" title="Link to Manage Locations"
-														alt="Link to Manage Locations" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/action/managelocations">Manage
-															Locations</a></li>
-
-													<li><a tabindex="28" title="Link to Manage Users"
-														alt="Link to Manage Users" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/action/manageusers/">Manage
-															Users</a></li>
-													<li class="divider"></li>
-
-													<li><a tabindex="29" title="Click to Logout"
-														alt="Click to Logout" class="menu-main-header"
-														href="https://gateway.usps.com/eAdmin/view/signin/logout">Log
-															Out</a></li>
-												</ul></li>
-
-											<li class="navbar-right-custom-middle"><a tabindex="30"
-												class="menu-main-header" title="Link to USPS.com"
-												alt="Link to USPS.com" href="https://www.usps.com/">
-													USPS.com </a></li>
-
-											<li class="navbar-right-custom-last"><a tabindex="31"
-												class="menu-main-header" title="Link to Help"
-												class="menu-main-header" alt="Link to Help"
-												href="https://gateway.usps.com/eAdmin/action/resources/support">
-													Help</a></li>
-										</ul>
-									</div>
-								</nav>
-							</div>
-							<!-- /.navbar-collapse -->
-
 						</div>
 					</div>
 				</div>
@@ -333,14 +204,14 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 											</a>								
 								{% else %}
 									<!-- begin Request Access button-->
+									<!-- Button trigger modal -->
+
 									<span class="hasHover"> 
-										<a tabindex="49" id="Request Access" href="{{lst.url}}" title="Get Access" class="buttons"><button class="btn btn-sm btn-default service-button" type="button" alt="Get {{lst.serviceName}} Access button">
+										<a tabindex="49" id="Request Access" title="Get Access" class="buttons"><button class="btn btn-sm btn-default service-button" type="button" alt="Get {{lst.serviceName}} Access button" data-toggle="modal" data-target="#getAccessModal">
 														<strong>Get Access</strong>
 												</button></a>
 									</span> 
-								{% endif %}
- 								
-							
+								{% endif %} 								
  						</div>
  					</div>
  					
@@ -360,7 +231,29 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 			</div>
 			{% endif %}
 			{% endfor %}			
-
+			
+<!-- Modal -->
+<div class="modal fade" id="getAccessModal" tabindex="-1" role="dialog" aria-labelledby="getAccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+		<!--
+			<div class="modal-header">
+        <h5 class="modal-title" id="getAccessModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  -->
+      <div class="modal-body">
+        Please contact your US Postal Service contract officer to obtain access to this service.
+      </div>
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END Modal -->
 		<!-- end OTHER SERVICES -->
 	
 
@@ -371,14 +264,9 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 						
 					</div>
 				</div>
-			</div>
-
-			<div class="dijitHidden">
-				
-
-			</div>
-		<div style="display: none;"><input type="hidden" name="_sourcePage" value="6Gats09WA7E09gmaQyWl1kVkq0yXTIF2RU_pdq80UJ319uf92GkEVovPntwdcYvs1U0HS0_vKuo=" /><input type="hidden" name="__fp" value="r_clNIa3jsvuuSoZ7ddKpw==" /></div></form>
+			</div>		
 		</div>
+
 		<!-- end page-section-->
 
 		<!-- end #main-inner -->
@@ -389,127 +277,7 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 	<!-- Begin Footer -->
 		<div id="footer" class="footer">
 			<div class="section">
-				<!-- Begin Footer -->
-				
-	
-		<!-- Begin Footer -->
-
-<!--  FHH ... set display: none for now on footer for wirefream -->
-<div class="bootstrap-iso main-footer" style="display: none;">
-		<div id="usps-footer" class="container" >
-			<div class="row" id="footer-margin-row">
-			 
-			 	<div class="col-md-12">
-						<div class="row" id="usps-footer-links">
-						
-									<div class="col-md-2 footer-link">
-		
-										<h3>LEGAL</h3>
-										<a
-												href="http://about.usps.com/who-we-are/privacy-policy/privacy-policy-highlights.htm"
-												tabindex="9500" title="Link to Privacy Policy" alt="Link to Privacy Policy">Privacy Policy
-													</a><br>
-											<a href="http://about.usps.com/termsofuse.htm"
-												tabindex="9501" title="Link to Terms of Use" alt="Link to Terms of Use">Terms of Use </a><br>
-											
-											<a
-												href="http://about.usps.com/who-we-are/foia/welcome.htm"
-												tabindex="9502" title="Link to FOIA" alt="Link to FOIA">FOIA </a><br>
-											<a
-												href="http://about.usps.com/who-we-are/no-fear-act/welcome.htm"
-												tabindex="9503" title="Link to No FEAR Act EEO Data" alt="Link to No FEAR Act EEO Data">No FEAR Act
-													EEO Data </a>
-									</div>
-									<div class="col-md-1">&nbsp;</div>
-									<div class="col-md-2 footer-link">
-										<h3>ON USPS.COM</h3>
-										<a
-												href="http://www.usps.com/gov-services/gov-services.htm"
-												tabindex="9504" title="Link to Government Services" alt="Link to Government Services">Government
-													Services </a><br>
-											<a href="https://www.usps.com/shop" tabindex="9505"
-												title="Link to Buy Stamps & Shop" alt="Link to Buy Stamps & Shop">Buy Stamps &amp; Shop </a><br>
-											<a href="http://www.usps.com/shipping/label.htm"
-												tabindex="9506" title="Link to Print a Label with Postage" alt="Link to Print a Label with Postage">Print a
-													Label with Postage </a><br>
-											<a
-												href="http://www.usps.com/customer-service/customer-service.htm"
-												tabindex="9507" title="Link to Customer Service" alt="Link to Customer Service">Customer Service
-													</a><br>
-											<a href="http://www.usps.com/globals/site-index.htm"
-												tabindex="9508" title="Link to Site Index" alt="Link to Site Index">Site Index </a>
-									</div>
-									<div class="col-md-1">&nbsp;</div>
-									<div class="col-md-2 footer-link">
-										<h3>ON ABOUT.USPS.COM</h3>
-											<a href="http://about.usps.com" tabindex="9509"
-												title="Link to know About USPS Home" alt="Link to know About USPS Home">About USPS Home </a><br>
-											<a href="http://about.usps.com/news/welcome.htm"
-												tabindex="9510" title="Link to Newsroom" alt="Link to Newsroom">Newsroom </a><br>
-											<a
-												href="http://about.usps.com/news/service-alerts/welcome.htm"
-												tabindex="9511" title="Link to Mail Service Updates" alt="Link to Mail Service Updates">Mail Service
-													Updates </a><br>
-											<a
-												href="http://about.usps.com/forms-publications/welcome.htm"
-												tabindex="9512" title="Link to Forms and Publications" alt="Link to Forms and Publications">Forms &amp;
-													Publications </a><br>
-											<a href="http://about.usps.com/careers/welcome.htm"
-												tabindex="9513" title="Link to Careers" alt="Link to Careers">Careers </a>
-										
-									</div>
-									<div class="col-md-1">&nbsp;</div>
-									<div class="col-md-2 footer-link">
-										<h3>OTHER USPS SITES</h3>
-										<a href="https://gateway.usps.com" tabindex="9514"
-												title="Link to Business Customer Gateway" alt="Link to Business Customer Gateway">Business Customer
-													Gateway </a><br>
-											<a href="https://postalinspectors.uspis.gov/"
-												tabindex="9515" title="Link to Postal Inspectors" alt="Link to Postal Inspectors">Postal Inspectors
-													</a><br>
-											<a href="http://www.uspsoig.gov/" tabindex="9516"
-												title="Link to Inspector General" alt="Link to Inspector General">Inspector General </a><br>
-											<a href="http://pe.usps.com/" tabindex="9517"
-												title="Link to Postal Explorer" alt="Link to Postal Explorer">Postal Explorer </a>
-										
-							</div>
-						</div>
-					</div>
-					</div>
-				<br>
-						<div class="row">
-							<div class="col-md-12">
-								<div id="footer-copyright">
-									<div id="usps-footer-copyright" style="display: inline;">
-											Copyright &copy; <script type="text/javascript">
-											var theDate = new Date();
-											document.write(theDate.getFullYear());
-											</script> USPS. All Rights Reserved.
-									</div>
-								</div>
-							</div>
-						</div>
-			</div>
-</div>
-		<!-- End footer -->
 			</div>
 		</div>
-	<div class="dijitHidden">
-		
-<!--  FHH ... set display: none for now on footer for wireframe -->	
-		<div id="timeOutDialogId" title="Warning:" data-dojo-type="dijit/Dialog" class="left clearfix"  style="display: none;">
-			<div class="bootstrap-iso">
-				<div class = "reviewRequestNote margin-bottom-30" style="">Your current BCG session will be logged out in one minute due to inactivity</div>
-				<div class = "modal-buttons-div">
-					<span class="hasHover"> 
-						<a tabindex="1005" href="#" title="OK" class="btn btn-sm btn-primary" id="TimeOutCloseButtonId">OK</a>
-					</span>	
-				</div>			
-			</div>
-		</div>
-	
-
-	</div>
-	 
 </body>
 	</html>

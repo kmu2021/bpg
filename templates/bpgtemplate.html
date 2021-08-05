@@ -1,60 +1,56 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<script>
-/*
-* show and hide descriptions for services
-*/
-showHideDesc = function(id, ctx){
-var approvedNum = id;
-var descNum = "desc"+id;
-var dropText = "more"+id;
-var origin = window.location.protocol + "//" + window.location.host + ctx;
-if(document.getElementById(approvedNum).alt == "image of plus symbol"){
-	document.getElementById(approvedNum).src = "{% static 'icons/minus-grey.png' %}";
-	document.getElementById(approvedNum).alt = "image of minus symbol";
-	document.getElementById(descNum).style.display = "block";
-	document.getElementById(dropText).alt = "less"+id;
-	document.getElementById(dropText).title = "Click to minimize";
-	document.getElementById(dropText).innerHTML = "less info >";
-}else{
-	document.getElementById(approvedNum).src = "{% static 'icons/plus-grey.png' %}";
-	document.getElementById(approvedNum).alt = "image of plus symbol";
-	document.getElementById(descNum).style.display = "none";
-	document.getElementById(dropText).alt = "more"+id;
-	document.getElementById(dropText).title = "Click to learn more"
-	document.getElementById(dropText).innerHTML = "more info >";
-}
-};	
-</script>
+	<script>
+		/*
+		* show and hide descriptions for services
+		*/
+		showHideDesc = function (id, ctx) {
+			var approvedNum = id;
+			var descNum = "desc" + id;
+			var dropText = "more" + id;
+			var origin = window.location.protocol + "//" + window.location.host + ctx;
+			if (document.getElementById(approvedNum).alt == "image of plus symbol") {
+				document.getElementById(approvedNum).src = "{% static 'icons/minus-grey.png' %}";
+				document.getElementById(approvedNum).alt = "image of minus symbol";
+				document.getElementById(descNum).style.display = "block";
+				document.getElementById(dropText).alt = "less" + id;
+				document.getElementById(dropText).title = "Click to minimize";
+				document.getElementById(dropText).innerHTML = "less info >";
+			} else {
+				document.getElementById(approvedNum).src = "{% static 'icons/plus-grey.png' %}";
+				document.getElementById(approvedNum).alt = "image of plus symbol";
+				document.getElementById(descNum).style.display = "none";
+				document.getElementById(dropText).alt = "more" + id;
+				document.getElementById(dropText).title = "Click to learn more"
+				document.getElementById(dropText).innerHTML = "more info >";
+			}
+		};
+	</script>
 
- 
-<title>USPS Business Partner Gateway</title>
-<meta name="keywords" content="" />
-<meta name="description" content="" />
 
-<link rel="shortcut icon"
-	href="{% static 'icons/favicon.ico' %}" 
-	type="image/x-icon">
+	<title>USPS Business Partner Gateway</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
 
-<link rel="stylesheet"
-	href="{% static 'styles/common-usps.css' %}"
-	type="text/css" media="all" />
-<link rel="stylesheet"
-	href="{% static 'styles/bcg.css' %}"
-	type="text/css" media="all" />
+	<link rel="shortcut icon" href="{% static 'icons/favicon.ico' %}" type="image/x-icon">
 
-<link type="text/css" href="{% static 'styles/bootstrap-iso.css' %}" rel="Stylesheet"/>
-<link type="text/css" href="{% static 'styles/redesign.css' %}" rel="Stylesheet" />
-<script type="text/javascript" language="javascript" src="{% static 'scripts/jquery.min.js' %}"></script>
-<script type="text/javascript" language="javascript" src="{% static 'scripts/bootstrap/bootstrap.min.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'styles/common-usps.css' %}" type="text/css" media="all" />
+	<link rel="stylesheet" href="{% static 'styles/bcg.css' %}" type="text/css" media="all" />
+
+	<link type="text/css" href="{% static 'styles/bootstrap-iso.css' %}" rel="Stylesheet" />
+	<link type="text/css" href="{% static 'styles/redesign.css' %}" rel="Stylesheet" />
+	<script type="text/javascript" language="javascript" src="{% static 'scripts/jquery.min.js' %}"></script>
+	<script type="text/javascript" language="javascript"
+		src="{% static 'scripts/bootstrap/bootstrap.min.js' %}"></script>
 </head>
 
 <body class="claro" id="pageBodyId">
 	<!-- begin #page -->
-	<div id="page">	
+	<div id="page">
 		<div class="bootstrap-iso pt-0 mt-0 mb-0 pb-0">
 			<nav id="myNavbar" class="navbar " role="navigation">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -64,17 +60,14 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 							<div class="col-12">
 								<div class="nav navbar-header" id="navbarAfterLogin">
 									<div class="row navbar-nav mb-0 pb-0" style="padding-top: 1%;">
-										<img
-											src="{% static 'images/usps-logo-withouttext.png' %}"
-											class="img-fluid " height="20px" title="USPS logo"
-											alt="USPS logo image of blue eagle" /> <a
+										<img src="{% static 'images/usps-logo-withouttext.png' %}" class="img-fluid "
+											height="20px" title="USPS logo" alt="USPS logo image of blue eagle" /> <a
 											href="https://gateway.usps.com/eAdmin/action/homepage">
-											<img							
-											src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
-											class="img-fluid" tabindex="16"
-											title="Link to Business Partner Gateway's Home Page"
-											alt="Image for Business Partner Gateway's Home Page link"
-											height="20px" />
+											<img src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
+												class="img-fluid" tabindex="16"
+												title="Link to Business Partner Gateway's Home Page"
+												alt="Image for Business Partner Gateway's Home Page link"
+												height="20px" />
 										</a>
 									</div>
 								</div>
@@ -84,14 +77,16 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 										<ul class="nav navbar-nav " id="navbar-display-name"
 											style="float: right; padding-right: 0%;">
 											<li style="padding-right: 20px;">
-												<a href="https://gateway.usps.com/eAdmin/action/homepage" style="display: inline">
+												<a href="https://gateway.usps.com/eAdmin/action/homepage"
+													style="display: inline">
 													<span class="navbar-text-blue"> Home Page </span> </a>
 											</li>
 											{% for lst in serviceList %}
-												{% if lst.userName %}
-												<li><span class="navbar-text-blue"> Welcome <b>{{lst.userName}}</b></span></li>
-												{% endif %}
-											{% endfor %}	
+											{% if lst.userName %}
+											<li><span class="navbar-text-blue"> Welcome <b>{{lst.userName}}</b></span>
+											</li>
+											{% endif %}
+											{% endfor %}
 
 										</ul>
 									</div>
@@ -104,180 +99,201 @@ if(document.getElementById(approvedNum).alt == "image of plus symbol"){
 
 		</div>
 
-	
+
 
 
 		<div id="main">
-				
-		<!-- TAB E content-->
-		<form method="post" action="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab" id="selectServicesForm">
-			<input type="hidden" name="serviceId" id="serviceId" value="">
-			<input type="hidden" name="command" id="command" value="">
-			<input type="hidden" name="roleName" id="roleName" value="">
-			<input name="tabID" type="hidden" value="5" />
-			<div class="bootstrap-iso">
 
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h2 class="service-page-title" style="margin-top: 20px;margin-bottom: 20px;">Logistics Gateway</h2>
+			<!-- TAB E content-->
+			<form method="post" action="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab"
+				id="selectServicesForm">
+				<input type="hidden" name="serviceId" id="serviceId" value="">
+				<input type="hidden" name="command" id="command" value="">
+				<input type="hidden" name="roleName" id="roleName" value="">
+				<input name="tabID" type="hidden" value="5" />
+				<div class="bootstrap-iso">
+
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12">
+								<h2 class="service-page-title" style="margin-top: 20px;margin-bottom: 20px;">Logistics
+									Gateway</h2>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="container-fluid service-page-area">
-					<div class="container service-page-container">
-						<div class="row">
-							<div class="col-md-8 col-sm-7" style="margin-left: 15px;">
-								
-									
-									
-									
-									
-										<div class="hcsIcon left"
-											alt="icon of white truck"></div>
-									
-								
-								<h4 class="serviceHeader">Gateway to manage your transporation relationship with the US Postal Service.</h4>
-								<h6 class="serviceHeader text-justify"
-									style="font-weight: normal; padding-top: 10px;">Services below enable Highway Transportation Suppliers to access current transportation schedules, real-time monitoring of vehicles, adjudication of trip exceptions and performance dashboards.</h6>
-							</div>
-							<div class="col-md-3 text-right"
-								style="float: right; margin-right: 15px; margin-top: 15px;">
-								
-									
-									
-									
-									
-										<img title="" width="232" height="150"
-											src="{% static 'images/hcs_image.png' %}"
-											alt="image of parked postal trucks">
-									
-								
-							</div>
-						</div>
+					<div class="container-fluid service-page-area">
+						<div class="container service-page-container">
+							<div class="row">
+								<div class="col-md-8 col-sm-7" style="margin-left: 15px;">
 
-						<!-- Table include -->
-						<div class="row">
-							<div class="col-md-12" style="margin-left: 15px;">
-								<div id="servicesTableId">
-									
-	
 
-	<script>var ctx = "/"</script>
-	<br>
-	
-		<!-- start OTHER SERVICES -->
-		
-		
 
-			<!-- Go To Services box -->			
-			{% for lst in serviceList %}
-			{% if lst.id %}
-				<div class="messageServices request" id="a1284323{{lst.id}}">
-				<div class="service-line box-shadow-services clearfix">
- 					
- 					<div class = "row">
- 						<div class = "col-md-8 col-sm-8 service-font">
- 							<img src="{% static 'icons/plus-grey.png' %}"
-							 id="{{lst.id}}" tabindex="37{{lst.id}}"
-							onclick="showHideDesc({{lst.id}}, ctx)" alt="image of plus symbol" style="cursor:pointer;">
-							{{lst.serviceName}}&nbsp;&nbsp; 
-							
-							<span class="smaller"> 
-								<a href="#/" class="underline" tabindex="38{{lst.id}}"
-									onclick="showHideDesc({{lst.id}}, ctx)" title="Click to learn more about {{lst.serviceName}}"
-									id="more{{lst.id}}" alt="Click to learn more about {{lst.serviceName}}">more info >
-								</a> 
-							</span>
- 						</div>
 
- 						<div class = "col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
-							
-								{% if lst.accessFlag %}
-								
-									<!-- begin Go to Service button-->
-									<a title="Go to Service" href="{{lst.url}}" tabindex="39">
-												<button class="btn btn-sm btn-primary service-button" alt="Go to {{lst.serviceName}} service button" type="button">
-													<span class="service-link">Go to Service</span> 
-												</button>
-											</a>								
-								{% else %}
-									<!-- begin Request Access button-->
-									<!-- Button trigger modal -->
 
-									<span class="hasHover"> 
-										<a tabindex="49" id="Request Access" title="Get Access" class="buttons"><button class="btn btn-sm btn-default service-button" type="button" alt="Get {{lst.serviceName}} Access button" data-toggle="modal" data-target="#getAccessModal">
-														<strong>Get Access</strong>
-												</button></a>
-									</span> 
-								{% endif %} 								
- 						</div>
- 					</div>
- 					
- 					<!-- Service description -->
- 					<div class = "row">
-	 					<div class="col-md-11 col-sm-11"> 
-							<div class="text-justify" id="desc{{lst.id}}" style="display: none; margin-left: 25px;">
-								<p class="text" style="margin-left: 25px;">
-									{{lst.serviceDescription}}																	
-								</p>
-							</div>
-	 					</div>
-					</div>
-					<!-- end of Service description -->
-					
-				</div>
-			</div>
-			{% endif %}
-			{% endfor %}			
-			
-<!-- Modal -->
-<div class="modal fade" id="getAccessModal" tabindex="-1" role="dialog" aria-labelledby="getAccessModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-		<!--
-			<div class="modal-header">
-        <h5 class="modal-title" id="getAccessModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-	  -->
-      <div class="modal-body">
-        Please contact your US Postal Service contract officer to obtain access to this service.
-      </div>
-      <div class="modal-footer">        
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- END Modal -->
-		<!-- end OTHER SERVICES -->
-	
+									<div class="hcsIcon left" alt="icon of white truck"></div>
+
+
+									<h4 class="serviceHeader">Gateway to manage your transporation relationship with the
+										US Postal Service.</h4>
+									<h6 class="serviceHeader text-justify"
+										style="font-weight: normal; padding-top: 10px;">Services below enable Highway
+										Transportation Suppliers to access current transportation schedules, real-time
+										monitoring of vehicles, adjudication of trip exceptions and performance
+										dashboards.</h6>
+								</div>
+								<div class="col-md-3 text-right"
+									style="float: right; margin-right: 15px; margin-top: 15px;">
+
+
+
+
+
+									<img title="" width="232" height="150" src="{% static 'images/hcs_image.png' %}"
+										alt="image of parked postal trucks">
+
 
 								</div>
 							</div>
-						</div>
 
-						
+							<!-- Table include -->
+							<div class="row">
+								<div class="col-md-12" style="margin-left: 15px;">
+									<div id="servicesTableId">
+
+
+
+										<script>var ctx = "/"</script>
+										<br>
+
+										<!-- start OTHER SERVICES -->
+
+
+
+										<!-- Go To Services box -->
+										{% for lst in serviceList %}
+										{% if lst.id %}
+										<div class="messageServices request" id="a1284323{{lst.id}}">
+											<div class="service-line box-shadow-services clearfix">
+
+												<div class="row">
+													<div class="col-md-8 col-sm-8 service-font">
+														<img src="{% static 'icons/plus-grey.png' %}" id="{{lst.id}}"
+															tabindex="37{{lst.id}}"
+															onclick="showHideDesc({{lst.id}}, ctx)"
+															alt="image of plus symbol" style="cursor:pointer;">
+														{{lst.serviceName}}&nbsp;&nbsp;
+
+														<span class="smaller">
+															<a href="#/" class="underline" tabindex="38{{lst.id}}"
+																onclick="showHideDesc({{lst.id}}, ctx)"
+																title="Click to learn more about {{lst.serviceName}}"
+																id="more{{lst.id}}"
+																alt="Click to learn more about {{lst.serviceName}}">more
+																info >
+															</a>
+														</span>
+													</div>
+
+													<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
+
+														{% if lst.accessFlag %}
+
+														<!-- begin Go to Service button-->
+														<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+															<button class="btn btn-sm btn-primary service-button"
+																alt="Go to {{lst.serviceName}} service button"
+																type="button">
+																<span class="service-link">Go to Service</span>
+															</button>
+														</a>
+														{% else %}
+														<!-- begin Request Access button-->
+														<!-- Button trigger modal -->
+
+														<span class="hasHover">
+															<a tabindex="49" id="Request Access" title="Get Access"
+																class="buttons"><button
+																	class="btn btn-sm btn-default service-button"
+																	type="button"
+																	alt="Get {{lst.serviceName}} Access button"
+																	data-toggle="modal" data-target="#getAccessModal">
+																	<strong>Get Access</strong>
+																</button></a>
+														</span>
+														{% endif %}
+													</div>
+												</div>
+
+												<!-- Service description -->
+												<div class="row">
+													<div class="col-md-11 col-sm-11">
+														<div class="text-justify" id="desc{{lst.id}}"
+															style="display: none; margin-left: 25px;">
+															<p class="text" style="margin-left: 25px;">
+																{{lst.serviceDescription}}
+															</p>
+														</div>
+													</div>
+												</div>
+												<!-- end of Service description -->
+
+											</div>
+										</div>
+										{% endif %}
+										{% endfor %}
+
+										<!-- Modal -->
+										<div class="modal fade" id="getAccessModal" tabindex="-1" role="dialog"
+											aria-labelledby="getAccessModalLabel" aria-hidden="true">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+														<h4 class="modal-title" id="getAccessModalLabel">Access Required
+														</h4>														
+													</div>
+
+													<div class="modal-body">
+														Please contact your US Postal Service contract officer to obtain
+														access to this service.
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary"
+															data-dismiss="modal">Close</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- END Modal -->
+										<!-- end OTHER SERVICES -->
+
+
+									</div>
+								</div>
+							</div>
+
+
+						</div>
 					</div>
 				</div>
-			</div>		
 		</div>
 
 		<!-- end page-section-->
 
 		<!-- end #main-inner -->
 
-		
+
 		<!-- End #page -->
 	</div>
 	<!-- Begin Footer -->
-		<div id="footer" class="footer">
-			<div class="section">
-			</div>
+	<div id="footer" class="footer">
+		<div class="section">
 		</div>
+	</div>
 </body>
-	</html>
+
+</html>

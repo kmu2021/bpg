@@ -83,7 +83,11 @@
 											</li>
 											{% for lst in serviceList %}
 											{% if lst.userName %}
-											<li><span class="navbar-text-blue"> Welcome <b>{{lst.userName}}</b></span>
+											<li style="padding-right: 20px;">
+												<span class="navbar-text-blue"> Welcome <b>{{lst.userName}}</b></span>
+											</li>
+											<li>
+												<span class="navbar-text-blue"><a href="logout">Logout</a></span>
 											</li>
 											{% endif %}
 											{% endfor %}

@@ -10,8 +10,11 @@ from pathlib import Path
 import json
 import requests
 from django.conf import settings
+from django.http import HttpResponseRedirect
 
 
+def logout(request):
+    return HttpResponseRedirect("/.auth/logout")
 
 def init(request):    
         
@@ -47,10 +50,10 @@ def init(request):
 def get_user_name(request):
     
     #For Testing in Local Only
-    '''user_details = UserDetails()
+    user_details = UserDetails()
     user_details.userName = "Test"
     user_details.ileAccess = ""
-    return(user_details)'''
+    return(user_details)
     
     try:
         user_details = UserDetails()

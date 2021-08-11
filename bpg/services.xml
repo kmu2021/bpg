@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
 <uspsservices name="services.xml">
-	<service id="1" serviceCode="FA" serviceName="Freight Auction" serviceDescription="Suppliers have the ability to accept or decline transportation based on a set rate." url="https://ile-ba-{ENV}.usps.com/FA/"/>
-	<service id="2" serviceCode="ILERPT" serviceName="Transportation Business Analytics" serviceDescription="Suppliers have the ability to run reports regarding their transportation activities with the US Postal Service." url="https://ile-ba-{ENV}.usps.com/ibmcognos/"/>
+	<service id="1" serviceCode="FA" serviceName="Freight Auction" serviceDescription="Suppliers have the ability to accept or decline transportation based on a set rate." url="https://ile-tm-{ENV}.usps.com/tm/"/>
+	<service id="2" serviceCode="ILERPT" serviceName="Transportation Business Analysis" serviceDescription="Suppliers have the ability to run reports regarding their transportation activities with the US Postal Service." url="https://ile-ba-{ENV}.usps.com/ibmcognos/"/>
 </uspsservices>

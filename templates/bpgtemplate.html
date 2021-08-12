@@ -62,7 +62,7 @@
 									<div class="row navbar-nav mb-0 pb-0" style="padding-top: 1%;">
 										<img src="{% static 'images/usps-logo-withouttext.png' %}" class="img-fluid "
 											height="20px" title="USPS logo" alt="USPS logo image of blue eagle" /> <a
-											href="https://gateway.usps.com/eAdmin/action/homepage">
+											href="/">
 											<img src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
 												class="img-fluid" tabindex="16"
 												title="Link to Business Partner Gateway's Home Page"
@@ -76,11 +76,6 @@
 									<div class="col-12">
 										<ul class="nav navbar-nav " id="navbar-display-name"
 											style="float: right; padding-right: 0%;">
-											<li style="padding-right: 20px;">
-												<a href="https://gateway.usps.com/eAdmin/action/homepage"
-													style="display: inline">
-													<span class="navbar-text-blue"> Home Page </span> </a>
-											</li>
 											{% for lst in serviceList %}
 											{% if lst.userName %}
 											<li style="padding-right: 20px;">
@@ -109,12 +104,7 @@
 		<div id="main">
 
 			<!-- TAB E content-->
-			<form method="post" action="https://gateway.usps.com/eAdmin/action/addservice/getServiceTab"
-				id="selectServicesForm">
-				<input type="hidden" name="serviceId" id="serviceId" value="">
-				<input type="hidden" name="command" id="command" value="">
-				<input type="hidden" name="roleName" id="roleName" value="">
-				<input name="tabID" type="hidden" value="5" />
+
 				<div class="bootstrap-iso">
 
 					<div class="container">
@@ -130,14 +120,7 @@
 						<div class="container service-page-container">
 							<div class="row">
 								<div class="col-md-8 col-sm-7" style="margin-left: 15px;">
-
-
-
-
-
 									<div class="hcsIcon left" alt="icon of white truck"></div>
-
-
 									<h4 class="serviceHeader">Gateway to manage your transporation relationship with the
 										US Postal Service.</h4>
 									<h6 class="serviceHeader text-justify"
@@ -148,15 +131,8 @@
 								</div>
 								<div class="col-md-3 text-right"
 									style="float: right; margin-right: 15px; margin-top: 15px;">
-
-
-
-
-
 									<img title="" width="232" height="150" src="{% static 'images/hcs_image.png' %}"
 										alt="image of parked postal trucks">
-
-
 								</div>
 							</div>
 
@@ -164,9 +140,6 @@
 							<div class="row">
 								<div class="col-md-12" style="margin-left: 15px;">
 									<div id="servicesTableId">
-
-
-
 										<script>var ctx = "/"</script>
 										<br>
 
@@ -258,7 +231,7 @@
 															<span aria-hidden="true">&times;</span>
 														</button>
 														<h4 class="modal-title" id="getAccessModalLabel">Access Required
-														</h4>														
+														</h4>
 													</div>
 
 													<div class="modal-body">
@@ -274,13 +247,9 @@
 										</div>
 										<!-- END Modal -->
 										<!-- end OTHER SERVICES -->
-
-
 									</div>
 								</div>
 							</div>
-
-
 						</div>
 					</div>
 				</div>

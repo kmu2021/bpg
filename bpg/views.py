@@ -17,7 +17,7 @@ def logout(request):
     # Redirect to the logout endpoint of Azure Web
     return HttpResponseRedirect("/.auth/logout")
 
-# Main Function
+# Main Init Function
 def init(request):    
     
     # Populate User Details    

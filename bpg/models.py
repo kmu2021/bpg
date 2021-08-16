@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+# Model to capture various services to be shown on the page
 class UspsServices:
     id : int
     serviceName : str    
@@ -9,7 +9,8 @@ class UspsServices:
     url : str    
     accessFlag : bool
 
+# Model to capture User details
 class UserDetails:
-    uid: int
-    userName: str
+    uid : int
+    userName : str
     ileAccessList = []

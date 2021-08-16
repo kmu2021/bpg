@@ -75,6 +75,7 @@ WSGI_APPLICATION = 'bpg_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# Commenting below as Database is not required in this project
 '''
 DATABASES = {
     'default': {
@@ -124,7 +125,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'bpg/static')]
 STATIC_ROOT = os.path.join (BASE_DIR,'static')
 
-#Retrieve Environment Variables
+# Retrieve Environment Variables
 def get_env_value(env_variable):
     try:
       	return os.environ[env_variable]
@@ -132,5 +133,5 @@ def get_env_value(env_variable):
         error_msg = 'Set the Environment Variable' + env_variable
         raise ImproperlyConfigured(error_msg)
 
-#Set Environment Name
+# Set Environment Name
 ENVIRONMENT = get_env_value('BPG_ENVIRONMENT')

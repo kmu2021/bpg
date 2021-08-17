@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'usps-bpg-dev'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_00969b654810417eadc732c8cd4587ba }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_033ee413a96d44e083779ac2fb46a172 }}

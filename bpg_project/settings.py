@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG =  int(os.environ.get('DJANGO_DEBUG',0))
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
@@ -120,9 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.environ.get('DJANGO_STATIC_URL',"/static/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'bpg/static')]
-STATIC_ROOT = os.path.join (BASE_DIR,'static')
+STATIC_ROOT = os.path.join (BASE_DIR, os.environ.get('DJANGO_STATIC_ROOT',"static"))
+#STATIC_ROOT = os.path.join (BASE_DIR,'static')
 
 # Set Environment Name
-ENVIRONMENT = os.environ['BPG_ENVIRONMENT']
+ENVIRONMENT = os.environ.get('BPG_ENVIRONMENT')

@@ -36,13 +36,16 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',    
+    'django.contrib.messages',    
+    #'django.contrib.staticfiles',    
+    'whitenoise.runserver_nostatic',
     'bpg',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Add whitenoise middleware after the security middleware                             
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,10 +123,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+#Adding Whitenoise Compression to handle static files
+STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL',"/static/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'bpg/static')]
 STATIC_ROOT = os.path.join (BASE_DIR, os.environ.get('DJANGO_STATIC_ROOT',"static"))
-#STATIC_ROOT = os.path.join (BASE_DIR,'static')
 
 # Set Environment Name
 ENVIRONMENT = os.environ.get('BPG_ENVIRONMENT')

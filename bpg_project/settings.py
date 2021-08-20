@@ -36,9 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',    
-    #'django.contrib.staticfiles',    
-    'whitenoise.runserver_nostatic',
+    'django.contrib.messages',   
+    'whitenoise.runserver_nostatic', 
+    'django.contrib.staticfiles',        
     'bpg',
 ]
 
@@ -124,7 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 #Adding Whitenoise Compression to handle static files
-STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+STATICFILES_STORAGE = ('whitenoise.storage.CompressedStaticFilesStorage')
 
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL',"/static/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'bpg/static')]

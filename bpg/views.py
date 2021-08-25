@@ -42,7 +42,8 @@ def init(request):
             service.serviceDescription = child.attrib['serviceDescription']
             # Service URL is generated based upon ENVIRONMENT variable
             #service.url = child.attrib['url'].replace('{ENV}',settings.ENVIRONMENT).lower
-            service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper]
+            service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
+            print (service.url)
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
             if service.serviceCode in user_data.ileAccessList:
                 service.accessFlag = True

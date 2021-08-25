@@ -19,8 +19,7 @@ def logout(request):
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function
-def init(request):    
-
+def init(request):        
     # Populate User Details    
     user_data = get_user_name (request)    
 

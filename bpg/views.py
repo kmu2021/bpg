@@ -21,8 +21,6 @@ def logout(request):
 # Main Init Function
 def init(request):    
     print("InitRequest")  
-    #return HttpResponse('<H1>This is a test page</H1>')  
-    print("populating user data")
     # Populate User Details    
     user_data = get_user_name (request)    
 
@@ -59,10 +57,10 @@ def init(request):
 def get_user_name(request):
     print("inside get_user_name")
     # For Testing in Local Only. Will be removed before deployment to Prod
-    user_details = UserDetails()
+    '''user_details = UserDetails()
     user_details.userName = "Test"
     user_details.ileAccess = ""
-    return(user_details)
+    return(user_details)'''
     
     try:
         user_details = UserDetails()
@@ -91,8 +89,8 @@ def get_user_name(request):
 # Fetch Access Token for the validated user
 def get_access_token(request):
 
-    auth_url = str(request.build_absolute_uri())+".auth/me"
-    
+    auth_url = os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
+    print("AUTH URL"+auth_url)
     try:
         print("Getting Access Token")
         cookie = request.COOKIES.get("AppServiceAuthSession")

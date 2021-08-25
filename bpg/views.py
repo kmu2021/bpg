@@ -15,16 +15,18 @@ import requests
 # Logout Function
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
+    print("Redirecting to Logout")
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function
 def init(request):    
-    
+    print("InitRequest")
     # Populate User Details    
     user_data = get_user_name (request)    
 
     if not hasattr(user_data, "userName") or user_data.userName=="" :
         # If User Details not available, Return to HomePage without populating links
+        print("Not Authenticated. Redirecting to Homepage")
         return render(request,'bpgtemplate.html')
     else:
         # If User Details are available, read XML Services File and generate Links            
@@ -53,7 +55,7 @@ def init(request):
 
 # Get User Details        
 def get_user_name(request):
-    
+    print("inside get_user_name")
     # For Testing in Local Only. Will be removed before deployment to Prod
     '''user_details = UserDetails()
     user_details.userName = "Test"
@@ -90,9 +92,11 @@ def get_access_token(request):
     auth_url = str(request.build_absolute_uri())+".auth/me"
     
     try:
+        print("Getting Access Token")
         cookie = request.COOKIES.get("AppServiceAuthSession")
         if cookie is not None:
             curSession = requests.Session() # all cookies received will be stored in the session object  
+
             # Pass Authentication Cookie to fetch access token
             response = curSession.get(auth_url,cookies=request.COOKIES)                
             auth_json = response.json()          
@@ -102,6 +106,7 @@ def get_access_token(request):
         print (e)
 
 def call_graph(access_token):
+    print("inside call_graph")
     # Call Graph API using access token
     response = requests.get("https://graph.microsoft.com/v1.0/me",headers={'Authorization': 'Bearer '+ access_token})
     graph_json = response.json()

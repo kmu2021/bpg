@@ -20,7 +20,7 @@ def logout(request):
 
 # Main Init Function
 def init(request):    
-    print("InitRequest")  
+    print("InitRequest")
     # Populate User Details    
     user_data = get_user_name (request)    
 
@@ -89,7 +89,8 @@ def get_user_name(request):
 # Fetch Access Token for the validated user
 def get_access_token(request):
 
-    auth_url = os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
+    #auth_url = request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
+    auth_url = "/.auth/me"
     print("AUTH URL"+auth_url)
     try:
         print("Getting Access Token")

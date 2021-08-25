@@ -89,8 +89,7 @@ def get_user_name(request):
 # Fetch Access Token for the validated user
 def get_access_token(request):
 
-    #auth_url = request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
-    auth_url = "/.auth/me"
+    auth_url = request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
     print("AUTH URL"+auth_url)
     try:
         print("Getting Access Token")

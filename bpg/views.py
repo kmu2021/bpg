@@ -15,12 +15,12 @@ import requests
 # Logout Function
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
-    print("Redirecting to Logout")
+    #print("Redirecting to Logout")
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function
 def init(request):    
-    print("InitRequest")
+
     # Populate User Details    
     user_data = get_user_name (request)    
 
@@ -55,7 +55,6 @@ def init(request):
 
 # Get User Details        
 def get_user_name(request):
-    print("inside get_user_name")
     # For Testing in Local Only. Will be removed before deployment to Prod
     '''user_details = UserDetails()
     user_details.userName = "Test"
@@ -90,9 +89,8 @@ def get_user_name(request):
 def get_access_token(request):
 
     auth_url = request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME') +"/.auth/me"
-    print("AUTH URL"+auth_url)
-    try:
-        print("Getting Access Token")
+    #print("AUTH URL"+auth_url)
+    try:        
         cookie = request.COOKIES.get("AppServiceAuthSession")
         if cookie is not None:
             curSession = requests.Session() # all cookies received will be stored in the session object  
@@ -105,24 +103,24 @@ def get_access_token(request):
         print ("Inside get_access_token exception")
         print (e)
 
-def call_graph(access_token):
-    print("inside call_graph")
+def call_graph(access_token):    
     # Call Graph API using access token
     response = requests.get("https://graph.microsoft.com/v1.0/me",headers={'Authorization': 'Bearer '+ access_token})
     graph_json = response.json()
-    if response.ok:        
-        print(graph_json)
-    else:    
-    
+    if not response.ok:        
         if "error" in graph_json:
             print(graph_json["error"]["code"])        
-        print (response.status_code)
+            print (response.status_code)
     return graph_json
 
 # Generate a list of ILE claims user has access to    
 def get_access_list(user_claims):
     ileAccessList=[]
-    for userclaims in user_claims:
-        if userclaims['typ'].startswith('ILE'):
-            ileAccessList.append(userclaims['val'].split("|")[0].upper())
+    try:
+        for userclaims in user_claims:
+            if userclaims['typ'].startswith('ILE'):
+                ileAccessList.append(userclaims['val'].split("|")[0].upper())
+    except Exception as e:
+        print ("get_access_list Exception")
+        print (e)
     return(ileAccessList)

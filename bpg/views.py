@@ -20,7 +20,9 @@ def logout(request):
 
 # Main Init Function
 def init(request):    
-    print("InitRequest")
+    print("InitRequest")  
+    return HttpResponse('<H1>This is a test page</H1>')  
+    print("populating user data")
     # Populate User Details    
     user_data = get_user_name (request)    
 

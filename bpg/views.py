@@ -15,7 +15,13 @@ import requests
 # Logout Function
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
-    #print("Redirecting to Logout")
+    print("Logout Initiated")
+    fa_logout_url = 'https://ile-tm-dev.usps.com/tm/admin/LoginViewController.jsp?ControllerAction=Logout'
+    print ('fa_logout_url '+fa_logout_url)
+    curSession = requests.Session() # all cookies received will be stored in the session object  
+    response = curSession.get(fa_logout_url,cookies=request.COOKIES)
+    print ('status code '+response.status_code)
+    print (response.json)
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function

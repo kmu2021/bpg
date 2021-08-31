@@ -1,27 +1,20 @@
-if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");
-function logout(){		
-	window.alert("Calling FA - Logout");
-	  $.ajax({
-		url: "https://ile-tm-dev.usps.com/tm/admin/LoginViewController.jsp?ControllerAction=Logout",
-		type: "GET",
-		success: (data, status, jqXHR) {
-			window.alert(jqXHR.status);
-		},
-		error: function (error) {
-		window.alert(error);
-		}
-		})
-		window.alert("Calling BA - Logout");
-		$.ajax({
-			url: "https://ile-ba-dev.usps.com/ibmcognos/bi/v1/disp?b_action=xts.run&m=portal/logoff.xts&h_CAM_action=logoff",
-			type: "GET",
-			success: (data, status, jqXHR) {
-				window.alert(jqXHR.status);
-			},
-			error: function (error) {
-			window.alert(error);
-			}
-			})
-	//location.href = 'logout';
+if ("undefined" == typeof jQuery) throw new Error("Missing jQuery");
+
+function logout() {
+    console.log("Initiating Logout");
+    for (i = 0; i < logoutUrls.length; i++) {
+        console.log("Calling URL: " + logoutUrls[i]);
+        $.ajax({
+            url: logoutUrls[i],
+            type: "GET",
+            success: function(data, status, jqXHR) {
+                console.log("Status: " + jqXHR.status);
+            },
+            error: function(error) {
+                window.alert(error);
+            }
+        })
+    }
+    //location.href = 'logout';
 
 }

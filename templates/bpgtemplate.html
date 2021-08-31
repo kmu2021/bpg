@@ -3,7 +3,6 @@
 <html>
 
 <head>
-
 	<script>
 		/*
 		* show and hide descriptions for services
@@ -77,6 +76,8 @@
 									<div class="col-12">
 										<ul class="nav navbar-nav " id="navbar-display-name"
 											style="float: right; padding-right: 0%;">
+											<!-- String Logout URLs -->
+											<script>var logoutUrls=[]</script>
 											{% for lst in serviceList %}
 											{% if lst.userName %}
 											<li style="padding-right: 20px;">
@@ -185,6 +186,8 @@
 																<span class="service-link">Go to Service</span>
 															</button>
 														</a>
+														<!-- Pushing Logout URL into Array-->
+														<script>logoutUrls.push(lst.logoutUrl)</script>
 														{% else %}
 														<!-- begin Request Access button-->
 														<!-- Button trigger modal -->

@@ -15,5 +15,6 @@ function logout() {
             }
         })
     }
+	console.log("Redirecting to AAD Logout")
     location.href = 'logout';
 }

@@ -15,6 +15,5 @@ function logout() {
             }
         })
     }
-    //location.href = 'logout';
-
+    location.href = 'logout';
 }

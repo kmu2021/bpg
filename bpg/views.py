@@ -16,12 +16,6 @@ import requests
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
     print("Logout Initiated")
-    fa_logout_url = 'https://ile-tm-dev.usps.com/tm/admin/LoginViewController.jsp?ControllerAction=Logout'
-    print ('fa_logout_url '+fa_logout_url)
-    curSession = requests.Session() # all cookies received will be stored in the session object  
-    response = curSession.get(fa_logout_url,cookies=request.COOKIES)
-    print ('status code '+response.status_code)
-    print (response.json)
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function
@@ -46,9 +40,9 @@ def init(request):
             service.serviceName = child.attrib['serviceName']
             service.serviceDescription = child.attrib['serviceDescription']
             # Service URL is generated based upon ENVIRONMENT variable
-            #service.url = child.attrib['url'].replace('{ENV}',settings.ENVIRONMENT).lower
             service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
-            print (service.url)
+            service.logoutUrl = service.url + child.attrib['LOGOUTURL']
+            print (service.logoutUrl)
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
             if service.serviceCode in user_data.ileAccessList:
                 service.accessFlag = True

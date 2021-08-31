@@ -6,7 +6,8 @@ class UspsServices:
     serviceName : str    
     serviceCode : str
     serviceDescription : str
-    url : str    
+    url : str
+    logoutUrl : str   
     accessFlag : bool
 
 # Model to capture User details

@@ -7,6 +7,9 @@ function logout() {
         $.ajax({
             url: logoutUrls[i],
             type: "GET",
+			async: false,
+        	cache: false,
+        	timeout: 30000,
             success: function(data, status, jqXHR) {
                 console.log("Status[" + i + "]: " +  jqXHR.status);
             },

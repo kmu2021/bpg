@@ -174,7 +174,10 @@
 													</span>
 												</div>
 
-												<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
+												<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">													
+
+													{% if lst.accessFlag %}
+													
 													{% if lst.pendingActivationFlag %}
 													<!-- begin Pending Activation button-->
 													<span class="hasHover">
@@ -189,9 +192,6 @@
 															</button></a>
 													</span>
 													{% else %}
-
-													{% if lst.accessFlag %}
-
 													<!-- begin Go to Service button-->
 													<a title="Go to Service" href="{{lst.url}}" tabindex="39">
 														<button class="btn btn-sm btn-primary service-button"
@@ -202,6 +202,8 @@
 													</a>
 													<!-- Pushing Logout URL into Array-->
 													<script>logoutUrls.push("{{lst.logoutUrl}}")</script>
+													{% endif %}
+													
 													{% else %}
 													<!-- begin Request Access button-->
 													<!-- Button trigger modal -->
@@ -216,7 +218,6 @@
 																<strong>Get Access</strong>
 															</button></a>
 													</span>													
-													{% endif %}
 													{% endif %}
 												</div>
 											</div>
@@ -275,7 +276,7 @@
 														aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
-													<h4 class="modal-title" id="pendingActivationModal">Access Required
+													<h4 class="modal-title" id="pendingActivationModal">Pending Activation
 													</h4>
 												</div>
 

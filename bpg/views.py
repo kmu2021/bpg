@@ -47,7 +47,8 @@ def init(request):
             if service.serviceCode in user_data.ileAccessList:
                 service.accessFlag = True
             else:
-                service.accessFlag = False            
+                service.accessFlag = False
+            service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
             service.id = child.attrib['id']                   
             serviceList.append(service)
         serviceList.append(user_data)

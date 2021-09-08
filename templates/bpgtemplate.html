@@ -77,14 +77,15 @@
 										<ul class="nav navbar-nav " id="navbar-display-name"
 											style="float: right; padding-right: 0%;">
 											<!-- String Logout URLs -->
-											<script>var logoutUrls=[]</script>
+											<script>var logoutUrls = []</script>
 											{% for lst in serviceList %}
 											{% if lst.userName %}
 											<li style="padding-right: 20px;">
 												<span class="navbar-text-blue"> Welcome <b>{{lst.userName}}</b></span>
 											</li>
 											<li>
-												<span class="navbar-text-blue"><a href="javascript:void(0);" onclick="logout()">Logout</a></span>
+												<span class="navbar-text-blue"><a href="javascript:void(0);"
+														onclick="logout()">Logout</a></span>
 											</li>
 											{% endif %}
 											{% endfor %}
@@ -107,156 +108,198 @@
 
 			<!-- TAB E content-->
 
-				<div class="bootstrap-iso">
+			<div class="bootstrap-iso">
 
-					<div class="container">
-						<div class="row">
-							<div class="col-md-12">
-								<h2 class="service-page-title" style="margin-top: 20px;margin-bottom: 20px;">Logistics
-									Gateway</h2>
-							</div>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h2 class="service-page-title" style="margin-top: 20px;margin-bottom: 20px;">Logistics
+								Gateway</h2>
 						</div>
 					</div>
+				</div>
 
-					<div class="container-fluid service-page-area">
-						<div class="container service-page-container">
-							<div class="row">
-								<div class="col-md-8 col-sm-7" style="margin-left: 15px;">
-									<div class="hcsIcon left" alt="icon of white truck"></div>
-									<h4 class="serviceHeader">Gateway to manage your transporation relationship with the
-										US Postal Service.</h4>
-									<h6 class="serviceHeader text-justify"
-										style="font-weight: normal; padding-top: 10px;">Services below enable Highway
-										Transportation Suppliers to access current transportation schedules, real-time
-										monitoring of vehicles, adjudication of trip exceptions and performance
-										dashboards.</h6>
-								</div>
-								<div class="col-md-3 text-right"
-									style="float: right; margin-right: 15px; margin-top: 15px;">
-									<img title="" width="232" height="150" src="{% static 'images/hcs_image.png' %}"
-										alt="image of parked postal trucks">
-								</div>
+				<div class="container-fluid service-page-area">
+					<div class="container service-page-container">
+						<div class="row">
+							<div class="col-md-8 col-sm-7" style="margin-left: 15px;">
+								<div class="hcsIcon left" alt="icon of white truck"></div>
+								<h4 class="serviceHeader">Gateway to manage your transporation relationship with the
+									US Postal Service.</h4>
+								<h6 class="serviceHeader text-justify" style="font-weight: normal; padding-top: 10px;">
+									Services below enable Highway
+									Transportation Suppliers to access current transportation schedules, real-time
+									monitoring of vehicles, adjudication of trip exceptions and performance
+									dashboards.</h6>
 							</div>
+							<div class="col-md-3 text-right"
+								style="float: right; margin-right: 15px; margin-top: 15px;">
+								<img title="" width="232" height="150" src="{% static 'images/hcs_image.png' %}"
+									alt="image of parked postal trucks">
+							</div>
+						</div>
 
-							<!-- Table include -->
-							<div class="row">
-								<div class="col-md-12" style="margin-left: 15px;">
-									<div id="servicesTableId">
-										<script>var ctx = "/"</script>
-										<br>
+						<!-- Table include -->
+						<div class="row">
+							<div class="col-md-12" style="margin-left: 15px;">
+								<div id="servicesTableId">
+									<script>var ctx = "/"</script>
+									<br>
 
-										<!-- start OTHER SERVICES -->
+									<!-- start OTHER SERVICES -->
 
 
 
-										<!-- Go To Services box -->
-										{% for lst in serviceList %}
-										{% if lst.id %}
-										<div class="messageServices request" id="a1284323{{lst.id}}">
-											<div class="service-line box-shadow-services clearfix">
+									<!-- Go To Services box -->
+									{% for lst in serviceList %}
+									{% if lst.id %}
+									<div class="messageServices request" id="a1284323{{lst.id}}">
+										<div class="service-line box-shadow-services clearfix">
 
-												<div class="row">
-													<div class="col-md-8 col-sm-8 service-font">
-														<img src="{% static 'icons/plus-grey.png' %}" id="{{lst.id}}"
-															tabindex="37{{lst.id}}"
+											<div class="row">
+												<div class="col-md-8 col-sm-8 service-font">
+													<img src="{% static 'icons/plus-grey.png' %}" id="{{lst.id}}"
+														tabindex="37{{lst.id}}" onclick="showHideDesc({{lst.id}}, ctx)"
+														alt="image of plus symbol" style="cursor:pointer;">
+													{{lst.serviceName}}&nbsp;&nbsp;
+
+													<span class="smaller">
+														<a href="#/" class="underline" tabindex="38{{lst.id}}"
 															onclick="showHideDesc({{lst.id}}, ctx)"
-															alt="image of plus symbol" style="cursor:pointer;">
-														{{lst.serviceName}}&nbsp;&nbsp;
-
-														<span class="smaller">
-															<a href="#/" class="underline" tabindex="38{{lst.id}}"
-																onclick="showHideDesc({{lst.id}}, ctx)"
-																title="Click to learn more about {{lst.serviceName}}"
-																id="more{{lst.id}}"
-																alt="Click to learn more about {{lst.serviceName}}">more
-																info >
-															</a>
-														</span>
-													</div>
-
-													<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
-
-														{% if lst.accessFlag %}
-
-														<!-- begin Go to Service button-->
-														<a title="Go to Service" href="{{lst.url}}" tabindex="39">
-															<button class="btn btn-sm btn-primary service-button"
-																alt="Go to {{lst.serviceName}} service button"
-																type="button">
-																<span class="service-link">Go to Service</span>
-															</button>
+															title="Click to learn more about {{lst.serviceName}}"
+															id="more{{lst.id}}"
+															alt="Click to learn more about {{lst.serviceName}}">more
+															info >
 														</a>
-														<!-- Pushing Logout URL into Array-->
-														<script>logoutUrls.push("{{lst.logoutUrl}}")</script>
-														{% else %}
-														<!-- begin Request Access button-->
-														<!-- Button trigger modal -->
-
-														<span class="hasHover">
-															<a tabindex="49" id="Request Access" title="Get Access"
-																class="buttons"><button
-																	class="btn btn-sm btn-default service-button"
-																	type="button"
-																	alt="Get {{lst.serviceName}} Access button"
-																	data-toggle="modal" data-target="#getAccessModal">
-																	<strong>Get Access</strong>
-																</button></a>
-														</span>
-														{% endif %}
-													</div>
+													</span>
 												</div>
 
-												<!-- Service description -->
-												<div class="row">
-													<div class="col-md-11 col-sm-11">
-														<div class="text-justify" id="desc{{lst.id}}"
-															style="display: none; margin-left: 25px;">
-															<p class="text" style="margin-left: 25px;">
-																{{lst.serviceDescription}}
-															</p>
-														</div>
-													</div>
-												</div>
-												<!-- end of Service description -->
+												<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
+													{% if lst.pendingActivationFlag %}
+													<!-- begin Pending Activation button-->
+													<span class="hasHover">
+														<a tabindex="49" id="Pending Activation"
+															title="Pending Activation" class="buttons"><button
+																class="btn btn-sm btn-default service-button"
+																type="button"
+																alt="{{lst.serviceName}} Pending Activation"
+																data-toggle="modal"
+																data-target="#pendingActivationModal">
+																<strong>Pending Activation</strong>
+															</button></a>
+													</span>
+													{% else %}
 
-											</div>
-										</div>
-										{% endif %}
-										{% endfor %}
+													{% if lst.accessFlag %}
 
-										<!-- Modal -->
-										<div class="modal fade" id="getAccessModal" tabindex="-1" role="dialog"
-											aria-labelledby="getAccessModalLabel" aria-hidden="true">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">&times;</span>
+													<!-- begin Go to Service button-->
+													<a title="Go to Service" href="{{lst.url}}" tabindex="39">
+														<button class="btn btn-sm btn-primary service-button"
+															alt="Go to {{lst.serviceName}} service button"
+															type="button">
+															<span class="service-link">Go to Service</span>
 														</button>
-														<h4 class="modal-title" id="getAccessModalLabel">Access Required
-														</h4>
-													</div>
+													</a>
+													<!-- Pushing Logout URL into Array-->
+													<script>logoutUrls.push("{{lst.logoutUrl}}")</script>
+													{% else %}
+													<!-- begin Request Access button-->
+													<!-- Button trigger modal -->
 
-													<div class="modal-body">
-														Please contact your US Postal Service contract officer to obtain
-														access to this service.
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-primary"
-															data-dismiss="modal">Close</button>
+													<span class="hasHover">
+														<a tabindex="49" id="Request Access" title="Get Access"
+															class="buttons"><button
+																class="btn btn-sm btn-default service-button"
+																type="button"
+																alt="Get {{lst.serviceName}} Access button"
+																data-toggle="modal" data-target="#getAccessModal">
+																<strong>Get Access</strong>
+															</button></a>
+													</span>													
+													{% endif %}
+													{% endif %}
+												</div>
+											</div>
+
+											<!-- Service description -->
+											<div class="row">
+												<div class="col-md-11 col-sm-11">
+													<div class="text-justify" id="desc{{lst.id}}"
+														style="display: none; margin-left: 25px;">
+														<p class="text" style="margin-left: 25px;">
+															{{lst.serviceDescription}}
+														</p>
 													</div>
 												</div>
 											</div>
+											<!-- end of Service description -->
+
 										</div>
-										<!-- END Modal -->
-										<!-- end OTHER SERVICES -->
 									</div>
+									{% endif %}
+									{% endfor %}
+
+									<!-- Modal Get Access -->
+									<div class="modal fade" id="getAccessModal" tabindex="-1" role="dialog"
+										aria-labelledby="getAccessModalLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+													<h4 class="modal-title" id="getAccessModalLabel">Access Required
+													</h4>
+												</div>
+
+												<div class="modal-body">
+													Please contact your US Postal Service contract officer to obtain
+													access to this service.
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-primary"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- END Modal Get Access -->
+									<!-- Modal Pending Activation-->
+									<div class="modal fade" id="pendingActivationModal" tabindex="-1" role="dialog"
+										aria-labelledby="pendingActivationModal" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+													<h4 class="modal-title" id="pendingActivationModal">Access Required
+													</h4>
+												</div>
+
+												<div class="modal-body">
+													Your user ID is currently pending activation within the application
+													you are trying to access. Once activated, the button will change to
+													<b>Go to Service</b> and you will be able to acess the application
+													endpoint.
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-primary"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- END Modal Pending Activation-->
+									<!-- end OTHER SERVICES -->
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 		</div>
 
 		<!-- end page-section-->

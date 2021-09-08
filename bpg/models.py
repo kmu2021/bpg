@@ -9,6 +9,7 @@ class UspsServices:
     url : str
     logoutUrl : str   
     accessFlag : bool
+    pendingActivationFlag : bool
 
 # Model to capture User details
 class UserDetails:

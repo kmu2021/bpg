@@ -56,10 +56,10 @@ def init(request):
             if service.pendingActivationFlag == 0:
                 try:
                     for item in user_data.ileAccessList:
-                        if item.split("|")[1].upper() == "FALSE":
-                            service.pendingActivationFlag = 1
-                        else:
+                        if item.split("|")[1].upper() == "TRUE":
                             service.pendingActivationFlag = 0
+                        else:
+                            service.pendingActivationFlag = 1
                 except Exception as e:
                     #Do nothing since pending flag is already initialized from Environment
                     pass

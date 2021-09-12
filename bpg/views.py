@@ -11,7 +11,6 @@ from pathlib import Path
 import json
 import requests
 
-
 # Logout Function
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
@@ -19,7 +18,7 @@ def logout(request):
     return HttpResponseRedirect("/.auth/logout")
 
 # Main Init Function
-def init(request):        
+def init(request):    
     # Populate User Details    
     user_data = get_user_name (request)    
 
@@ -44,11 +43,27 @@ def init(request):
             service.logoutUrl = service.url + child.attrib['LOGOUTURL']
             print (service.logoutUrl)
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
-            if service.serviceCode in user_data.ileAccessList:
-                service.accessFlag = True
-            else:
+            try:
+                for item in user_data.ileAccessList:
+                    if service.serviceCode == item.split("|")[0].upper():
+                        service.accessFlag = True
+                else:
+                    service.accessFlag = False
+            except Exception as e:
                 service.accessFlag = False
+
             service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
+            if service.pendingActivationFlag == 0:
+                try:
+                    for item in user_data.ileAccessList:
+                        if item.split("|")[1].upper() == "TRUE":
+                            service.pendingActivationFlag = 1
+                        else:
+                            service.pendingActivationFlag = 0
+                except Exception as e:
+                    #Do nothing since pending flag is already initialized from Environment
+                    pass
+                
             service.id = child.attrib['id']                   
             serviceList.append(service)
         serviceList.append(user_data)
@@ -121,7 +136,14 @@ def get_access_list(user_claims):
     try:
         for userclaims in user_claims:
             if userclaims['typ'].startswith('ILE'):
-                ileAccessList.append(userclaims['val'].split("|")[0].upper())
+                try:
+                    appname = userclaims['val'].split("|")[0].upper()
+                    appstatus = userclaims['val'].split("|")[0].upper()
+                    
+                except Exception as e:
+                    appname = ""
+                    appstatus = ""
+                ileAccessList.append(appname + "|" + appstatus)
     except Exception as e:
         print ("get_access_list Exception")
         print (e)

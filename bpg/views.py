@@ -34,39 +34,38 @@ def init(request):
         serviceList = []
         
         for child in root:
-            if child.attrib['enabled'].upper() == "TRUE":
-                service = UspsServices()        
-                service.serviceCode = child.attrib['serviceCode'].upper()
-                service.serviceName = child.attrib['serviceName']
-                service.serviceDescription = child.attrib['serviceDescription']
-                # Service URL is generated based upon ENVIRONMENT variable
-                service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
-                service.logoutUrl = service.url + child.attrib['LOGOUTURL']
-                print (service.logoutUrl)
-                # If ServiceCode (from xml) is available in User's ILE Access List, show the service
-                try:
-                    for item in user_data.ileAccessList:
-                        if service.serviceCode == item.split("|")[0].upper():
-                            service.accessFlag = True
+            service = UspsServices()        
+            service.serviceCode = child.attrib['serviceCode'].upper()
+            service.serviceName = child.attrib['serviceName']
+            service.serviceDescription = child.attrib['serviceDescription']
+            # Service URL is generated based upon ENVIRONMENT variable
+            service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
+            service.logoutUrl = service.url + child.attrib['LOGOUTURL']
+            
+            # If ServiceCode (from xml) is available in User's ILE Access List, show the service
+            try:
+                
+                for item in user_data.ileAccessList:                    
+                    if service.serviceCode == item.split("|")[0].upper():
+                        service.accessFlag = True                  
                     else:
                         service.accessFlag = False
+            except Exception as e:
+                service.accessFlag = False
+
+            service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
+            if service.pendingActivationFlag == 0:
+                try:
+                    for item in user_data.ileAccessList:
+                        if item.split("|")[1].upper() == "TRUE":
+                            service.pendingActivationFlag = 0
+                        else:
+                            service.pendingActivationFlag = 1
                 except Exception as e:
-                    service.accessFlag = False
-
-                service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
-                if service.pendingActivationFlag == 0:
-                    try:
-                        for item in user_data.ileAccessList:
-                            if item.split("|")[1].upper() == "TRUE":
-                                service.pendingActivationFlag = 0
-                            else:
-                                service.pendingActivationFlag = 1
-                    except Exception as e:
-                        #Do nothing since pending flag is already initialized from Environment
-                        pass
-
-                service.id = child.attrib['id']                   
-                serviceList.append(service)
+                    #Do nothing since pending flag is already initialized from Environment
+                    pass
+            service.id = child.attrib['id']                   
+            serviceList.append(service)
         serviceList.append(user_data)
     return render(request, 'bpgtemplate.html',{"serviceList":serviceList})
         
@@ -76,7 +75,7 @@ def get_user_name(request):
     # For Testing in Local Only. Will be removed before deployment to Prod
     '''user_details = UserDetails()
     user_details.userName = "Test"
-    user_details.ileAccess = ""
+    user_details.ileAccessList = ["FA|TRUE"]
     return(user_details)'''
     
     try:

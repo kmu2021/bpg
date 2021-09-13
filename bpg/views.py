@@ -45,39 +45,48 @@ def init(request):
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
             try:
                 
-                for item in user_data.ileAccessList:                    
+                for item in user_data.ileAccessList:      
+                    print(item)              
                     if service.serviceCode == item.split("|")[0].upper():
-                        service.accessFlag = True                  
-                    else:
+                        service.accessFlag = True  
+                        print("accessflag true for "+service.serviceCode)  
+                        break          
+                    else :
                         service.accessFlag = False
+                        print("accessflag false for "+service.serviceCode)  
             except Exception as e:
+                print(e)
                 service.accessFlag = False
-
+            print(service.accessFlag)
             service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
             if service.pendingActivationFlag == 0:
                 try:
                     for item in user_data.ileAccessList:
-                        if item.split("|")[1].upper() == "TRUE":
+                        print('******')
+                        print(item)
+                        if service.serviceCode+"|"+"TRUE"==item:
                             service.pendingActivationFlag = 0
+                            print("Setting pendingActivationFlag 0" + service.serviceCode)
+                            break
                         else:
                             service.pendingActivationFlag = 1
+                            print("ServiceCode:"+service.serviceCode)
                 except Exception as e:
                     #Do nothing since pending flag is already initialized from Environment
-                    pass
+                    pass            
             service.id = child.attrib['id']                   
             serviceList.append(service)
-        serviceList.append(user_data)
-    print(serviceList)
+        serviceList.append(user_data)    
     return render(request, 'bpgtemplate.html',{"serviceList":serviceList})
         
 
 # Get User Details        
 def get_user_name(request):
     # For Testing in Local Only. Will be removed before deployment to Prod
-    '''user_details = UserDetails()
+    user_details = UserDetails()
     user_details.userName = "Test"
-    user_details.ileAccessList = ["FA|TRUE"]
-    return(user_details)'''
+    user_details.ileAccessList = ['FA|FALSE','ILERPT|TRUE']
+    return(user_details)
     
     try:
         user_details = UserDetails()

@@ -67,6 +67,7 @@ def init(request):
             service.id = child.attrib['id']                   
             serviceList.append(service)
         serviceList.append(user_data)
+    print(serviceList)
     return render(request, 'bpgtemplate.html',{"serviceList":serviceList})
         
 
@@ -146,4 +147,5 @@ def get_access_list(user_claims):
     except Exception as e:
         print ("get_access_list Exception")
         print (e)
+    print(ileAccessList)        
     return(ileAccessList)

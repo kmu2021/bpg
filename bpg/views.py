@@ -138,10 +138,9 @@ def get_access_list(user_claims):
             if userclaims['typ'].startswith('ILE'):
                 try:
                     appname = userclaims['val'].split("|")[0].upper()
-                    appstatus = userclaims['val'].split("|")[0].upper()
+                    appstatus = userclaims['val'].split("|")[4].upper()
                     
                 except Exception as e:
-                    appname = ""
                     appstatus = ""
                 ileAccessList.append(appname + "|" + appstatus)
     except Exception as e:

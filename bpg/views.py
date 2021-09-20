@@ -49,28 +49,21 @@ def init(request):
                     print(item)              
                     if service.serviceCode == item.split("|")[0].upper():
                         service.accessFlag = True  
-                        print("accessflag true for "+service.serviceCode)  
                         break          
                     else :
                         service.accessFlag = False
-                        print("accessflag false for "+service.serviceCode)  
             except Exception as e:
                 print(e)
                 service.accessFlag = False
-            print(service.accessFlag)
             service.pendingActivationFlag = int(os.environ.get('BPG_LINKS_DISABLED',0)) if 'BPG_LINKS_DISABLED' in os.environ else 0
             if service.pendingActivationFlag == 0:
                 try:
                     for item in user_data.ileAccessList:
-                        print('******')
-                        print(item)
-                        if service.serviceCode+"|"+"TRUE"==item:
+                        if service.serviceCode + "|" + "TRUE"==item:
                             service.pendingActivationFlag = 0
-                            print("Setting pendingActivationFlag 0" + service.serviceCode)
                             break
                         else:
                             service.pendingActivationFlag = 1
-                            print("ServiceCode:"+service.serviceCode)
                 except Exception as e:
                     #Do nothing since pending flag is already initialized from Environment
                     pass            
@@ -155,6 +148,5 @@ def get_access_list(user_claims):
                 ileAccessList.append(appname + "|" + appstatus)
     except Exception as e:
         print ("get_access_list Exception")
-        print (e)
-    print(ileAccessList)        
+        print (e)       
     return(ileAccessList)

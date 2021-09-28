@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG =  int(os.environ.get('DJANGO_DEBUG',0))
 
-ALLOWED_HOSTS = ([os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []) + ['usps.com']
+ALLOWED_HOSTS = ([os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []) + ['.usps.com']
 
 
 # Application definition

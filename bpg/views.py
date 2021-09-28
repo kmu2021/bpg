@@ -25,7 +25,8 @@ def init(request):
     if not hasattr(user_data, "userName") or user_data.userName=="" :
         # If User Details not available, Return to HomePage without populating links
         print("Not Authenticated. Redirecting to Homepage")
-        return render(request,'bpgtemplate.html')
+        #return render(request,'bpgtemplate.html')
+        return HttpResponseRedirect("/.auth/login/aad?post_login_redirect_uri=/")
     else:
         # If User Details are available, read XML Services File and generate Links            
         xmldoc = ET.parse(os.path.join(os.path.dirname(__file__),'services.xml'))

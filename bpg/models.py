@@ -16,3 +16,4 @@ class UserDetails:
     uid : int
     userName : str
     ileAccessList = []
+    loginUrl : str

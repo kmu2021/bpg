@@ -165,9 +165,11 @@ def get_login_url(user_claims):
         for userclaims in user_claims:
             if userclaims['typ'] == 'aud':
                 client_id = userclaims['val']
-            if userclaims['typ'] == 'aud':
+            elif userclaims['typ'].endswith('tenantid'):
                 tenant_id = userclaims['val']
-        login_url = base_url + tenant_id + "/oauth2/v2.0/authorize?response_type=code+id_token&client_id=" + client_id + "&scope=openid+profile+email&response_mode=form_post&nonce=12345678902389447837_12121123213&state=redir%3D%252F"
+            elif userclaims['typ'] == 'nonce':
+                nonce = userclaims['val']
+        login_url = base_url + tenant_id + "/oauth2/v2.0/authorize?response_type=code+id_token&client_id=" + client_id + "&scope=openid+profile+email&response_mode=form_post&nonce=" + nonce + "&state=redir%3D%252F"
         print("Login URL: "+login_url)
     except Exception as e:
         print ("get_login_url Exception")

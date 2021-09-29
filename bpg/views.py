@@ -15,8 +15,7 @@ import requests
 def logout(request):
     # Redirect to the logout endpoint of Azure Web
     print("Logout Initiated")
-    return HttpResponseRedirect("/.auth/logout")
-    #https://login.microsoftonline.com/<tenantid>/oauth2/v2.0/authorize?response_type=code+id_token&client_id=<clientid>&scope=openid+profile+email&response_mode=form_post&nonce=<random>&state=redir%3D%252F
+    return HttpResponseRedirect("/.auth/logout")    
 
 # Main Init Function
 def init(request):    
@@ -26,8 +25,6 @@ def init(request):
     if not hasattr(user_data, "userName") or user_data.userName=="" :
         # If User Details not available, Return to Login Page
         print("Not Authenticated. Redirecting to Login Page")
-        #return render(request,'bpgtemplate.html')
-        #return HttpResponseRedirect("/.auth/login/aad?post_login_redirect_uri=/")
         return HttpResponseRedirect(user_data.loginUrl)
     else:
         # If User Details are available, read XML Services File and generate Links            
@@ -48,8 +45,7 @@ def init(request):
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
             try:
                 
-                for item in user_data.ileAccessList:      
-                    print(item)              
+                for item in user_data.ileAccessList:                         
                     if service.serviceCode == item.split("|")[0].upper():
                         service.accessFlag = True  
                         break          
@@ -170,7 +166,6 @@ def get_login_url(user_claims):
             elif userclaims['typ'] == 'nonce':
                 nonce = userclaims['val']
         login_url = base_url + tenant_id + "/oauth2/v2.0/authorize?response_type=code+id_token&client_id=" + client_id + "&scope=openid+profile+email&response_mode=form_post&nonce=" + nonce + "&state=redir%3D%252F"
-        print("Login URL: "+login_url)
     except Exception as e:
         print ("get_login_url Exception")
         print (e)       

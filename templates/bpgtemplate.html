@@ -30,7 +30,6 @@
 		};
 	</script>
 
-
 	<title>USPS Business Partner Gateway</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
@@ -60,14 +59,13 @@
 							<div class="col-12">
 								<div class="nav navbar-header" id="navbarAfterLogin">
 									<div class="row navbar-nav mb-0 pb-0" style="padding-top: 1%;">
-										<img src="{% static 'images/usps-logo-withouttext.png' %}" class="img-fluid "
-											height="20px" title="USPS logo" alt="USPS logo image of blue eagle" /> <a
+										<img src="{% static 'images/usps-logo-withouttext.png' %}" class="img-fluid"
+											height="20px" width="34px" title="USPS logo" alt="USPS logo image of blue eagle" /> <a
 											href="/">
 											<img src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
-												class="img-fluid" tabindex="16"
-												title="Link to Business Partner Gateway's Home Page"
-												alt="Image for Business Partner Gateway's Home Page link"
-												height="20px" />
+												class="img-fluid" tabindex="16" title="Link to Business Partner Gateway&apos;s Home Page"
+												alt="Image for Business Partner Gateway&apos;s Home Page link"
+												height="20px" width="335px" />
 										</a>
 									</div>
 								</div>
@@ -159,8 +157,8 @@
 											<div class="row">
 												<div class="col-md-8 col-sm-8 service-font">
 													<img src="{% static 'icons/plus-grey.png' %}" id="{{lst.id}}"
-														tabindex="37{{lst.id}}" onclick="showHideDesc({{lst.id}}, ctx)"
-														alt="image of plus symbol" style="cursor:pointer;">
+														tabindex="37{{lst.id}}" onclick="showHideDesc({{lst.id}}, ctx)" onkeypress="javascript:void(0);"
+														alt="image of plus symbol" style="cursor:pointer;" width="24px" height="24px">
 													{{lst.serviceName}}&nbsp;&nbsp;
 
 													<span class="smaller">

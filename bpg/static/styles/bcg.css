@@ -201,7 +201,7 @@ input.text-input-large {
 
 #main-inner {
     background: url("../images/gui/bkg/main-bkg.png") repeat-x scroll 0 0 #fff;
-    background: -moz-linear-gradient(center bottom , white, #DEDEDE) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(to left top, white, #DEDEDE) repeat scroll 0 0 transparent;
     min-height: 364px;
     min-width: 960px;
 }
@@ -787,7 +787,7 @@ div.messageContent {
 } 
 #tabs-1 #dashTable {
 	margin-top:10px;
-}7
+}
 
 .vtabs .vtabs-tab-column ul a.open li , .vtabs .vtabs-tab-column ul a.closed  li {
     color: #006699; 
@@ -1005,11 +1005,7 @@ span.openTooltipHome img {
 .custom.options {
       margin: 10px 0 15px 18px;
 }
-h7 {
-       font-size: 16px;
-       line-height:22px;
-       font-weight:bold;
-}
+
 a.pending:link, a.pending:visited, a.pending:active, a.pending:hover {
 	color: #FF6600; 
 	font-size: 16px; 

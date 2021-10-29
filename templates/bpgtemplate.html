@@ -139,12 +139,12 @@
 						</div>
 						<!-- Check if you are not in Production-->
 						{% for lst in serviceList %}
-						{% if lst.instanceName != "PROD" %}
+						{% if lst.userName and lst.instanceName != "PROD" %}
 						<div class="row" align="center" style="margin-left: 15px; margin-top: 2px;">
 							<marquee behavior="alternate" bgcolor="#bb3434" direction="left" loop="7" scrollamount="1"
 								scrolldelay="2" width="98%" style="box-shadow: 2px 2px 2px grey;">
 								<span style="font-size: 20px;color:#FFFFFF">
-									You are accessing a Test Site ({% lst.instanceName %}). Production URL is:
+									You are accessing a Test Site ({{lst.instanceName}}). Production URL is:
 									<a href='https://logistics.ups.com'><span
 											style="color:#FFFF00">https://logistics.ups.com</span></a></span>
 							</marquee>

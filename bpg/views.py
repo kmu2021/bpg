@@ -27,6 +27,9 @@ def init(request):
         print("Not Authenticated. Redirecting to Login Page")
         return HttpResponseRedirect(user_data.loginUrl)
     else:
+        #If User Details are available, Populate InstanceName variable
+        user_data.instanceName = str(settings.ENVIRONMENT).upper()
+
         # If User Details are available, read XML Services File and generate Links            
         xmldoc = ET.parse(os.path.join(os.path.dirname(__file__),'services.xml'))
         root = xmldoc.getroot()
@@ -39,8 +42,7 @@ def init(request):
             service.serviceName = child.attrib['serviceName']
             service.serviceDescription = child.attrib['serviceDescription']
             # Service URL is generated based upon ENVIRONMENT variable
-            service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
-            user_data.instanceName = child.attrib[str((settings.ENVIRONMENT)).upper()]
+            service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]            
             service.logoutUrl = service.url + child.attrib['LOGOUTURL']
             
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service
@@ -79,6 +81,7 @@ def get_user_name(request):
     '''user_details = UserDetails()
     user_details.userName = "Test"
     user_details.ileAccessList = ['FA|FALSE','ILERPT|TRUE']
+    user_details.loginUrl="aaa"
     return(user_details)'''
     
     try:

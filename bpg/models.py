@@ -17,3 +17,4 @@ class UserDetails:
     userName : str
     ileAccessList = []
     loginUrl : str
+    instanceName: str 

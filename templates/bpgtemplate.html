@@ -60,10 +60,11 @@
 								<div class="nav navbar-header" id="navbarAfterLogin">
 									<div class="row navbar-nav mb-0 pb-0" style="padding-top: 1%;">
 										<img src="{% static 'images/usps-logo-withouttext.png' %}" class="img-fluid"
-											height="20px" width="34px" title="USPS logo" alt="USPS logo image of blue eagle" /> <a
-											href="/">
+											height="20px" width="34px" title="USPS logo"
+											alt="USPS logo image of blue eagle" /> <a href="/">
 											<img src="{% static 'images/USPS-BusinessPartnerGateway.png' %}"
-												class="img-fluid" tabindex="16" title="Link to Business Partner Gateway&apos;s Home Page"
+												class="img-fluid" tabindex="16"
+												title="Link to Business Partner Gateway&apos;s Home Page"
 												alt="Image for Business Partner Gateway&apos;s Home Page link"
 												height="20px" width="335px" />
 										</a>
@@ -136,7 +137,20 @@
 									alt="image of parked postal trucks">
 							</div>
 						</div>
-
+						<!-- Check if you are not in Production-->
+						{% for lst in serviceList %}
+						{% if lst.instanceName != 'PROD' %}
+						<div class="row" align="center" style="margin-left: 15px; margin-top: 2px;">
+							<marquee behavior="alternate" bgcolor="#bb3434" direction="left" loop="7" scrollamount="1"
+								scrolldelay="2" width="98%" style="box-shadow: 2px 2px 2px grey;">
+								<span style="font-size: 20px;color:#FFFFFF">
+									You are accessing a Test Site ({% lst.instanceName %}). Production URL is:
+									<a href='https://logistics.ups.com'><span
+											style="color:#FFFF00">https://logistics.ups.com</span></a></span>
+							</marquee>
+						</div>
+						{% endif %}
+						{% endfor %}
 						<!-- Table include -->
 						<div class="row">
 							<div class="col-md-12" style="margin-left: 15px;">
@@ -157,8 +171,9 @@
 											<div class="row">
 												<div class="col-md-8 col-sm-8 service-font">
 													<img src="{% static 'icons/plus-grey.png' %}" id="{{lst.id}}"
-														tabindex="37{{lst.id}}" onclick="showHideDesc({{lst.id}}, ctx)" onkeypress="javascript:void(0);"
-														alt="image of plus symbol" style="cursor:pointer;" width="24px" height="24px">
+														tabindex="37{{lst.id}}" onclick="showHideDesc({{lst.id}}, ctx)"
+														onkeypress="javascript:void(0);" alt="image of plus symbol"
+														style="cursor:pointer;" width="24px" height="24px">
 													{{lst.serviceName}}&nbsp;&nbsp;
 
 													<span class="smaller">
@@ -172,7 +187,7 @@
 													</span>
 												</div>
 
-												<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">													
+												<div class="col-md-3 col-sm-3 text-right" style="margin-top: 5px;">
 
 													{% if lst.accessFlag %}
 													{% if lst.pendingActivationFlag %}
@@ -200,7 +215,7 @@
 													<!-- Pushing Logout URL into Array-->
 													<script>logoutUrls.push("{{lst.logoutUrl}}")</script>
 													{% endif %}
-													
+
 													{% else %}
 													<!-- begin Request Access button-->
 													<!-- Button trigger modal -->
@@ -214,7 +229,7 @@
 																data-toggle="modal" data-target="#getAccessModal">
 																<strong>Get Access</strong>
 															</button></a>
-													</span>													
+													</span>
 													{% endif %}
 												</div>
 											</div>
@@ -273,7 +288,8 @@
 														aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
-													<h4 class="modal-title" id="pendingActivationModal">Pending Activation
+													<h4 class="modal-title" id="pendingActivationModal">Pending
+														Activation
 													</h4>
 												</div>
 

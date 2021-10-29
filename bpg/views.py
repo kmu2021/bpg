@@ -40,6 +40,7 @@ def init(request):
             service.serviceDescription = child.attrib['serviceDescription']
             # Service URL is generated based upon ENVIRONMENT variable
             service.url = child.attrib[str((settings.ENVIRONMENT)+'url').upper()]
+            user_data.instanceName = child.attrib[str((settings.ENVIRONMENT)).upper()]
             service.logoutUrl = service.url + child.attrib['LOGOUTURL']
             
             # If ServiceCode (from xml) is available in User's ILE Access List, show the service

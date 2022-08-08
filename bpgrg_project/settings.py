@@ -131,3 +131,12 @@ STATIC_ROOT = os.path.join (BASE_DIR, os.environ.get('DJANGO_STATIC_ROOT',"stati
 
 # Set Environment Name
 ENVIRONMENT = os.environ.get('BPG_ENVIRONMENT')
+
+#Set Tenant ID
+AZURE_TENANT_ID = os.environ.get('AZURE_TENANT_ID');
+
+#Set Client ID
+AZURE_CLIENT_ID = os.environ.get('AZURE_CLIENT_ID');
+
+#Set Client Secret
+AZURE_CLIENT_SECRET = os.environ.get('AZURE_CLIENT_SECRET');

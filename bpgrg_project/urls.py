@@ -24,5 +24,6 @@ urlpatterns = [
 
 urlpatterns = [    
     path('', include('bpgrg.urls')),
+    path('', include('api.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

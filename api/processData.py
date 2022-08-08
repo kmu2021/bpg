@@ -22,52 +22,53 @@ def init(request):
 def process(request):
     print(request.scheme)
     print("Welcome")
-   # resp = ""
-    users = json.loads(request.body)
+    if request.method == "GET":
+        return HttpResponse('UNSUPPORTED ACTION')
+    elif request.method == "POST":
+        users = json.loads(request.body)
+        response_body = []
+        access_token = ""
+        invitation_count = 0
+        for user in users:
+            user_details = UserDetails()
+            user_details.uid = user['uid']
+            user_details.firstName = user['firstName']
+            user_details.lastName = user['lastName']
+            user_details.email = user['email']
+            user_details.company = user['company']
+            user_details.supplierId = user['supplierId']
+            user_details.responseText = ''
+            print(response_body)
 
-    response_body = []
-    access_token = ""
-    invitation_count = 0
-    for user in users:
-        user_details = UserDetails()
-        user_details.uid = user['uid']
-        user_details.firstName = user['firstName']
-        user_details.lastName = user['lastName']
-        user_details.email = user['email']
-        user_details.company = user['company']
-        user_details.supplierId = user['supplierId']
-        user_details.responseText = ''
-        print(response_body)
+            if access_token == "":
+                access_token = get_access_token(str(settings.AZURE_TENANT_ID), str(
+                    settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+                print(access_token)
+            user_id = get_user_id(user_details.email, access_token)
+            if user_id != '':
+                user_details.responseText = 'User already Exists'
+                user_details.user_id = user_id
+            else:
+                user_details.user_id = invite_user(user_details.email, user_details.firstName +
+                                                ' '+user_details.lastName, request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'), access_token)
+                if user_details.user_id != '':
+                    invitation_count = invitation_count + 1
 
-        if access_token == "":
-            access_token = get_access_token(str(settings.AZURE_TENANT_ID), str(
-                settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-            print(access_token)
-        user_id = get_user_id(user_details.email, access_token)
-        if user_id != '':
-            user_details.responseText = 'User already Exists'
-            user_details.user_id = user_id
-        else:
-            user_details.user_id = invite_user(user_details.email, user_details.firstName +
-                                               ' '+user_details.lastName, request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'), access_token)
-            if user_details.user_id != '':
-                invitation_count = invitation_count + 1
+            response_body.append(vars(user_details))
 
-        response_body.append(vars(user_details))
-
-    if invitation_count > 0:
-        print('Updating User since sucessfully sent ' +
-              str(invitation_count)+' invitations')
-        sleep(60)
-        print(response_body)
-        i = 0
-        while i < len(response_body):
-            print('inside loop')
-            if (response_body[i]['user_id'] != '' and response_body[i]['responseText'] == ''):
-                response_body[i]['responseText'] = update_user_details(
-                    response_body[i]['user_id'], response_body[i]['firstName'], response_body[i]['lastName'], response_body[i]['company'], access_token)
-            i = i + 1
-    return HttpResponse(json.dumps(response_body))
+        if invitation_count > 0:
+            print('Updating User since sucessfully sent ' +
+                str(invitation_count)+' invitations')
+            sleep(60)
+            print(response_body)
+            i = 0
+            while i < len(response_body):
+                print('inside loop')
+                if (response_body[i]['user_id'] != '' and response_body[i]['responseText'] == ''):
+                    response_body[i]['responseText'] = update_user_details(
+                        response_body[i]['user_id'], response_body[i]['firstName'], response_body[i]['lastName'], response_body[i]['company'], access_token)
+                i = i + 1
+        return HttpResponse(json.dumps(response_body))
 
 
 def get_access_token(tenant_id, client_id, client_secret):

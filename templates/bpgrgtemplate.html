@@ -149,7 +149,9 @@
 						{% endif %}
 						{% endfor %}
 						<!-- Table include -->
-						<form action="/" class="form-group">
+
+						<form action="" method="POST" class="form-group">
+							{% csrf_token %}
 							<table class="table table-striped table-bordered table-sm">
 								<thead class="thead-dark">
 									<tr>
@@ -161,24 +163,50 @@
 									</tr>
 								</thead>
 								<tbody>
+									{{ formset.management_form }}
+									{% for form in formset %}
 									<tr>
-										<td> <input id="inpFirstName" type="text" class="form-control"  name="First Name"></td>
-										<td> <input id="inpLastName" type="text" class="form-control" name="Last Name"></td>
-										<td> <input id="inpEmail" type="email" class="form-control" name="Email"></td>
-										<td> <input id="inpCompany" type="text" class="form-control" name="Company"></td>
-										<td> <input id="inpSupplierId" type="number" class="form-control" name="Supplier ID"></td>
+										<td> {{ form.firstName }}</td>
+										<td> {{ form.lastName }}</td>
+										<td> {{ form.email }}</td>
+										<td> {{ form.company }}</td>
+										<td> {{ form.supplierId }}</td>
+										{% if forloop.counter == formset.total_form_count or formset.total_form_count == 1 %}
+										<td>
+											<div class="input-group-append">
+												<input type="hidden" value="false" name="additems" id="additems">
+												<button class="btn btn-success" id="additemsbutton">+</button>
+											</div>
+										</td>
+										{% endif %}
+										{% if forloop.counter == formset.total_form_count and formset.total_form_count > 1%}
+										<td>
+											<div class="input-group-append">
+												<input type="hidden" value="false" name="removeitems" id="removeitems">
+												<button class="btn btn-danger" id="removeitemsbutton">-</button>
+											</div>
+										</td>
+										{% endif %}
 									</tr>
-									<tr>
-										<td> <input id="inpFirstName" type="text" class="form-control" name="First Name"></td>
-										<td> <input id="inpLastName" type="text" class="form-control" name="Last Name"></td>
-										<td> <input id="inpEmail" type="email" class="form-control" name="Email"></td>
-										<td> <input id="inpCompany" type="text" class="form-control" name="Company"></td>
-										<td> <input id="inpSupplierId" type="number" class="form-control" name="Supplier ID"></td>
-									</tr>
+									{% endfor %}
 								</tbody>
 							</table>
+
 							<input class="btn btn-primary" type="submit">
+							
 						</form>
+						<script>
+$(document).ready(function() {
+        $("#additemsbutton").on('click',function(event) {
+         $("#additems").val("true");
+       });
+
+	   $("#removeitemsbutton").on('click',function(event) {
+         console.log("REMOVE ITEM");
+		 $("#removeitems").val("true");
+       });
+});
+</script>
 						<div class="row">
 							<div class="col-md-12" style="margin-left: 15px;">
 								<div id="accessTableId">

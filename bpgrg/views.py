@@ -1,3 +1,4 @@
+from plistlib import UID
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -11,7 +12,8 @@ from pathlib import Path
 import json
 import requests
 from django.shortcuts import render
-from .models import RegistrationForm
+from .models import RegistrationForm, UserDetails
+from .graph import processForm
 from django.forms import formset_factory
 
 # Logout Function
@@ -36,11 +38,15 @@ def init(request):
         context['formset'] = formset
         return render(request, "bpgrgtemplate.html", context)
     elif request.method == 'POST':
-        print(request)
+        #print(request)
         RegistrationFormSet = formset_factory(RegistrationForm)
         formset = RegistrationFormSet(data=request.POST)
-        context['formset'] = formset
+        newFormset = RegistrationFormSet()
         
+        context['formset'] = formset
+        print("Context")
+        print (context)
+
         if 'additems' in request.POST and request.POST['additems'] == 'true':
             print("ADDDING")
             formset_dictionary_copy = request.POST.copy()
@@ -53,16 +59,20 @@ def init(request):
             formset_dictionary_copy = request.POST.copy()
             formset_dictionary_copy['form-TOTAL_FORMS'] = int(
                 formset_dictionary_copy['form-TOTAL_FORMS']) - 1
-            formset = RegistrationFormSet(formset_dictionary_copy)
+            formset = RegistrationFormSet(formset_dictionary_copy)            
             context['formset'] = formset
         else:
-            print ("INSIDE ELSE")
-            #Form JSON
-            counter = 1
+            print("INSIDE ELSE")
+            # Form JSON
+            counter = 0
             user_list = []
             for form in formset:
+                print (form)
+                form.responseText = "Invalid Data" 
+                form.uid=counter               
                 if form.is_valid():
                     # person = form.save(commit=False)
+                    print("Form is VALID")
                     print(form.cleaned_data['lastName'])
                     user_dict = {
                         "uid": counter,
@@ -71,12 +81,29 @@ def init(request):
                         "email": form.cleaned_data['email'],
                         "company": form.cleaned_data['company'],
                         "supplierId": form.cleaned_data['supplierId'],
+                        "responseText": ""
                     }
-                    user_list.append(user_dict)
+                    
                     counter += 1
-            print (user_list)
-            print (json.dumps(user_list))
-            
+                    print(user_list)                                        
+                    user_list.append(user_dict)
+                    print("RESPONSE BODY")
+                    #print(user_dict.responseText)
+                    print(json.dumps(user_list))
+                else:
+                    print("Form is Invalid")
+            if (counter>0):
+                print("Calling ProcessForm")
+                user_details = UserDetails()
+                user_details =processForm(user_list,request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'))
+                for users in user_details:
+                    print("printing users")
+                    print(users.responseText) 
+                    for form in formset:
+                        if (form.uid==users.uid):
+                            form.responseText = users.responseText
+
+            #context['userdetails']=user_details
         return render(request, "bpgrgtemplate.html", context)
     else:
         return render(request, "bpgrgtemplate.html")

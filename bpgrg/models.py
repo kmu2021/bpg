@@ -7,13 +7,23 @@ from django import forms
 
 
 class RegistrationForm(forms.Form):
-    firstName = forms.CharField(label='First Name', max_length=100, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    lastName = forms.CharField(label='Last Name', max_length=100, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    email = forms.CharField(label='Email', max_length=100, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    company = forms.CharField(label='Company', max_length=100, widget=forms.TextInput(
-        attrs={'class': 'form-control'}))
-    supplierId = forms.IntegerField(
-        label='Supplier ID', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    firstName = forms.CharField(max_length=100, widget=forms.TextInput(
+        attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name'}))
+    lastName = forms.CharField(max_length=100, widget=forms.TextInput(
+        attrs={'class': 'form-control',  'required': True, 'aria-label': 'Last Name'}))
+    email = forms.EmailField(max_length=100, widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Email'}))
+    company = forms.CharField(max_length=100, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company'}))
+    supplierId = forms.IntegerField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID','pattern':'[0-9]+', 'title':'Enter numbers Only '}))
+
+class UserDetails:
+    uid: int
+    firstName: str
+    lastName: str
+    email: str
+    company: str
+    supplierId: str
+    responseText: str
+    user_id: str

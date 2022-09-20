@@ -161,6 +161,7 @@
 										<th>Email</th>
 										<th>Company</th>
 										<th>Supplier ID</th>
+										<th>Applications</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -172,6 +173,7 @@
 										<td> {{ form.email }}</td>
 										<td> {{ form.company }}</td>
 										<td> {{ form.supplierId }}</td>
+										<td>{{form.ileAppFlag}} ILE<br>{{form.faAppFlag}} FA</td>
 										{% if form.responseText %}
 										<td style="color: red;font-size:small;">{{form.responseText}}</td>
 										{% endif %}

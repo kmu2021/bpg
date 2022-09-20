@@ -7,6 +7,7 @@ from django import forms
 
 
 class RegistrationForm(forms.Form):
+  
     firstName = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name'}))
     lastName = forms.CharField(max_length=100, widget=forms.TextInput(
@@ -17,7 +18,9 @@ class RegistrationForm(forms.Form):
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company'}))
     supplierId = forms.IntegerField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID','pattern':'[0-9]+', 'title':'Enter numbers Only '}))
-
+    ileAppFlag = forms.BooleanField(required=False, initial=True,label='ILE')
+    faAppFlag = forms.BooleanField(required=False, initial=True,label='FA')
+     
 class UserDetails:
     uid: int
     firstName: str

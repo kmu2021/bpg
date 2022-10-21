@@ -36,6 +36,7 @@ def init(request):
         RegistrationFormSet = formset_factory(RegistrationForm, extra=1)
         formset = RegistrationFormSet()
         context['formset'] = formset
+        #print(context['formset'])
         return render(request, "bpgrgtemplate.html", context)
     elif request.method == 'POST':
         #print(request)
@@ -46,7 +47,8 @@ def init(request):
         context['formset'] = formset
         print("Context")
         print (context)
-
+        print('ADD ITEM------');
+        print(request.POST['additems']);
         if 'additems' in request.POST and request.POST['additems'] == 'true':
             print("ADDDING")
             formset_dictionary_copy = request.POST.copy()
@@ -73,7 +75,10 @@ def init(request):
                 if form.is_valid():
                     # person = form.save(commit=False)
                     print("Form is VALID")
-                    print(form.cleaned_data['lastName'])
+                    appListDict = {}
+                    appListDict['ileAppFlag']= form.cleaned_data['ileAppFlag']
+                    appListDict['faAppFlag']= form.cleaned_data['faAppFlag']                    
+                    print("Adding to Dict")
                     user_dict = {
                         "uid": counter,
                         "firstName": form.cleaned_data['firstName'],
@@ -81,6 +86,7 @@ def init(request):
                         "email": form.cleaned_data['email'],
                         "company": form.cleaned_data['company'],
                         "supplierId": form.cleaned_data['supplierId'],
+                        "appListDict": appListDict,
                         "responseText": ""
                     }
                     
@@ -93,6 +99,7 @@ def init(request):
                 else:
                     print("Form is Invalid")
             if (counter>0):
+                
                 print("Calling ProcessForm")
                 user_details = UserDetails()
                 user_details =processForm(user_list,request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'))

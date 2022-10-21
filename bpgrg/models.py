@@ -7,21 +7,11 @@ from django import forms
 
 
 class RegistrationForm(forms.Form):
-    APP_CHOICES =(
-    ("fa1", "FA1"),
-    ("ile1", "ILE1"),
-    ("fa2", "FA2"),
-    ("ile2", "ILE2"),
-    ("fa3", "FA3"),
-    ("ile3", "ILE3"),
-    ("fa4", "FA4"),
-    ("ile4", "ILE4"),
-    ("fa5", "FA5"),
-    ("ile5", "ILE5"),
-    ("fa6", "FA6"),
-    ("ile6", "ILE6"),
-)
-  
+    APP_CHOICES = (
+        ("iles", "ILE"),
+        ("fas", "FA"),
+    )
+
     firstName = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name'}))
     lastName = forms.CharField(max_length=100, widget=forms.TextInput(
@@ -30,12 +20,16 @@ class RegistrationForm(forms.Form):
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Email'}))
     company = forms.CharField(max_length=100, widget=forms.TextInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company'}))
-    supplierId = forms.IntegerField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID','pattern':'[0-9]+', 'title':'Enter numbers Only '}))
-    ileAppFlag = forms.BooleanField(required=False, initial=True,label='ILE')
-    faAppFlag = forms.BooleanField(required=False, initial=True,label='FA')
-    appList = forms.MultipleChoiceField(choices = APP_CHOICES)
-     
+  #  supplierId = forms.IntegerField(widget=forms.TextInput(
+   #     attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID', 'pattern': '[0-9]+', 'title': 'Enter numbers Only '}))
+    supplierId = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Please Click', 'required': True, 'readonly': 'readonly', 'aria-label': 'Supplier ID'}))   
+    ileAppFlag = forms.BooleanField(required=False, initial=True, label='ILE')
+    faAppFlag = forms.BooleanField(required=False, initial=True, label='FA')
+   # appList = forms.MultipleChoiceField(
+    #    choices=APP_CHOICES, widget=forms.CheckboxSelectMultiple)
+
+
 class UserDetails:
     uid: int
     firstName: str
@@ -45,3 +39,4 @@ class UserDetails:
     supplierId: str
     responseText: str
     user_id: str
+    appListDict = {}

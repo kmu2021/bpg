@@ -15,6 +15,8 @@ import requests
 
 def processForm(users, redirectUrl):
 
+    BPG_GRP_NAME="NAT_AZURE_BPG_ILE_USR_DEV"#will be read from Env later
+    bpg_grp_id = ""
     response_body = []
     access_token = ""
     invitation_count = 0
@@ -26,12 +28,21 @@ def processForm(users, redirectUrl):
         user_details.email = user['email']
         user_details.company = user['company']
         user_details.supplierId = user['supplierId']
+        user_details.appListDict = user['appListDict']
         user_details.responseText = ''
+        
+        
 
         if access_token == "":
             access_token = get_access_token(str(settings.AZURE_TENANT_ID), str(
                 settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
             print(access_token)
+
+        if bpg_grp_id == "":
+            bpg_grp_id = get_bpg_group_id (BPG_GRP_NAME,access_token)
+            print('bpg_grp_id: '+bpg_grp_id)
+        #return response_body
+
         user_id = get_user_id(user_details.email, access_token)
         if user_id != '':
             print('User ID is '+ str(user_id))
@@ -55,7 +66,7 @@ def processForm(users, redirectUrl):
             print('inside loop')
             if (response_body[i].user_id != '' and response_body[i].responseText == ''):
                 response_body[i].responseText = update_user_details(
-                    response_body[i].user_id, response_body[i].firstName, response_body[i].lastName, response_body[i].company, access_token)
+                    response_body[i].user_id, response_body[i].firstName, response_body[i].lastName, response_body[i].company, bpg_grp_id, access_token)
             i = i + 1
     print(response_body)
     return response_body
@@ -150,7 +161,7 @@ def invite_user(email, display_name, redirect_url, access_token):
     return user_id
 
 
-def update_user_details(user_id, given_name, surname, company_name, access_token):
+def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token):
     print('update_user_details user_id:'+user_id)
     url = 'https://graph.microsoft.com/v1.0/users/'+user_id
 
@@ -180,4 +191,57 @@ def update_user_details(user_id, given_name, surname, company_name, access_token
         return 'Error in Updating User'
     else:
         print('User Update Pass')
+        add_to_group(user_id, bpg_grp_id, access_token)
     return 'User Attributes Updated'
+
+def get_bpg_group_id (BPG_GRP_NAME,access_token):
+    url = 'https://graph.microsoft.com/v1.0/groups'
+    req_params = {'$select': 'id', '$filter': 'displayName eq \''+BPG_GRP_NAME+'\''}
+    req_header = {'Authorization': 'Bearer ' + access_token}
+    response = requests.get(url, params=req_params, headers=req_header)
+    response_json = response.json()
+    bpg_grp_id = ''
+    if not response.ok:
+        if "error" in response_json:
+            print(response_json["error"]["code"])
+            print(response.status_code)
+    else:
+        print('Group Check Result')
+        print(response_json)
+        try:
+            bpg_grp_id = response_json['value'][0]['id']
+
+        except Exception as e:
+            bpg_grp_id = ''
+
+    return bpg_grp_id
+
+def add_to_group(user_id, bpg_grp_id, access_token):
+    print('Adding User to Group')
+    url = 'https://graph.microsoft.com/v1.0/groups/'+bpg_grp_id+'/members/$ref'
+
+    req_body = {
+        "@odata.id": "https://graph.microsoft.com/v1.0/directoryObjects/"+user_id,
+    }
+
+    req_header = {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + access_token}
+    response = requests.post(url, json=req_body, headers=req_header)
+    print('Sent Data')
+    print(response)
+
+    print('Group Update Result')
+    if (response.status_code < 200 or response.status_code > 229):
+        print('Add Group Failed')
+        try:
+            print(response.json())
+        except Exception as e:
+            print('Exception while parsing JSON')
+
+        '''if "error" in response_json:
+            print(response_json["error"]["code"])
+            print(response.status_code)'''
+        return 'Error in Adding User to Group'
+    else:
+        print('Group Add Pass')
+    return 'Added to Group'

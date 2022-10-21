@@ -28,7 +28,63 @@
 				document.getElementById(dropText).innerHTML = "more info >";
 			}
 		};
-		
+		openSupplierPopup = function(id){
+			console.log(id);
+			supplierIDs = '';
+			supplierIDArr = [];
+
+			if (document.getElementById('modalHiddenAttr')){
+			document.getElementById('modalHiddenAttr').setAttribute("data-focus", id);}
+			else {
+			var input = document.createElement("input");
+			input.setAttribute("type", "hidden");
+			input.setAttribute("id", "modalHiddenAttr");
+			input.setAttribute("data-focus", id);
+
+			document.getElementById('supplierIdModalBody').appendChild(input);
+		}
+
+			var inputs = document.querySelectorAll("#"+id+" input");
+			for (var i = 0; i < inputs.length; i++) {						
+					supplierIDs = inputs[i].value;				
+				}
+				console.log("supplierIDs:::"+supplierIDs);
+			if (supplierIDs)supplierIDArr=supplierIDs.split(','); 
+			console.log(supplierIDArr);
+			if (supplierIDArr.length>0) {
+				var inputs = document.querySelectorAll("#supplierIdModal input");
+				for (var i = 0; i < inputs.length; i++) {
+					document.getElementById(inputs[i].id).value = '';
+					console.log('i='+i+' length='+supplierIDArr.length)	;
+					if (supplierIDArr.length > i ){console.log('Setting popup for'+inputs[i].id);
+					document.getElementById(inputs[i].id).value = supplierIDArr[i];}
+				}	
+			}
+
+		}
+
+
+		populateSupplierID = 	function(focusElement){
+			console.log("SUBMITTED");
+			console.log(focusElement);
+			var supplierIDs = '';
+			var inputs = document.querySelectorAll("#supplierIdModal input");
+				for (var i = 0; i < inputs.length; i++) {	
+					if (inputs[i].value)supplierIDs+=','+inputs[i].value;
+				}
+
+			
+			supplierIDs = supplierIDs.replace(/(^[,\s]+)|([,\s]+$)/g, '');
+			
+			console.log("supplierID is: "+supplierIDs);
+			var inputs = document.querySelectorAll("#"+focusElement+" input");
+			for (var i = 0; i < inputs.length; i++) {						
+				inputs[i].value = supplierIDs;			
+				}
+
+			//document.getElementById("id_form-0-supplierId").value = supplierIDs;
+			
+		}	
 	</script>
 
 	<title>USPS Business Partner Registration</title>
@@ -172,8 +228,10 @@
 										<td> {{ form.lastName }}</td>
 										<td> {{ form.email }}</td>
 										<td> {{ form.company }}</td>
-										<td> {{ form.supplierId }}</td>
-										<td>{{form.ileAppFlag}} ILE<br>{{form.faAppFlag}} FA</td>										
+										<td data-id="supplierInput{{forloop.counter}}" data-toggle="modal"
+																data-target="#supplierIdModal" id="supplierInput{{forloop.counter}}"
+																 onclick="openSupplierPopup(this.id);"> {{ form.supplierId }}</td>
+										<td>{{form.ileAppFlag}} ILE<br>{{form.faAppFlag}} FA</td>							
 										{% if form.responseText %}
 										<td style="color: red;font-size:small;">{{form.responseText}}</td>
 										{% endif %}
@@ -203,19 +261,56 @@
 							<input class="btn btn-primary" type="submit" value="Submit" id="btnSubmit">
 
 						</form>
+						<!-- Start Supplier Modal-->
+						<div class="modal fade" id="supplierIdModal" name="supplierIdModal" role="dialog" aria-labelledby="supplierIdModal"
+							aria-hidden="true">
+							<div class="modal-dialog modal-sm" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<h4 class="modal-title" id="pendingActivationModal">Enter Supplier IDs
+										</h4>
+									</div>
+						
+									<div class="modal-body" id="supplierIdModalBody">
+						
+										<div class="form-group">
+											<label for="supplier1">Supplier#1</label>
+											<input type="number" class="form-control form-control-sm" id="supplier1" placeholder="Enter Supplier ID">
+										</div>
+										<div class="form-group ">
+											<label for="supplier2">Supplier#2</label>
+											<input type="number" class="form-control" id="supplier2" placeholder="Enter Supplier ID">
+										</div>
+										<div class="form-group">
+											<label for="supplier3 ">Supplier#3</label>
+											<input type="number" class="form-control" id="supplier3" placeholder="Enter Supplier ID">
+										</div>
+										<button type="button" class="btn btn-primary" data-dismiss="modal"
+											onclick="populateSupplierID(document.getElementById('modalHiddenAttr').getAttribute('data-focus'))">Submit</button>
+						
+									</div>
+								</div>
+							</div>
+						</div>
+									<!-- END Supplier Modal-->
 						<script>
-		/*Adding Form Row*/
+		
 		$(document).ready(function () {
+			/*Adding Form Row*/
 			$("#additemsbutton").on('click', function (event) {
 				console.log("ADD ITEMS");
 				
 				var blankField = false;
-				var inputs = document.querySelectorAll("input");
-				for (var i = 0; i < inputs.length; i++) {
+				var inputs = document.querySelectorAll("#bpgrg-form input");
+				for (var i = 0; i < inputs.length; i++) {				
 					if (inputs[i].value === "")
 					{
 						
-						blankField=true}
+						blankField=true
+					}
 					}
 				if (blankField==false)$("#additems").val("true");
 
@@ -224,7 +319,7 @@
 			$("#removeitemsbutton").on('click', function (event) {
 				//console.log("REMOVE ITEMS");
 				$("#removeitems").val("true");
-				var inputs = document.querySelectorAll("input");
+				var inputs = document.querySelectorAll("#bpgrg-form input");
 				//console.log(inputs.length );
 				for (var i = 0; i < inputs.length; i++) {
 					if (inputs[i].value === "") {
@@ -233,6 +328,7 @@
 					}
 				}
 			});
+		
 		});
 
 		$('#bpgrg-form').submit( function(event) {
@@ -259,6 +355,7 @@
 
 
 		<!-- End #page -->
+		
 	</div>
 	<!-- Begin Footer -->
 	<div id="footer" class="footer">

@@ -102,7 +102,8 @@ def init(request):
                 
                 print("Calling ProcessForm")
                 user_details = UserDetails()
-                user_details =processForm(user_list,request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'))
+                #user_details =processForm(user_list,request.scheme + "://" + os.environ.get('WEBSITE_HOSTNAME'))
+                user_details =processForm(user_list,"https://logistics.usps.com/")
                 for users in user_details:
                     print("printing users")
                     print(users.responseText) 

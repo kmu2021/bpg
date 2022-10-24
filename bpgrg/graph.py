@@ -124,7 +124,7 @@ def get_user_id(email, access_token):
 
 def invite_user(email, display_name, redirect_url, access_token):
     
-    url = 'https://graph.microsoft.com/v1.0/invitations'
+    url = 'https://graph.microsoft.com/v1.0/invitations'        
     email_message_body = "Hello "+display_name + ", \r\n\r"\
         "Welcome to USPS Integrated Logistics EcoSystem (ILE) registration.\r\n\r" + \
         "Click \"Accept invitation\" link below to complete the registration process.\r\n\r" + \

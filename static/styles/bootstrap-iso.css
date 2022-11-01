@@ -6119,14 +6119,12 @@
   margin-left: -3px;
 }
 .bootstrap-iso .tooltip-inner {
-  /*max-width: 200px;*/
+  max-width: 200px;
   padding: 3px 8px;
   color: #fff;
   text-align: center;
   background-color: #000;
   border-radius: 4px;
-  max-width: none;
-  white-space: nowrap;
 }
 .bootstrap-iso .tooltip-arrow {
   position: absolute;

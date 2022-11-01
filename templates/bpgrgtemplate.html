@@ -316,10 +316,10 @@
 		
 		$(document).ready(function () {
 			/*Tooltip*/	
-			$('input[id^="id_form"][id$="-email"]').on('keyup',function(){
+			$('input[id$="-email"]').on('keyup',function(){
     $(this).attr('title',$(this).val())
   })
-  $('input[id^="id_form"][id$="-company"]').on('keyup',function(){
+  $('input[id$="-company"]').on('keyup',function(){
     $(this).attr('title',$(this).val())
   })		
   	//$('[data-toggle="tooltip"]').tooltip();   

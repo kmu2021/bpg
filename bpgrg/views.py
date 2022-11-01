@@ -81,11 +81,11 @@ def init(request):
                     print("Adding to Dict")
                     user_dict = {
                         "uid": counter,
-                        "firstName": form.cleaned_data['firstName'],
-                        "lastName": form.cleaned_data['lastName'],
-                        "email": form.cleaned_data['email'],
-                        "company": form.cleaned_data['company'],
-                        "supplierId": form.cleaned_data['supplierId'],
+                        "firstName": form.cleaned_data['firstName'].strip(),
+                        "lastName": form.cleaned_data['lastName'].strip(),
+                        "email": form.cleaned_data['email'].strip(),
+                        "company": form.cleaned_data['company'].strip(),
+                        "supplierId": form.cleaned_data['supplierId'].strip(),
                         "appListDict": appListDict,
                         "responseText": ""
                     }

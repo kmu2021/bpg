@@ -12,13 +12,13 @@ class RegistrationForm(forms.Form):
         ("fas", "FA"),
     )
 
-    firstName = forms.CharField(max_length=100, widget=forms.TextInput(
+    firstName = forms.CharField(max_length=2000, widget=forms.TextInput(
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name'}))
-    lastName = forms.CharField(max_length=100, widget=forms.TextInput(
+    lastName = forms.CharField(max_length=2000, widget=forms.TextInput(
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'Last Name'}))
-    email = forms.EmailField(max_length=100, widget=forms.EmailInput(
+    email = forms.EmailField(max_length=2000, widget=forms.EmailInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Email'}))
-    company = forms.CharField(max_length=100, widget=forms.TextInput(
+    company = forms.CharField(max_length=2000, widget=forms.TextInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company'}))
   #  supplierId = forms.IntegerField(widget=forms.TextInput(
    #     attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID', 'pattern': '[0-9]+', 'title': 'Enter numbers Only '}))

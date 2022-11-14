@@ -36,6 +36,7 @@ class UserDetails:
     lastName: str
     email: str
     company: str
+    invitationStatus: str
     supplierId: str
     responseText: str
     user_id: str

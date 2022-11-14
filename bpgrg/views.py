@@ -12,6 +12,8 @@ from pathlib import Path
 import json
 import requests
 from django.shortcuts import render
+
+from .search import search_users
 from .models import RegistrationForm, UserDetails
 from .graph import processForm
 from django.forms import formset_factory
@@ -23,6 +25,25 @@ def logout(request):
     # Redirect to the logout endpoint of Azure Web
     print("Logout Initiated")
     return HttpResponseRedirect("/.auth/logout")
+
+# Search Function
+def search(request):
+    # Redirect to the Search Page
+    print("Redirecting to Search Page")
+    context = {}
+    users_list = []
+    if request.method == 'POST':
+        #displayName = request.
+        display_name=request.POST['srchDisplayName']
+        email=request.POST['srchEmail']
+        #user_details = UserDetails()      
+        users_list =search_users(email,display_name)
+        print("CONTEXT****")
+        #print(context['users_list'][0].uid)
+
+        return render(request, "bpgrgsearch.html", {"users_list":users_list})
+    else:
+        return render(request, "bpgrgsearch.html", context)
 
 # Main Init Function
 

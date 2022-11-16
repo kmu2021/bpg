@@ -229,9 +229,11 @@
 							<div class="col-sm-4">
 							<input class="btn btn-primary btn-sm" type="reset" value="Reset" id="btnReset">
 							
-							<input class="btn btn-primary btn-sm" type="submit" value="Search" id="btnSearch">
+							<input class="btn btn-primary btn-sm" type="submit" value="Search" id="btnSearch">							
 							</div>
+							<div id="formErr" class="form-group col-md-5 error-bold"></div>	
 						</form>
+						
 							<table class="table table-sm table-striped table-bordered table-hover" id="tblUsers">
 								<thead class="thead-dark">
 									<tr class="table-primary">
@@ -337,16 +339,25 @@
     $(this).attr('title',$(this).val())
   })		
 			$("#btnReset").on('click', function (event) {
-				$("srchDisplayName").val("");
-				$("srchEmail").val("");
+				$("#srchDisplayName").val("");
+				$("#srchEmail").val("");
+				$('#formErr').html("");			
 				$('#tblUsers tbody').empty();
 			});		
 		});
 
 		$('#bpgrgsearch-form').submit( function(event) {
     // disable to avoid double submission
+	if ($('#srchEmail').val().length==0 && $('#srchDisplayName').val().length==0  )
+	{
+		$('#formErr').html("Please provide at least one of the value to search");
+	return false;
+	}
+	else{
+	$('#formErr').html("");
     $('#btnSearch').attr('disabled', true);
 	$('#btnSearch').val('Please Wait');
+	}
 });
 						</script>
 						<div class="row">

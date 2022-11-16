@@ -126,11 +126,11 @@ tr.even:last-child , tr.odd:last-child
 {
 	border-bottom:none !important;
 }
-td { 
+/*td { 
     line-height: 20px !important;
     padding-top:30px !important;
 	padding-bottom:30px !important;
-}
+}*/
 td.postalTableData
 {
 	line-height: 20px !important;

@@ -103,9 +103,9 @@
 
 	<link rel="stylesheet" href="{% static 'styles/common-usps.css' %}" type="text/css" media="all" />
 	<link rel="stylesheet" href="{% static 'styles/bcg.css' %}" type="text/css" media="all" />
-
-	<link type="text/css" href="{% static 'styles/bootstrap-iso.css' %}" rel="Stylesheet" />
 	<link type="text/css" href="{% static 'styles/redesign.css' %}" rel="Stylesheet" />
+	<link type="text/css" href="{% static 'styles/bootstrap-iso.css' %}" rel="Stylesheet" />
+	
 	<script type="text/javascript" language="javascript" src="{% static 'scripts/jquery.min.js' %}"></script>
 	<script type="text/javascript" language="javascript" src="{% static 'scripts/bpg.js' %}"></script>
 	<script type="text/javascript" language="javascript"
@@ -232,9 +232,9 @@
 							<input class="btn btn-primary btn-sm" type="submit" value="Search" id="btnSearch">
 							</div>
 						</form>
-							<table class="table table-striped table-bordered table-dark table-hover">
+							<table class="table table-sm table-striped table-bordered table-hover" id="tblUsers">
 								<thead class="thead-dark">
-									<tr>
+									<tr class="table-primary">
 										<th>First Name</th>
 										<th>Last Name</th>
 										<th>Email</th>
@@ -245,7 +245,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									
+								
 									{% for user in users_list %}
 									<tr>
 										<td> {{ user.firstName }}</td>
@@ -339,13 +339,14 @@
 			$("#btnReset").on('click', function (event) {
 				$("srchDisplayName").val("");
 				$("srchEmail").val("");
+				$('#tblUsers tbody').empty();
 			});		
 		});
 
-		$('#bpgrg-form').submit( function(event) {
+		$('#bpgrgsearch-form').submit( function(event) {
     // disable to avoid double submission
-    $('#btnSubmit').attr('disabled', true);
-	$('#btnSubmit').val('Please Wait');
+    $('#btnSearch').attr('disabled', true);
+	$('#btnSearch').val('Please Wait');
 });
 						</script>
 						<div class="row">

@@ -3482,12 +3482,12 @@ div.showPageDiv {
 }
 
 select {
-   -webkit-appearance: none; 
+ /*  -webkit-appearance: none; 
    -moz-appearance: none;
-   appearance: none;       /* remove default arrow */
-   background-image: url(../../images/gui/bkg/icons/caretselectdown.svg) !important;   /* add custom arrow */
-   background-repeat:no-repeat !important;
-   background-position: 98% center;
+   appearance: none;        remove default arrow */
+  /* background-image: url(../../images/gui/bkg/icons/caretselectdown.svg) !important;  */ /* add custom arrow */
+   /*background-repeat:no-repeat !important;
+   background-position: 98% center;*/
    border: 1px solid #333366 !important;
    border-radius: 4px;
    white-space:pre-wrap;
@@ -3498,11 +3498,11 @@ select::-ms-expand {
     display: none; /* hide the default arrow in ie10 and ie11 */
 }
 select option { 
-	width:100%;
+	/*width:100%;
 	border: 1px solid #333366 !important;
-    border-radius: 4px;
+    border-radius: 4px;*/
     /* wrap text in compatible browsers */
-  -moz-white-space: pre-wrap;
+ /* -moz-white-space: pre-wrap;
   -o-white-space: pre-wrap;
   white-space: pre-wrap;
   /* hide text that can't wrap with an ellipsis */

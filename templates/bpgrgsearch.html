@@ -225,8 +225,22 @@
 								<label for="srchDisplayName">Full Name</label>
 								<input type="text" class="form-control" name="srchDisplayName" id="srchDisplayName" placeholder="Enter Full Name">
 							</div>
-							
-							<div class="col-sm-4">
+							<div class="form-group col-md-5">
+								<label for="srchCompanyName">Company Name</label>
+								<input type="text" class="form-control" name="srchCompanyName" id="srchCompanyName" placeholder="Enter Company Name">
+							</div>
+							<div class="form-group col-md-5">
+								<label for="srchInvitationStatus">Invitation Status</label>
+								<input type="text" id="hidden1" disabled>
+								<select style="overflow-y: auto;" class="form-select" size=2 name="srchInvitationStatus" id="srchInvitationStatus" placeholder="Invitation Status">																		
+									<option value="accepted">Accepted</option>
+									<option value="pendingAcceptance">Pending Acceptance</option>
+								</select>
+								
+
+							</div>
+
+							<div class="col-md-8">
 							<input class="btn btn-primary btn-sm" type="reset" value="Reset" id="btnReset">
 							
 							<input class="btn btn-primary btn-sm" type="submit" value="Search" id="btnSearch">							
@@ -341,6 +355,7 @@
 			$("#btnReset").on('click', function (event) {
 				$("#srchDisplayName").val("");
 				$("#srchEmail").val("");
+				$("#srchCompanyName").val("");
 				$('#formErr').html("");			
 				$('#tblUsers tbody').empty();
 			});		
@@ -348,7 +363,7 @@
 
 		$('#bpgrgsearch-form').submit( function(event) {
     // disable to avoid double submission
-	if ($('#srchEmail').val().length==0 && $('#srchDisplayName').val().length==0  )
+	if ($('#srchEmail').val().length==0 && $('#srchDisplayName').val().length==0 && $('#srchCompanyName').val().length==0  )
 	{
 		$('#formErr').html("Please provide at least one of the value to search");
 	return false;

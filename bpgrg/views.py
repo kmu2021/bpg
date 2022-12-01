@@ -36,8 +36,10 @@ def search(request):
         #displayName = request.
         display_name=request.POST['srchDisplayName']
         email=request.POST['srchEmail']
+        company_name = request.POST['srchCompanyName']
+        invitation_status = request.POST.get('srchInvitationStatus','')
         #user_details = UserDetails()      
-        users_list =search_users(email,display_name)
+        users_list =search_users(email,display_name,company_name, invitation_status)
         print("CONTEXT****")
         #print(context['users_list'][0].uid)
 

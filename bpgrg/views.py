@@ -101,6 +101,8 @@ def init(request):
                     appListDict = {}
                     appListDict['ileAppFlag']= form.cleaned_data['ileAppFlag']
                     appListDict['faAppFlag']= form.cleaned_data['faAppFlag']                    
+                    appListDict['clearAppFlag']= form.cleaned_data['clearAppFlag']   
+                    appListDict['stafAppFlag']= form.cleaned_data['stafAppFlag']   
                     print("Adding to Dict")
                     user_dict = {
                         "uid": counter,

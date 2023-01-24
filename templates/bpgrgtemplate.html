@@ -240,7 +240,7 @@
 										<td data-id="supplierInput{{forloop.counter}}" data-toggle="modal"
 																data-target="#supplierIdModal" id="supplierInput{{forloop.counter}}"
 																 onclick="openSupplierPopup(this.id);"> {{ form.supplierId }}</td>
-										<td>{{form.ileAppFlag}} ILE<br>{{form.faAppFlag}} FA</td>							
+										<td>{{form.ileAppFlag}} ILE<br>{{form.faAppFlag}} FA<br>{{form.clearAppFlag}} CLEAR<br>{{form.faAppFlag}} STAF</td>							
 										{% if form.responseText %}
 										<td style="color: red;font-size:small;">{{form.responseText}}</td>
 										{% endif %}

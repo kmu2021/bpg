@@ -26,6 +26,8 @@ class RegistrationForm(forms.Form):
         attrs={'class': 'form-control', 'placeholder': 'Please Click', 'required': True, 'readonly': 'readonly', 'aria-label': 'Supplier ID'}))   
     ileAppFlag = forms.BooleanField(required=False, initial=True, label='ILE')
     faAppFlag = forms.BooleanField(required=False, initial=True, label='FA')
+    clearAppFlag = forms.BooleanField(required=False, initial=True, label='CLEAR')
+    stafAppFlag = forms.BooleanField(required=False, initial=True, label='CLEAR')
    # appList = forms.MultipleChoiceField(
     #    choices=APP_CHOICES, widget=forms.CheckboxSelectMultiple)
 

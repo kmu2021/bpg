@@ -201,7 +201,7 @@ input.text-input-large {
 
 #main-inner {
     background: url("../images/gui/bkg/main-bkg.png") repeat-x scroll 0 0 #fff;
-    background: -moz-linear-gradient(to left top, white, #DEDEDE) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(center bottom , white, #DEDEDE) repeat scroll 0 0 transparent;
     min-height: 364px;
     min-width: 960px;
 }
@@ -787,7 +787,7 @@ div.messageContent {
 } 
 #tabs-1 #dashTable {
 	margin-top:10px;
-}
+}7
 
 .vtabs .vtabs-tab-column ul a.open li , .vtabs .vtabs-tab-column ul a.closed  li {
     color: #006699; 
@@ -1005,7 +1005,11 @@ span.openTooltipHome img {
 .custom.options {
       margin: 10px 0 15px 18px;
 }
-
+h7 {
+       font-size: 16px;
+       line-height:22px;
+       font-weight:bold;
+}
 a.pending:link, a.pending:visited, a.pending:active, a.pending:hover {
 	color: #FF6600; 
 	font-size: 16px; 
@@ -1106,4 +1110,62 @@ a.pending:link, a.pending:visited, a.pending:active, a.pending:hover {
 	cursor: pointer;
 }
    
- 
+/*START of changes to replace MARQUEE*/ 
+.bounce {
+                height: 25px;
+                overflow: hidden;
+                position: relative;
+                background: #bb3434;
+				width: 98%;				
+				margin: auto; 
+				box-shadow: 2px 2px 2px grey;
+                color: #333;
+                border: 1px solid #4a4a4a;
+            }
+            
+            .bounce p {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                margin: 1;
+                line-height: 20px;
+                text-align: center;
+                -moz-transform: translateX(50%);
+                -webkit-transform: translateX(50%);
+                transform: translateX(50%);
+                -moz-animation: bouncing-text 5s linear infinite alternate;
+                -webkit-animation: bouncing-text 5s linear infinite alternate;
+                animation: bouncing-text 15s linear infinite alternate;
+            }
+            
+            @-moz-keyframes bouncing-text {
+                0% {
+                    -moz-transform: translateX(50%);
+                }
+                100% {
+                    -moz-transform: translateX(-50%);
+                }
+            }
+            
+            @-webkit-keyframes bouncing-text {
+                0% {
+                    -webkit-transform: translateX(50%);
+                }
+                100% {
+                    -webkit-transform: translateX(-50%);
+                }
+            }
+            
+            @keyframes bouncing-text {
+                0% {
+                    -moz-transform: translateX(50%);
+                    -webkit-transform: translateX(50%);
+                    transform: translateX(50%);
+                }
+                100% {
+                    -moz-transform: translateX(-50%);
+                    -webkit-transform: translateX(-50%);
+                    transform: translateX(-50%);
+                }
+            }
+/*END of changes to replace MARQUEE*/

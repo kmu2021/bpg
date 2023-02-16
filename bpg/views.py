@@ -78,11 +78,11 @@ def init(request):
 # Get User Details        
 def get_user_name(request):
     # For Testing in Local Only. Will be removed before deployment to Prod
-    '''user_details = UserDetails()
+    user_details = UserDetails()
     user_details.userName = "Test"
     user_details.ileAccessList = ['FA|FALSE','ILERPT|TRUE']
     user_details.loginUrl="aaa"
-    return(user_details)'''
+    return(user_details)
     
     try:
         user_details = UserDetails()

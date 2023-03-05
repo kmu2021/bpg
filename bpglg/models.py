@@ -12,7 +12,7 @@ class RegistrationForm(forms.Form):
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name', 'placeholder': "Enter First Name"}))
     lastName = forms.CharField(max_length=200, label='Last Name', widget=forms.TextInput(
         attrs={'class': 'form-control',  'required': True, 'aria-label': 'Last Name', 'placeholder': "Enter Last Name"}))
-    workEmail = forms.EmailField(max_length=200, label='Work Email', widget=forms.EmailInput(
+    workEmail = forms.EmailField(max_length=400, label='Work Email', widget=forms.EmailInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Work Email', 'placeholder': "Enter Work Email"}))
     company = forms.CharField(max_length=200, label='Company', widget=forms.TextInput(
         attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company', 'placeholder': "Enter Company"}))
@@ -41,3 +41,8 @@ class UserDetails:
     invitationStatus: str
     supplierId: str
     responseText: str
+
+class EmailDetail:
+    email: str
+    isVerified: bool
+    counter: int

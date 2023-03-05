@@ -4,19 +4,21 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
 import os
-#from .models import UspsServices, UserDetails
-#import xml.etree.ElementTree as ET
-#from xml.dom import minidom
-#from xml.dom.minidom import parse,parseString,Document
 from pathlib import Path
 import json
 import requests
 from django.shortcuts import render
+from datetime import datetime
+import base64
+import pyotp
+from rest_framework.response import Response
 
 from .search import search_users
-from .models import RegistrationForm, UserDetails
+from .models import RegistrationForm, UserDetails, EmailDetail
 from .graph import processForm
-from django.forms import formset_factory
+
+
+
 
 # Logout Function
 
@@ -48,8 +50,6 @@ def search(request):
         return render(request, "bpgrgsearch.html", context)
 
 # Main Init Function
-
-
 def init(request):
     # if this is a GET request present a Blank Form
     if request.method == 'GET':
@@ -58,7 +58,8 @@ def init(request):
     
     # if this is a POST request we need to process the form data
     elif request.method == 'POST':
-        #print(request)
+        print(request.POST)
+        print("POST Printed")
         form = RegistrationForm(data=request.POST)
         # check whether it's valid:
         if form.is_valid():
@@ -67,10 +68,52 @@ def init(request):
                         "uid": "",
                         "firstName": form.cleaned_data['firstName'].strip(),
                         "lastName": form.cleaned_data['lastName'].strip(),
-                        "email": form.cleaned_data['workEmail'].strip(),
+                        "workEmail": form.cleaned_data['workEmail'].strip(),
                         "company": form.cleaned_data['company'].strip(),
                         "responseText": ""
                     }
             print(user_details);
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+
+            otp_validated_flag = 'N'          
+            otp = ""
+            if (request.POST.get('twoFactorCode',False)):
+                if (OTPFeatures.verifyOTP(user_details['workEmail'],request.POST['twoFactorCode'])):
+                    otp_validated_flag = 'Y'
+                    return HttpResponse("<H1>OTP has been validated</H1>")
+                else:
+                    otp_validated_flag = 'N'
+            else:
+                otp=OTPFeatures.getOTP(user_details['workEmail'])
+
+            return render(request, 'bpglgindex.html',{'form': form,'otp_flag':'Y','otp':otp, 'display_main_form':'hidden','otp_validated_flag':otp_validated_flag})
+            #return HttpResponseRedirect('/thanks/')
+
+# This class returns the string needed to generate the key
+class generateKey:
+    #@staticmethod
+    def getOtpKey(email):
+        randomKey = "123456@#41354787"        
+        return base64.b32encode((str(email) + str(datetime.date(datetime.now())) + randomKey).encode())
+
+class OTPFeatures:    
+    # Get to Create a call for OTP
+    KEY_DURATION = 60
+    @staticmethod
+    def getOTP(email):
+        #KEY_DURATION = 60 #in seconds
+        key = generateKey.getOtpKey(email)        
+        OTP = pyotp.TOTP(key,interval = OTPFeatures.KEY_DURATION)  # TOTP Model for OTP is created
+        current_otp = OTP.now()
+        print("Current OTP: "+ str(current_otp))
+        return current_otp
+    
+# This Method verifies the OTP
+    @staticmethod
+    def verifyOTP(email, user_otp):
+        
+        key = generateKey.getOtpKey(email)
+        OTP = pyotp.TOTP(key,interval = OTPFeatures.KEY_DURATION)  # TOTP Model 
+        if OTP.verify(user_otp):
+            return True
+        else:
+            return False

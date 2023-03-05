@@ -92,33 +92,33 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div class="well well-lg hidden-xs">
-            <h3>Register with Us</h3>
+            <h3>Register with Us {{ otp }}</h3>
             <strong>New users can register for a Logistics Gateway account.</strong>
             <p></p>
-        {% if form %}
-        <!-- Form Errors -->
-        {% if form.errors %}
+            {% if form %}
+            <!-- Form Errors -->
+            {% if form.errors %}
             <ul class="errors">
-                {% for error in form.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
+              {% for error in form.errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
             </ul>
-        {% endif %}
+            {% endif %}
             <!-- Display Form -->
             <form id="registerForm" name="registerForm" action="" method="POST" class="form-group was-validated">
-              {% csrf_token %} 
+              {% csrf_token %}
               {% for field in form %}
               {% if field.name == 'tncFlag' %}
-              <div class="form-group has-feedback" id="form-group-{{ field.id_for_label}}">
+              <div class="form-group has-feedback {{display_main_form}}" id="form-group-{{ field.id_for_label}}">
                 <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
-                    {{ field }} I accept the <a href="#" class="link-info">Terms and Conditions</a>. </label>
-                  
+                  {{ field }} I accept the <a href="#" class="link-info">Terms and Conditions</a>. </label>
+
               </div>
               {% else %}
-              <div class="form-group has-feedback" id="form-group-{{ field.id_for_label}}">
+              <div class="form-group has-feedback {{display_main_form}}" id="form-group-{{ field.id_for_label}}">
                 <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
                   <span class="required">*</span> {{ field.label }} </label>
-                  {{ field }}
+                {{ field }}
                 <span class="error-txt" id="error-{{ field.id_for_label}}"></span>
                 <span class="sr-only" id="sr-only-error-{{ field.id_for_label}}"></span>
               </div>
@@ -126,132 +126,90 @@
 
               {% endfor %}
               {% endif %}
-        
+
+              {% if otp_flag == 'Y' %}
+              <div class="two-factor-container" id="twoFactorDiv">
+                <div class="row grid-row-margin-24">
+                  <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
+                    <img src="{% static 'images/2fa-icon.png' %}" alt="muli-factor authentication icon" width="50"
+                      height="50">
+                    <h1>Enter your code</h1>
+                  </div>
+                </div>
+                <div class="row grid-row-margin-24">
+                  <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12">
+                        <p id="code-via-sms-msg"> We sent a 6-digit verification code to {{ form.workEmail.value }}<strong>                          
+                          </strong>
+                          <span class="visible-xs-inline-block">
+                            <a title="Verification Code" tabindex="25" class="mfa-modal" role="button"
+                              data-toggle="modal">
+                              <img src="{% static 'images/info-help15x15.png' %}" class="info-label" alt="tool tip"
+                                height="15" width="15">
+                            </a>
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row grid-row-margin-24">
+                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+                    <div class="form-group" id="form-group-twoFactorCode">
+                      <label id="for-twoFactorCode" for="twoFactorCode" class="control-label sr-only">
+                        <span class="required">*</span> Multi-Factor Code </label>
+                      <div class="input-container">
+                        <input type="text" name="twoFactorCode" maxlength="6" value="" tabindex="26" id="twoFactorCode"
+                          class="form-control two-factor-input" inputmode="numeric" autocomplete="off"
+                          placeholder="Verification Code">
+                        <a id="send-new-sms-code"
+                          href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=https://www.usps.com/&amp;_gl=1*1dibzil*_ga*MTIzODAwNTgxOS4xNjc3NzYzNjUy*_ga_3NXP3C8S9V*MTY3Nzc2MzY1Mi4xLjEuMTY3Nzc2NDk2My4wLjAuMA..#"
+                          tabindex="26" class="small" title="Send a new code now">Resend</a>
+                      </div>
+                      <span id="error-twoFactorCode" class="error-txt"></span>
+                      <span class="sr-only" id="sr-only-error-twoFactorCode"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row grid-row-margin-24">
+                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-4">                  
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-6">
+                        <p class="text-center">
+                          <span id="2fa-sms-error-msg" class="error"></span>
+                        </p>
+                        <p id="send-new-code-msg" class="valid-status hidden">
+                          <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                          <strong>A new code has been sent to your mobile device!</strong>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+
+              {% endif %}
+
               <div class="btn-wrap">
-                <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit">Sign Up
-                  Now</button>
+                <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit">
+                  {% if otp_flag == 'Y'%}
+                  Verify
+                  {% else %}
+                  Sign Up
+                  Now
+                {%endif%}</button>
               </div>
             </form>
           </div>
-       
-          <div class="hidden">
-            <strong>Browser Info</strong>
-            <ul class="list-unstyled">
-              <li>Browser Name: Chrome 11</li>
-              <li>Browser Type: WEB_BROWSER</li>
-              <li>Manufacturer: GOOGLE</li>
-              <li>Rendering Engine: WEBKIT</li>
-            </ul>
-            <strong>Browser Version Info</strong>
-            <ul class="list-unstyled">
-              <li>Version: 110.0.0.0</li>
-              <li>Major Version: 110</li>
-              <li>Minor Version: 0</li>
-            </ul>
-            <strong>Operating System Info</strong>
-            <ul class="list-unstyled">
-              <li>Operating System: Windows 10</li>
-              <li>Manufacturer: MICROSOFT</li>
-              <li>Device Type: COMPUTER</li>
-            </ul>
-          </div>
+
+         
         </div>
       </div>
     </div>
   </div>
-  <div class="row hidden" id="row-3">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="two-factor-container">
-        <div class="row grid-row-margin-24">
-          <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
-            <img src="{% static 'images/2fa-icon.png' %}" alt="muli-factor authentication icon" width="50" height="50">
-            <h1>Enter your code</h1>
-          </div>
-        </div>
-        <div class="row grid-row-margin-24">
-          <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
-                <p id="code-via-sms-msg"> We sent a 6-digit verification code to <strong>
-                    <span class="mfa-option-text">
-                      <span id="mobile-number-last-two">**</span>
-                    </span>
-                  </strong>. <span class="hidden-xs">
-                    <a role="button" id="validation-code-tip" tabindex="24" title="" data-placement="left"
-                      data-remotecontent="/entreg/assets/html/tooltips/tool-tip-mfa-code.html" data-toggle="popover"
-                      data-original-title="Verification Code">
-                      <img src="{% static 'images/info-help15x15.png' %}" class="info-label" alt="tool tip" height="15"
-                        width="15">
-                    </a>
-                  </span>
-                  <span class="visible-xs-inline-block">
-                    <a title="Verification Code" tabindex="25" class="mfa-modal" role="button" data-toggle="modal">
-                      <img src="{% static 'images/info-help15x15.png' %}" class="info-label" alt="tool tip" height="15"
-                        width="15">
-                    </a>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row grid-row-margin-24">
-          <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-            <div class="form-group" id="form-group-twoFactorCode">
-              <label id="for-twoFactorCode" for="twoFactorCode" class="control-label sr-only">
-                <span class="required">*</span> Multi-Factor Code </label>
-              <div class="input-container">
-                <input type="text" name="twoFactorCode" maxlength="6" value="" tabindex="26" id="twoFactorCode"
-                  class="form-control two-factor-input" inputmode="numeric" autocomplete="off"
-                  placeholder="Verification Code">
-                <a id="send-new-sms-code"
-                  href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=https://www.usps.com/&amp;_gl=1*1dibzil*_ga*MTIzODAwNTgxOS4xNjc3NzYzNjUy*_ga_3NXP3C8S9V*MTY3Nzc2MzY1Mi4xLjEuMTY3Nzc2NDk2My4wLjAuMA..#"
-                  tabindex="26" class="small link-inside-input" title="Send a new code now">Resend</a>
-              </div>
-              <span id="error-twoFactorCode" class="error-txt"></span>
-              <span class="sr-only" id="sr-only-error-twoFactorCode"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row grid-row-margin-24">
-          <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-4">
-            <div class="row">
-              <div class="col-xs-10 col-xs-offset-1 col-sm-12 col-sm-offset-0 col-md-6">
-                <div class="btn-wrap-single text-center">
-                  <button type="button" class="btn btn-primary btn-lg" id="btn-2fa-continue"
-                    tabindex="27">Verify</button>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-6">
-                <p class="text-center">
-                  <span id="2fa-sms-error-msg" class="error"></span>
-                </p>
-                <p id="send-new-code-msg" class="valid-status hidden">
-                  <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                  <strong>A new code has been sent to your mobile device!</strong>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row grid-row-margin-24">
-          <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
-            <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-12">
-                <p> Didn't receive your Verification Code? <a
-                    href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=https://www.usps.com/&amp;_gl=1*1dibzil*_ga*MTIzODAwNTgxOS4xNjc3NzYzNjUy*_ga_3NXP3C8S9V*MTY3Nzc2MzY1Mi4xLjEuMTY3Nzc2NDk2My4wLjAuMA..#"
-                    id="send-code-via-email" class="underline">Try sending via email</a>.
-                  <!--<br />Keep in mind that many factors can affect message delivery speed.-->
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
   <div class="row hidden" id="row-4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="two-factor-container">
@@ -570,7 +528,7 @@
   <!-- [Build 9.0.62 December 16, 2022] -->
   <div id="blockUI" style="display:none;"></div>
 
- 
+
 </body>
 
 </html>

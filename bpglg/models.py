@@ -7,39 +7,37 @@ from django import forms
 
 
 class RegistrationForm(forms.Form):
-    APP_CHOICES = (
-        ("iles", "ILE"),
-        ("fas", "FA"),
+
+    firstName = forms.CharField(max_length=200, label='First Name', widget=forms.TextInput(
+        attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name', 'placeholder': "Enter First Name"}))
+    lastName = forms.CharField(max_length=200, label='Last Name', widget=forms.TextInput(
+        attrs={'class': 'form-control',  'required': True, 'aria-label': 'Last Name', 'placeholder': "Enter Last Name"}))
+    workEmail = forms.EmailField(max_length=200, label='Work Email', widget=forms.EmailInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Work Email', 'placeholder': "Enter Work Email"}))
+    company = forms.CharField(max_length=200, label='Company', widget=forms.TextInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company', 'placeholder': "Enter Company"}))
+    scac = forms.CharField(max_length=200, label='SCAC', widget=forms.TextInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'SCAC', 'placeholder': "Enter SCAC"}))
+    duns = forms.CharField(max_length=200, label='DUNS', widget=forms.TextInput(
+        attrs={'class': 'form-control', 'required': True, 'aria-label': 'DUNS', 'placeholder': "Enter DUNS"}))
+   # tncFlag = forms.BooleanField(required=False, label='tnc')
+
+    tncFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input checkbox-xl'}),
+        required=True
     )
 
-    firstName = forms.CharField(max_length=2000, widget=forms.TextInput(
-        attrs={'class': 'form-control',  'required': True, 'aria-label': 'First Name'}))
-    lastName = forms.CharField(max_length=2000, widget=forms.TextInput(
-        attrs={'class': 'form-control',  'required': True, 'aria-label': 'Last Name'}))
-    email = forms.EmailField(max_length=2000, widget=forms.EmailInput(
-        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Email'}))
-    company = forms.CharField(max_length=2000, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'required': True, 'aria-label': 'Company'}))
-  #  supplierId = forms.IntegerField(widget=forms.TextInput(
-   #     attrs={'class': 'form-control', 'required': True, 'aria-label': 'Supplier ID', 'pattern': '[0-9]+', 'title': 'Enter numbers Only '}))
-    supplierId = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Please Click', 'required': True, 'readonly': 'readonly', 'aria-label': 'Supplier ID'}))   
-    ileAppFlag = forms.BooleanField(required=False, initial=True, label='ILE')
-    faAppFlag = forms.BooleanField(required=False, initial=True, label='FA')
-    clearAppFlag = forms.BooleanField(required=False, initial=True, label='CLEAR')
-    stafAppFlag = forms.BooleanField(required=False, initial=True, label='CLEAR')
-   # appList = forms.MultipleChoiceField(
-    #    choices=APP_CHOICES, widget=forms.CheckboxSelectMultiple)
+    # widget=forms.CheckboxInput(
+    #   attrs={'class': 'form-control form-check-input checkbox-xl', 'required': True, 'aria-label': 'Terms', 'placeholder': "Enter Terms"}))
 
 
 class UserDetails:
     uid: int
     firstName: str
     lastName: str
-    email: str
+    workEmail: str
     company: str
     invitationStatus: str
     supplierId: str
     responseText: str
-    user_id: str
-    appListDict = {}

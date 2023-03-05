@@ -95,68 +95,38 @@
             <h3>Register with Us</h3>
             <strong>New users can register for a Logistics Gateway account.</strong>
             <p></p>
+        {% if form %}
+        <!-- Form Errors -->
+        {% if form.errors %}
+            <ul class="errors">
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+            <!-- Display Form -->
             <form id="registerForm" name="registerForm" action="" method="POST" class="form-group was-validated">
               {% csrf_token %} 
-              <div class="form-group has-feedback" id="form-group-firstname">
-                <label id="for-firstname" for="firstname" class="control-label">
-                  <span class="required">*</span> First Name </label>
-                <input type="text" name="firstname" maxlength="50" value="" tabindex="1" id="firstname"
-                  class="form-control" autocorrect="off" placeholder="Enter First Name" autocomplete="off"
-                  aria-describedby="helpBlock" autocapitalize="off" required>
-                <span class="error-txt" id="error-firstname"></span>
-                <span class="sr-only" id="sr-only-error-firstname"></span>
+              {% for field in form %}
+              {% if field.name == 'tncFlag' %}
+              <div class="form-group has-feedback" id="form-group-{{ field.id_for_label}}">
+                <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
+                    {{ field }} I accept the <a href="#" class="link-info">Terms and Conditions</a>. </label>
+                  
               </div>
-              <div class="form-group has-feedback" id="form-group-lastname">
-                <label id="for-lastname" for="lastname" class="control-label">
-                  <span class="required">*</span> Last Name </label>
-                <input type="text" name="lastname" maxlength="50" value="" tabindex="2" id="lastname"
-                  class="form-control" autocorrect="off" placeholder="Enter Last Name" autocomplete="off"
-                  aria-describedby="helpBlock" autocapitalize="off" required>
-                <span class="error-txt" id="error-lastname"></span>
-                <span class="sr-only" id="sr-only-error-lastname"></span>
+              {% else %}
+              <div class="form-group has-feedback" id="form-group-{{ field.id_for_label}}">
+                <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
+                  <span class="required">*</span> {{ field.label }} </label>
+                  {{ field }}
+                <span class="error-txt" id="error-{{ field.id_for_label}}"></span>
+                <span class="sr-only" id="sr-only-error-{{ field.id_for_label}}"></span>
               </div>
-              <div class="form-group has-feedback" id="form-group-workemail">
-                <label id="for-workemail" for="workemail" class="control-label">
-                  <span class="required">*</span> Work Email </label>
-                <input type="email" name="workemail" maxlength="50" value="" tabindex="3" id="workemail"
-                  class="form-control" autocorrect="off" placeholder="Enter Work Email" autocomplete="off"
-                  aria-describedby="helpBlock" autocapitalize="off" required>
-                <span class="error-txt" id="error-workemail"></span>
-                <span class="sr-only" id="sr-only-error-workemail"></span>
-              </div>
-              <div class="form-group has-feedback" id="form-group-company">
-                <label id="for-company" for="company" class="control-label">
-                  <span class="required">*</span> Company </label>
-                <input type="text" name="company" maxlength="50" value="" tabindex="4" id="company" class="form-control"
-                  autocorrect="off" placeholder="Enter Company" autocomplete="off" aria-describedby="helpBlock"
-                  autocapitalize="off" required>
-                <span class="error-txt" id="error-company"></span>
-                <span class="sr-only" id="sr-only-error-company"></span>
-              </div>
-              <div class="form-group has-feedback" id="form-group-scac">
-                <label id="for-scac" for="scac" class="control-label">
-                  <span class="required">*</span> SCAC </label>
-                <input type="text" name="scac" maxlength="50" value="" tabindex="5" id="scac" class="form-control"
-                  autocorrect="off" placeholder="Enter SCAC" autocomplete="off" aria-describedby="helpBlock"
-                  autocapitalize="off" required>
-                <span class="error-txt" id="error-scac"></span>
-                <span class="sr-only" id="sr-only-error-scac"></span>
-              </div>
-              <div class="form-group has-feedback" id="form-group-duns">
-                <label id="for-duns" for="duns" class="control-label">
-                  <span class="required">*</span> DUNS </label>
-                <input type="text" name="duns" maxlength="50" value="" tabindex="6" id="duns" class="form-control"
-                  autocorrect="off" placeholder="Enter DUNS" autocomplete="off" aria-describedby="helpBlock"
-                  autocapitalize="off" required>
-                <span class="error-txt" id="error-duns"></span>
-                <span class="sr-only" id="sr-only-error-duns"></span>
-              </div>
-              <div class="form-check">
-                <label class="form-check-label" id="for-tnc" for="tnc">
-                  <input type="checkbox" class="form-check-input checkbox-xl" name="tnc" tabindex="7" id="tnc" value="" required>
-                  I accept the <a>Terms and Conditions</a>
-                </label>
-              </div>
+              {% endif %}
+
+              {% endfor %}
+              {% endif %}
+        
               <div class="btn-wrap">
                 <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit">Sign Up
                   Now</button>

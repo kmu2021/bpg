@@ -95,6 +95,9 @@
             <h3>Register with Us</h3>
             <strong>New users can register for a Logistics Gateway account.</strong>
             <p></p>
+            <div>
+              <h3 class="subhead">{{ response_message.invitation_message}}</h3>
+            </div>
             {% if form %}
             <!-- Form Errors -->
             {% if form.errors %}
@@ -179,7 +182,7 @@
               <!--/div-->
 
               {% endif %}
-
+              {% if response_message.invitation_message is None or  response_message.invitation_message == '' %}
               <div class="btn-wrap">
                 <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit">
                   {% if otp_flag == 'Y'%}
@@ -187,8 +190,10 @@
                   {% else %}
                   Sign Up
                   Now
-                {%endif%}</button>
+                {%endif%}
+              </button>
               </div>
+              {% endif %}
             </form>
           </div>
 

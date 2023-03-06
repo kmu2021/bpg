@@ -248,15 +248,28 @@ def add_to_group(user_id, bpg_grp_id, access_token):
         print('Group Add Pass')
     return 'Added to Group'
 
+#Check if User Exists or Not
 def does_user_exists(user_details):
     access_token = ""
     if access_token == "":
         access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-        print(access_token)
+        
 
     user_id = get_user_id(user_details.workEmail, access_token)
     if user_id != '':
         print('User ID is '+ str(user_id))
-        user_details.responseText = 'User already Exists'
+        user_details.responseText = 'User is already registered'
         user_details.user_id = user_id
+    return user_details
+
+#Send Invitation to User - Wrapper Function
+def send_invitation_to_user(user_details):
+    access_token = ""
+    if access_token == "":
+        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    redirectUrl = "http://bpg-dev-rg.azurewebsites.net/"
+    user_details.user_id = invite_user(user_details.workEmail, user_details.firstName +
+                                               ' '+user_details.lastName,  redirectUrl, access_token)
+    if (user_details.user_id==''):
+        user_details.responseText = 'User Invitation Failed. Please contact administrator.'
     return user_details

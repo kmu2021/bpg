@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 from .search import search_users
 from .models import RegistrationForm, UserDetails, EmailDetail
-from .graph import processForm, does_user_exists
+from .graph import does_user_exists, send_invitation_to_user
 
 
 # Global Variables
@@ -59,7 +59,8 @@ def search(request):
 
 def init(request):
     OTP_COUNTER = 0
-    response_message = {}
+    response_message = {"validation_error":"",
+                        "invitation_message":""}
     # if this is a GET request present a Blank Form
     if request.method == 'GET':
         form = RegistrationForm()
@@ -78,18 +79,21 @@ def init(request):
             user_details.lastName = form.cleaned_data['lastName'].strip()
             user_details.workEmail = form.cleaned_data['workEmail'].strip()
             user_details.company = form.cleaned_data['company'].strip()
+            user_details.scac = form.cleaned_data['scac'].strip()
+            user_details.duns = form.cleaned_data['duns'].strip()
             user_details.responseText=""
-            #user_details.user_id = form.cleaned_data['user_id'].strip()
+            user_details.user_id = ""
 
             user_details=does_user_exists (user_details)
+            print(user_details.company)
 
             if (user_details.responseText!=""):
-                response_message = {
-                "validation_error":user_details.responseText
-            }
-                return render(request, 'bpglgindex.html', {'form': form, "response_message":response_message})
-                         
+                response_message['validation_error']=user_details.responseText
             
+                return render(request, 'bpglgindex.html', {'form': form, "response_message":response_message})                         
+               
+
+
             print(user_details)
                       
             
@@ -119,8 +123,12 @@ def init(request):
                 print(OTPFeatures.verifyOTP(user_details.workEmail, request.POST['twoFactorCode']))
                 if (OTPFeatures.verifyOTP(user_details.workEmail, request.POST['twoFactorCode'])):
                     otp_validated_flag = 'Y'
+                    user_details=send_invitation_to_user (user_details)
+                    response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."
+                    print("User ID: "+user_details.user_id)
                     #del request.session['OTP_COUNTER']
-                    return HttpResponse("<H1>OTP has been validated</H1>")
+                    return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                    #return HttpResponse("<H1>OTP has been validated</H1>")
                 else:
                     otp_validated_flag = 'N'
                     response_message = {"error_twoFactorCode":"Incorrect OTP provided. Please try again."}

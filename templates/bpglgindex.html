@@ -92,7 +92,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
           <div class="well well-lg hidden-xs">
-            <h3>Register with Us {{ otp }}</h3>
+            <h3>Register with Us</h3>
             <strong>New users can register for a Logistics Gateway account.</strong>
             <p></p>
             {% if form %}
@@ -123,12 +123,13 @@
                 <span class="sr-only" id="sr-only-error-{{ field.id_for_label}}"></span>
               </div>
               {% endif %}
-
+              
               {% endfor %}
+              <span class="error-txt" id="error-validation"><b>{{ response_message.validation_error }}</b></span>
               {% endif %}
 
               {% if otp_flag == 'Y' %}
-              <div class="two-factor-container" id="twoFactorDiv">
+              <!-- div class="two-factor-container" id="twoFactorDiv"-->
                 <div class="row grid-row-margin-24">
                   <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 text-center">
                     <img src="{% static 'images/2fa-icon.png' %}" alt="muli-factor authentication icon" width="50"
@@ -155,40 +156,27 @@
                   </div>
                 </div>
                 <div class="row grid-row-margin-24">
-                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+                  <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group" id="form-group-twoFactorCode">
-                      <label id="for-twoFactorCode" for="twoFactorCode" class="control-label sr-only">
-                        <span class="required">*</span> Multi-Factor Code </label>
-                      <div class="input-container">
+                      <div class="input-container col-md-6">
                         <input type="text" name="twoFactorCode" maxlength="6" value="" tabindex="26" id="twoFactorCode"
                           class="form-control two-factor-input" inputmode="numeric" autocomplete="off"
-                          placeholder="Verification Code">
+                          placeholder="Verification Code" required>
+                      </div>
+                      <div class="input-container col-md-6">                       
                         <a id="send-new-sms-code"
-                          href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=https://www.usps.com/&amp;_gl=1*1dibzil*_ga*MTIzODAwNTgxOS4xNjc3NzYzNjUy*_ga_3NXP3C8S9V*MTY3Nzc2MzY1Mi4xLjEuMTY3Nzc2NDk2My4wLjAuMA..#"
-                          tabindex="26" class="small" title="Send a new code now">Resend</a>
+                          href=""
+                          tabindex="26" class="" title="Send a new code now">Resend Code</a>
                       </div>
-                      <span id="error-twoFactorCode" class="error-txt"></span>
+                      <div class="input-container col-md-12">
+                      <span id="error-twoFactorCode" class="error-txt">{{ response_message.error_twoFactorCode }}</span>
                       <span class="sr-only" id="sr-only-error-twoFactorCode"></span>
-                    </div>
-                  </div>
-                </div>
-                <div class="row grid-row-margin-24">
-                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-4">                  
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-12 col-md-6">
-                        <p class="text-center">
-                          <span id="2fa-sms-error-msg" class="error"></span>
-                        </p>
-                        <p id="send-new-code-msg" class="valid-status hidden">
-                          <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-                          <strong>A new code has been sent to your mobile device!</strong>
-                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>                
                
-              </div>
+              <!--/div-->
 
               {% endif %}
 
@@ -527,7 +515,9 @@
   <!-- 1a8a.usps.gov -->
   <!-- [Build 9.0.62 December 16, 2022] -->
   <div id="blockUI" style="display:none;"></div>
-
+  {%if otp%}
+  Test OTP:  {{ otp }}
+  {%endif%}
 
 </body>
 

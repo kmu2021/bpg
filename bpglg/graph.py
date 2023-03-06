@@ -247,3 +247,16 @@ def add_to_group(user_id, bpg_grp_id, access_token):
     else:
         print('Group Add Pass')
     return 'Added to Group'
+
+def does_user_exists(user_details):
+    access_token = ""
+    if access_token == "":
+        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+        print(access_token)
+
+    user_id = get_user_id(user_details.workEmail, access_token)
+    if user_id != '':
+        print('User ID is '+ str(user_id))
+        user_details.responseText = 'User already Exists'
+        user_details.user_id = user_id
+    return user_details

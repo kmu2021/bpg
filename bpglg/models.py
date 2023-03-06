@@ -34,6 +34,7 @@ class RegistrationForm(forms.Form):
 
 class UserDetails:
     uid: int
+    user_id: str
     firstName: str
     lastName: str
     workEmail: str

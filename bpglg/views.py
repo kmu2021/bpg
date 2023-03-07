@@ -12,6 +12,7 @@ from datetime import datetime
 import base64
 import pyotp
 from rest_framework.response import Response
+from .uspsOtp import generateOTP
 
 from .search import search_users
 from .models import RegistrationForm, UserDetails, EmailDetail
@@ -58,7 +59,8 @@ def search(request):
 
 
 def init(request):
-    OTP_COUNTER = 0
+    #OTP_COUNTER = 0
+    MAX_OTP_COUNTER = 3
     response_message = {"validation_error":"",
                         "invitation_message":""}
     # if this is a GET request present a Blank Form
@@ -83,58 +85,60 @@ def init(request):
             user_details.duns = form.cleaned_data['duns'].strip()
             user_details.responseText=""
             user_details.user_id = ""
-
-            user_details=does_user_exists (user_details)
-            print(user_details.company)
+            
+            #If twoFactorCode is NOT present in request, check if user exists
+            if (not 'twoFactorCode' in request.POST):     
+                print("Checking uid")   
+                request.session['OTP_COUNTER'] = '0'        
+                user_details=does_user_exists (user_details)            
 
             if (user_details.responseText!=""):
                 response_message['validation_error']=user_details.responseText
-            
                 return render(request, 'bpglgindex.html', {'form': form, "response_message":response_message})                         
                
-
-
-            print(user_details)
-                      
-            
+           
             
             otp_validated_flag = 'N'
             otp = ""
 
-            '''print('Current OTP Counter'+str(OTP_COUNTER))
             
+
             if request.session.get('OTP_COUNTER', False):
-                OTP_COUNTER = 1
-                request.session['OTP_COUNTER'] = str(OTP_COUNTER)
-                request.session.modified = True
-                print('Init Session')     
+                request.session['OTP_COUNTER'] = str(int(request.session.get('OTP_COUNTER', False)) + 1)
+                print ("Session available")             
                 print(request.session['OTP_COUNTER'])      
             else:
-
-                OTP_COUNTER = int(request.session.get('OTP_COUNTER', False))+1
-                print ("Session available"+request.session.get('OTP_COUNTER', False))
-                request.session['OTP_COUNTER'] = str(OTP_COUNTER)
-                request.session.modified = True
+                request.session['OTP_COUNTER'] = '1'
+                print('Init Session')                                     
+                print(request.session['OTP_COUNTER'])   
             
-            print('Session Set'+str(OTP_COUNTER))'''
-
             if (request.POST.get('twoFactorCode', False)):
                 print("OTP Entered by User: "+user_details.workEmail + ":" + request.POST['twoFactorCode'])
-                print(OTPFeatures.verifyOTP(user_details.workEmail, request.POST['twoFactorCode']))
-                if (OTPFeatures.verifyOTP(user_details.workEmail, request.POST['twoFactorCode'])):
-                    otp_validated_flag = 'Y'
-                    user_details=send_invitation_to_user (user_details)
-                    response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."
-                    print("User ID: "+user_details.user_id)
-                    #del request.session['OTP_COUNTER']
-                    return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                
+                
+                if request.session.get('OTP', False):
+                    print("OTP in SESSION")
+                    print(request.session['OTP'])
+                    if (request.session['OTP'] == request.POST['twoFactorCode']):
+                        otp_validated_flag = 'Y'
+                        user_details=send_invitation_to_user (user_details)
+                        response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
+                        del request.session['OTP_COUNTER']
+                        del request.session['OTP']
+                        return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
                     #return HttpResponse("<H1>OTP has been validated</H1>")
-                else:
-                    otp_validated_flag = 'N'
-                    response_message = {"error_twoFactorCode":"Incorrect OTP provided. Please try again."}
+                    else:
+                        otp_validated_flag = 'N'
+                        if int(request.session['OTP_COUNTER']) > MAX_OTP_COUNTER:
+                            response_message = {"error_twoFactorCode":"Please resend the One Time Code"}
+                        else:
+                            response_message = {"error_twoFactorCode":"Incorrect OTP provided. Please try again."}
             else:
-
-                otp = OTPFeatures.getOTP(user_details.workEmail)
+                #Generate OTP                         
+                otp = generateOTP()
+                request.session['OTP_COUNTER'] = '0'     
+                print ("OTP is "+otp)                   
+                request.session['OTP'] = otp                
 
             return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp': otp, 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
             # return HttpResponseRedirect('/thanks/')

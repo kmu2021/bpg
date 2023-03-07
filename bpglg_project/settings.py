@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = int(os.environ.get('DJANGO_DEBUG',0))
 
 ALLOWED_HOSTS = ([os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []) + ['.usps.com','.azurewebsites.net']
-CSRF_TRUSTED_ORIGINS = ['https://*.usps.com','https://*.azurewebsites.net','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://bpg-dev-rg.azurewebsites.net/']
 
 
 # Application definition

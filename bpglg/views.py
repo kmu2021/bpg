@@ -130,7 +130,8 @@ def init(request):
                     else:
                         otp_validated_flag = 'N'
                         if int(request.session['OTP_COUNTER']) > MAX_OTP_COUNTER:
-                            response_message = {"error_twoFactorCode":"Please resend the One Time Code"}
+                            response_message = {"error_twoFactorCode":"One Time Code Expired. Please resend."}
+                            request.session['OTP']='0' #Resetting Session OTP
                         else:
                             response_message = {"error_twoFactorCode":"Incorrect OTP provided. Please try again."}
             else:

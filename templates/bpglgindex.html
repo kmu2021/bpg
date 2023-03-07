@@ -29,6 +29,9 @@
   <!-- Bootstrap JS -->
   <script src="{% static 'scripts/jquery-3.4.1.min.js' %}"></script>
   <script src="{% static 'scripts/bootstrap.min.js' %}"></script>
+
+  <!-- USPS Custom JS -->
+  <script src="{% static 'scripts/bpglg.js' %}"></script>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
 																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/html5shiv.min.js"></script>
@@ -168,10 +171,12 @@
                           class="form-control two-factor-input" inputmode="numeric" autocomplete="off"
                           placeholder="Verification Code" required>
                       </div>
-                      <div class="input-container col-md-6">                       
-                        <a id="send-new-sms-code"
-                          href=""
-                          tabindex="26" class="" title="Send a new code now">Resend Code</a>
+                      <div class="input-container col-md-6">    
+                        <button type="button" id="resend-code" onClick="javascript:getOtp();javascript:resendCountDown();" tabindex="27" class="btn btn-link" title="Send a new code now" disabled>
+                          Resend Code<span id="span-count"></span></button>   
+                          <script type="text/javascript">
+                            resendCountDown();
+                         </script>                                        
                       </div>
                       <div class="input-container col-md-12">
                       <span id="error-twoFactorCode" class="error-txt">{{ response_message.error_twoFactorCode }}</span>

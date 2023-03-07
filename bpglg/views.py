@@ -144,6 +144,14 @@ def init(request):
             return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp': otp, 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
             # return HttpResponseRedirect('/thanks/')
 
+
+def generateotp(request):
+    otp = generateOTP()
+    request.session['OTP_COUNTER'] = '0'     
+    print ("OTP is "+otp)                   
+    request.session['OTP'] = otp    
+    return HttpResponse('Test OTP: '+otp,status=200)
+
 # This class returns the string needed to generate the key
 
 

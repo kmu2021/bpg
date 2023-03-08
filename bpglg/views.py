@@ -10,9 +10,10 @@ import requests
 from django.shortcuts import render
 from datetime import datetime
 import base64
-import pyotp
+
+import time
 from rest_framework.response import Response
-from .uspsOtp import generateOTP
+from .uspsOtp import *
 
 from .search import search_users
 from .models import RegistrationForm, UserDetails, EmailDetail
@@ -119,70 +120,25 @@ def init(request):
                 if request.session.get('OTP', False):
                     print("OTP in SESSION")
                     print(request.session['OTP'])
-                    if (request.session['OTP'] == request.POST['twoFactorCode']):
+                    validate_otp_result = validate_otp_wrapper(int(request.session['OTP']),int(request.POST['twoFactorCode']),int(request.session['OTP_COUNTER']),int(request.session['OTP_EXPIRES_AT']))
+
+                    if (validate_otp_result==""):
                         otp_validated_flag = 'Y'
                         user_details=send_invitation_to_user (user_details)
                         response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
+                        del request.session['OTP_EXPIRES_AT']
                         return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
-                    #return HttpResponse("<H1>OTP has been validated</H1>")
                     else:
-                        otp_validated_flag = 'N'
-                        if int(request.session['OTP_COUNTER']) > MAX_OTP_COUNTER:
-                            response_message = {"error_twoFactorCode":"One Time Code Expired. Please resend."}
-                            request.session['OTP']='0' #Resetting Session OTP
-                        else:
-                            response_message = {"error_twoFactorCode":"Incorrect OTP provided. Please try again."}
+                        response_message = {"error_twoFactorCode":validate_otp_result}
             else:
-                #Generate OTP                         
-                otp = generateOTP()
-                request.session['OTP_COUNTER'] = '0'     
-                print ("OTP is "+otp)                   
-                request.session['OTP'] = otp                
-
-            return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp': otp, 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
+                #Generate OTP  
+                request = generate_otp_wrapper(request)
+            return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp':  request.session['OTP'], 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
             # return HttpResponseRedirect('/thanks/')
 
 
 def generateotp(request):
-    otp = generateOTP()
-    request.session['OTP_COUNTER'] = '0'     
-    print ("OTP is "+otp)                   
-    request.session['OTP'] = otp    
-    return HttpResponse('Test OTP: '+otp,status=200)
-
-# This class returns the string needed to generate the key
-
-
-class generateKey:
-    # @staticmethod
-    def getOtpKey(email):
-        randomKey = str(settings.ENVIRONMENT).upper() + str(settings.SECRET_KEY) #+ str(OTP_COUNTER)
-        return base64.b32encode((str(email) + str(datetime.date(datetime.now())) + randomKey).encode())
-
-
-class OTPFeatures:
-    # Get to Create a call for OTP
-    KEY_DURATION = 120
-
-    @staticmethod
-    def getOTP(email):
-        # KEY_DURATION = 60 #in seconds
-        key = generateKey.getOtpKey(email)
-        # TOTP Model for OTP is created
-        OTP = pyotp.TOTP(key, interval=OTPFeatures.KEY_DURATION)
-        current_otp = OTP.now()
-        print("Current OTP: " + str(current_otp))
-        return current_otp
-
-# This Method verifies the OTP
-    @staticmethod
-    def verifyOTP(email, user_otp):
-
-        key = generateKey.getOtpKey(email)
-        OTP = pyotp.TOTP(key, interval=OTPFeatures.KEY_DURATION)  # TOTP Model
-        if OTP.verify(user_otp):
-            return True
-        else:
-            return False
+    request = generate_otp_wrapper(request)
+    return HttpResponse('Test OTP: '+request.session['OTP'],status=200)

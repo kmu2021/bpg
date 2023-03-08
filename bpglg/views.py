@@ -142,3 +142,28 @@ def init(request):
 def generateotp(request):
     request = generate_otp_wrapper(request)
     return HttpResponse('Test OTP: '+request.session['OTP'],status=200)
+
+def testemail(request):
+    response_text = ""
+    if request.method == 'POST':
+        print(request.POST['url'])
+        print(request.POST['postheader'])
+        print(request.POST['postbody'])
+        url = request.POST['url']
+        payload = json.loads(request.POST['postbody'])
+        print("Body Loaded")
+        headers = json.loads(request.POST['postheader'])
+        print("Header Loaded")
+        try:
+            response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.text)
+            if(response.ok):
+                response_text = response.content
+            else:
+                response_text = response.raise_for_status()
+        except Exception as err:
+            response_text = err
+        return render(request, 'testemail.html',{'response_text':response_text, 'url':url,'postheader':request.POST['postbody'],'postbody':request.POST['postbody']})
+    else:
+        return render(request, 'testemail.html',{'response_text':response_text})
+    

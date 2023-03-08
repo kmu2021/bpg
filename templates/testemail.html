@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="no-cache">
+  <meta http-equiv="Expires" content="-1">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta name="description"
+    content="Create a USPS.com(registered trademark symbol) account to print shipping labels, request a Carrier Pickup, buy stamps, shop, plus much more.">
+  <meta name="keywords" content="">
+  <meta name="author" content="www.usps.com">
+  <link rel="icon" href="https://reg.usps.com/entreg/favicon.ico">
+  <title>Test Mail</title>
+
+  <!-- USPS global -->
+  <link href="{% static 'styles/usps-fonts.css' %}" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'styles/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static 'styles/bootstrap-sticky-footer.css' %}" rel="stylesheet">
+  <link href="{% static 'styles/theme.css' %}" rel="stylesheet">
+
+  <!-- Bootstrap JS -->
+  <script src="{% static 'scripts/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'scripts/bootstrap.min.js' %}"></script>
+
+  <!-- USPS Custom JS -->
+  <script src="{% static 'scripts/bpglg.js' %}"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/html5shiv.min.js"></script>
+																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/respond.min.js"></script>
+																	<![endif]-->
+</head>
+
+<body>
+  <nav id="usps-navbar" class="navbar navbar-default navbar-static-top">
+    <div class="navbar-header" style="padding-left: -2px">
+
+      <a href="/">
+        <img class="img-responsive" id="Image_18_bdx" alt="Main Image" src="{% static 'images/Image_18_bdx.png' %}">
+      </a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="page-header-no-border">
+      <h1 id="sign-in-to-your-account-header">Test Email</h1>
+    </div>
+  </div>
+  <div class="container" role="main" id="content">
+    <div id="double-click" class="doubleclick sr-only"></div>
+    <form id="loginForm" name="loginForm" action="testemail" method="post">
+      {% csrf_token %}
+      <div class="form-group has-feedback " id="form-group-id_url">
+        <label id="for-id_url" for="id_url" class="control-label">
+          URL </label>
+        <input type="text" name="url" class="form-control" required="" aria-label="URL" placeholder="Enter URL"
+          maxlength="2000" id="id_url" value="{{ url }}">
+      </div>
+      <div class="form-group has-feedback " id="form-group-id_postheader">
+        <label id="for-id_postheader" for="id_postheader" class="control-label">
+          POST HEADER </label>
+        <TEXTAREA name="postheader" class="form-control" required="" aria-label="postheader"
+          placeholder="Enter Post Header" maxlength="20000" rows="4" id="id_postheader"></TEXTAREA>
+      </div>
+      <div class="form-group has-feedback " id="form-group-id_postbody">
+        <label id="for-id_postbody" for="id_postbody" class="control-label">
+          POST BODY </label>
+        <TEXTAREA name="postbody" class="form-control" required="" aria-label="postbody" placeholder="Enter Post Body"
+          maxlength="20000" rows="6" id="id_postbody"></TEXTAREA>
+        <div class="btn-wrap">
+          <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnSubmit">
+            SEND REST CALL
+          </button>
+        </div>
+      </div>
+    </form>
+    <h4>Response: {{ response_text }}</h4>
+  </div>
+
+
+</body>
+
+</html>

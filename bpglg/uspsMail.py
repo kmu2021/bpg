@@ -13,6 +13,7 @@ def send_email(message):
         connection_string = "endpoint=" + EMAIL_ENDPOINT+";accessKey=" + EMAIL_ACCESS_KEY
         email_client = EmailClient.from_connection_string(connection_string)
         poller = email_client.begin_send(message)    
+        error_message = poller.result()
     except HttpResponseError as ex:        
         print(ex)
         error_message = str(ex)    

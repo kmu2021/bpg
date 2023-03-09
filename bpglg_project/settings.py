@@ -141,3 +141,12 @@ AZURE_CLIENT_ID = os.environ.get('AZURE_CLIENT_ID');
 
 #Set Client Secret
 AZURE_CLIENT_SECRET = os.environ.get('AZURE_CLIENT_SECRET');
+
+#Set Azure From Email ID
+AZURE_EMAIL_FROM_ADDRESS = os.environ.get('AZURE_EMAIL_FROM_ADDRESS');
+
+#Set Azure Email Access Key
+AZURE_EMAIL_ACCESS_KEY = os.environ.get('AZURE_EMAIL_ACCESS_KEY');
+
+#Set Azure Email Endpoint
+AZURE_EMAIL_ENDPOINT = os.environ.get('AZURE_EMAIL_ENDPOINT');

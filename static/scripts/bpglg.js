@@ -30,17 +30,22 @@ function logout() {
 function getOtp() {
     var otp;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const firstname = document.querySelector('[name=firstName]').value;
+    const lastname = document.querySelector('[name=lastName]').value;
+    const workEmail = document.querySelector('[name=workEmail]').value;
     $.post("/getotp",
         {
 
-            "csrfmiddlewaretoken": csrftoken
+            "csrfmiddlewaretoken": csrftoken,
+            "workEmail": workEmail,
+            "displayName": firstname + " " + lastname
         },
         function (data, status) {
             if (status == "success") {
                 otp = data;
                 document.getElementById("resend-code").disabled=true;
                 document.getElementById("error-twoFactorCode").textContent = "One Time Code has been sent";
-                window.alert(otp);
+                //window.alert(otp);
                                 
             }
         }

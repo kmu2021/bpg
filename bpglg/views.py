@@ -140,7 +140,7 @@ def init(request):
                 email_to_arr=[{"address": user_details.workEmail,"displayName": user_details.firstName + " " + user_details.lastName}]
                 email_subject = "One Time Code for Logistics Gateway Registration"
                 email_plain_text = "Please use following One Time Code for registering: " + request.session['OTP']
-                email_html_text = "<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
+                email_html_text = get_otp_html(user_details.firstName + " " + user_details.lastName,otp)#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
                 send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)
             return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp':  request.session['OTP'], 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
             # return HttpResponseRedirect('/thanks/')
@@ -155,7 +155,7 @@ def generateotp(request):
         email_to_arr=[{"address": request.POST['workEmail'],"displayName": request.POST['displayName']}]
         email_subject = "One Time Code for Logistics Gateway Registration"
         email_plain_text = "Please use following One Time Code for registering: " + request.session['OTP']
-        email_html_text = "<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
+        email_html_text = get_otp_html(request.POST['displayName'],request.session['OTP'])#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
         send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)            
         return HttpResponse('Test OTP: '+request.session['OTP'],status=200)
 
@@ -171,7 +171,7 @@ def testemail(request):
         #headers = json.loads(request.POST['postheader'])
         #print("Header Loaded")
         #Send Email
-        response_text=send_email(message=payload)
+        response_text=send_email(message=payload, debug_flag=True)
         if (response_text==""):
             response_text="Mail Sent"
     return render(request, 'testemail.html',{'response_text':response_text})

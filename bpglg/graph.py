@@ -267,7 +267,7 @@ def send_invitation_to_user(user_details):
     access_token = ""
     if access_token == "":
         access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-    redirectUrl = "http://bpg-dev-rg.azurewebsites.net/"
+    redirectUrl = "https://bpg-dev-rg.azurewebsites.net/"
     user_details.user_id = invite_user(user_details.workEmail, user_details.firstName +
                                                ' '+user_details.lastName,  redirectUrl, access_token)
     if (user_details.user_id==''):

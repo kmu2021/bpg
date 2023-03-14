@@ -39,17 +39,27 @@ function getOtp() {
             "csrfmiddlewaretoken": csrftoken,
             "workEmail": workEmail,
             "displayName": firstname + " " + lastname
-        },
-        function (data, status) {
+        })
+        .done(function (data, status) {
+            //window.alert('status: ' + status + ', data: ' + data);
             if (status == "success") {
                 otp = data;
                 document.getElementById("resend-code").disabled=true;
-                document.getElementById("error-twoFactorCode").textContent = "One Time Code has been sent";
+                document.getElementById("error-twoFactorCode").textContent = data;
                 //window.alert(otp);
                                 
             }
-        }
-    );
+            else {
+                document.getElementById("error-twoFactorCode").textContent = data;
+                document.getElementById("resend-code").disabled=true;
+            }
+        })
+        .fail(function(data,status){            
+            console.log( data);
+            document.getElementById("error-twoFactorCode").textContent = data.responseText;
+            document.getElementById("resend-code").disabled=true;
+        });
+    
 }
 
 function resendCountDown() {// Get refreence to span and button
@@ -61,7 +71,7 @@ function resendCountDown() {// Get refreence to span and button
 
     (function countDown() {
         // Display counter and start counting down
-        spn.textContent = ' in ' + count;
+        spn.textContent = ' in ' + count + ' seconds';
 
         // Run the function again every second if the count is not zero
         if (count !== 0) {

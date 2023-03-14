@@ -3,16 +3,12 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
-import os
+
 from pathlib import Path
 import json
-import requests
-from django.shortcuts import render
-from datetime import datetime
-import base64
 
-import time
-from rest_framework.response import Response
+from django.shortcuts import render
+
 from .uspsOtp import *
 from .uspsMail import *
 
@@ -86,11 +82,12 @@ def init(request):
             user_details.duns = form.cleaned_data['duns'].strip()
             user_details.responseText=""
             user_details.user_id = ""
+
+            request.session['PROCESSING_STATUS'] = 'PENDING'
             
 
             #If twoFactorCode is NOT present in request, check if user exists
-            if (not 'twoFactorCode' in request.POST):     
-                print("Checking uid")   
+            if (not 'twoFactorCode' in request.POST):                     
                 request.session['OTP_COUNTER'] = '0'        
                 user_details=does_user_exists (user_details)            
 
@@ -130,7 +127,9 @@ def init(request):
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
                         del request.session['OTP_EXPIRES_AT']
-                        return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                        #return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                        request.session['PROCESSING_STATUS'] = 'COMPLETE'
+                        return render(request, 'bpglgindex.html', {  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
                     else:
                         response_message = {"error_twoFactorCode":validate_otp_result}
             else:
@@ -140,15 +139,17 @@ def init(request):
                 email_to_arr=[{"address": user_details.workEmail,"displayName": user_details.firstName + " " + user_details.lastName}]
                 email_subject = "One Time Code for Logistics Gateway Registration"
                 email_plain_text = "Please use following One Time Code for registering: " + request.session['OTP']
-                email_html_text = get_otp_html(user_details.firstName + " " + user_details.lastName,otp)#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
-                send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)
-            return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y', 'otp':  request.session['OTP'], 'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})
-            # return HttpResponseRedirect('/thanks/')
+                email_html_text = get_otp_html(user_details.firstName + " " + user_details.lastName,request.session['OTP'])#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
+                send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)                
+            return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y',  'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})            
 
-
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def generateotp(request):
     print(request.method)
-    if request.method == 'POST':   
+    if request.method == 'POST':
+        print(request.session.get('PROCESSING_STATUS','P'))
+        if (request.session.get('PROCESSING_STATUS','PENDING') == 'COMPLETE'):              
+            return HttpResponse('Invitation has already been sent',content_type="text/plain",status=200)
         #Generate OTP  
         request = generate_otp_wrapper(request)
         #Send Email     
@@ -157,19 +158,14 @@ def generateotp(request):
         email_plain_text = "Please use following One Time Code for registering: " + request.session['OTP']
         email_html_text = get_otp_html(request.POST['displayName'],request.session['OTP'])#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
         send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)            
-        return HttpResponse('Test OTP: '+request.session['OTP'],status=200)
+        return HttpResponse('One Time Code has been resent',content_type="text/plain",status=200)
 
 def testemail(request):
     response_text = ""
     if request.method == 'POST':
-        #print(request.POST['url'])
-        #print(request.POST['postheader'])
-        print(request.POST['postbody'])
-        #url = request.POST['url']
+        print(request.POST['postbody'])        
         payload = json.loads(request.POST['postbody'])
         print("Body Loaded")
-        #headers = json.loads(request.POST['postheader'])
-        #print("Header Loaded")
         #Send Email
         response_text=send_email(message=payload, debug_flag=True)
         if (response_text==""):

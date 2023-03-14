@@ -1,0 +1,10 @@
+{
+  "DEV": [
+    "NAT_AZURE_BPG_ILE_USR_DEV",
+    "NAT_AZURE_CLEAR_ILE_USR_DEV"
+  ],
+  "SIT": [
+    "NAT_AZURE_BPG_ILE_USR_SIT",
+    "NAT_AZURE_CLEAR_ILE_USR_SIT"
+  ]
+}

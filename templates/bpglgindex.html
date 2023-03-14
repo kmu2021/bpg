@@ -31,7 +31,7 @@
   <script src="{% static 'scripts/bootstrap.min.js' %}"></script>
 
   <!-- USPS Custom JS -->
-  <script src="{% static 'scripts/bpglg.js' %}"></script>
+  <script src="{% static 'scripts/bpglg1.js' %}"></script>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
 																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/html5shiv.min.js"></script>
@@ -82,7 +82,7 @@
             <div class="row">
               <div class="col-xs-12 col-sm-9 col-md-5">
                 <div class="btn-wrap">
-                  <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='https://portal.azure.com';" id="btn-submit" tabindex="14">Sign
+                  <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='https://usps-bpg-test.azurewebsites.net';" id="btn-submit" tabindex="14">Sign
                     In</button>
                 </div>
               </div>
@@ -166,14 +166,14 @@
                 <div class="row grid-row-margin-24">
                   <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="form-group" id="form-group-twoFactorCode">
-                      <div class="input-container col-md-6">
+                      <div class="input-container col-xs-6 col-sm-6 col-md-6">
                         <input type="text" name="twoFactorCode" maxlength="6" value="" tabindex="26" id="twoFactorCode"
                           class="form-control two-factor-input" inputmode="numeric" autocomplete="off"
                           placeholder="Verification Code" required>
                       </div>
-                      <div class="input-container col-md-6">    
+                      <div class="input-container col-xs-6 col-sm-6 col-md-6">    
                         <button type="button" id="resend-code" onClick="javascript:getOtp();javascript:resendCountDown();" tabindex="27" class="btn btn-link" title="Send a new code now" disabled>
-                          Resend Code<span id="span-count"></span></button>   
+                          Resend Code<span id="span-count" class="small"></span></button>   
                           <script type="text/javascript">
                             resendCountDown();
                          </script>                                        
@@ -191,7 +191,7 @@
               {% endif %}
               {% if response_message.invitation_message is None or  response_message.invitation_message == '' %}
               <div class="btn-wrap">
-                <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit">
+                <button class="btn btn-primary btn-lg" type="submit" value="Submit" id="btnRegisterSubmit" name="btnRegisterSubmit">
                   {% if otp_flag == 'Y'%}
                   Verify
                   {% else %}
@@ -527,9 +527,15 @@
   <!-- 1a8a.usps.gov -->
   <!-- [Build 9.0.62 December 16, 2022] -->
   <div id="blockUI" style="display:none;"></div>
-  {%if otp%}
-  Test OTP:  {{ otp }}
-  {%endif%}
+
+<!-- Scripts to handle submission-->
+<script>
+$('#registerForm').submit( function(event) {
+    // disable to avoid double submission
+    $('#btnRegisterSubmit').attr('disabled', true);
+	$('#btnRegisterSubmit').html('Please Wait');
+});
+  </script>
 
 </body>
 

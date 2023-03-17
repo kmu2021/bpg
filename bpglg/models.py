@@ -28,8 +28,20 @@ class RegistrationForm(forms.Form):
         required=True
     )
 
-    # widget=forms.CheckboxInput(
-    #   attrs={'class': 'form-control form-check-input checkbox-xl', 'required': True, 'aria-label': 'Terms', 'placeholder': "Enter Terms"}))
+
+class UserMgmtSearchForm(forms.Form):
+    lastName = forms.CharField(max_length=200, required=False, label='Last Name', widget=forms.TextInput(
+        attrs={'class': 'form-control search-form', 'aria-label': 'Last Name', 'placeholder': "Search by Last Name"}))
+    firstName = forms.CharField(max_length=200, required=False, label='First Name', widget=forms.TextInput(
+        attrs={'class': 'form-control search-form',  'aria-label': 'First Name', 'placeholder': "Search by First Name"}))
+    workEmail = forms.EmailField(max_length=400, required=False, label='Email', widget=forms.EmailInput(
+        attrs={'class': 'form-control search-form', 'aria-label': 'Email', 'placeholder': "Search by Email"}))
+    company = forms.CharField(max_length=200, required=False, label='Company', widget=forms.TextInput(
+        attrs={'class': 'form-control search-form', 'aria-label': 'Company', 'placeholder': "Search by Company"}))
+    scac = forms.CharField(max_length=200, required=False, label='SCAC', widget=forms.TextInput(
+        attrs={'class': 'form-control search-form', 'aria-label': 'SCAC', 'placeholder': "Search by SCAC"}))
+    duns = forms.CharField(max_length=200, required=False, label='DUNS', widget=forms.TextInput(
+        attrs={'class': 'form-control search-form',  'aria-label': 'DUNS', 'placeholder': "Search by DUNS"}))
 
 
 class UserDetails:
@@ -39,9 +51,12 @@ class UserDetails:
     lastName: str
     workEmail: str
     company: str
+    scac: str
+    duns: str
     invitationStatus: str
     supplierId: str
     responseText: str
+
 
 class EmailDetail:
     email: str

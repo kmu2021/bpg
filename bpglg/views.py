@@ -13,13 +13,8 @@ from .uspsOtp import *
 from .uspsMail import *
 
 from .search import search_users
-from .models import RegistrationForm, UserDetails, EmailDetail
+from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
 from .graph import does_user_exists, send_invitation_to_user
-
-
-# Global Variables
-OTP_COUNTER = 0
-
 
 # Logout Function
 
@@ -173,4 +168,37 @@ def testemail(request):
     return render(request, 'testemail.html',{'response_text':response_text})
 
         
-    
+def usermgmt(request):
+    # if this is a GET request present a Blank Form
+    if request.method == 'GET':
+        form = UserMgmtSearchForm()        
+        return render(request, 'bpglgusermgmt.html',{'form': form})
+    # if this is a POST request we need to process the form data
+    elif request.method == 'POST':
+        print(request.POST)
+        print("POST Printed")
+        form = UserMgmtSearchForm(data=request.POST)
+        print("Checking form Valid")
+        # check whether it's valid:
+        if form.is_valid():
+            print("Form Valid")
+            # process the data in form.cleaned_data as required
+            user_details = UserDetails()
+            user_details.firstName = form.cleaned_data['firstName'].strip()
+            user_details.lastName = form.cleaned_data['lastName'].strip()
+            user_details.workEmail = form.cleaned_data['workEmail'].strip()
+            user_details.company = form.cleaned_data['company'].strip()
+            user_details.scac = form.cleaned_data['scac'].strip()
+            user_details.duns = form.cleaned_data['duns'].strip()
+            user_details.invitationStatus = ""#form.cleaned_data['duns'].strip()
+            user_details.responseText=""
+            user_details.user_id = ""
+
+            users_list = search_users(
+            user_details)
+        print("CONTEXT****")
+        # print(context['users_list'][0].uid)
+
+        return render(request, "bpglgusermgmt.html", {'form': form,"users_list": users_list})
+
+    return render(request, 'bpglgusermgmt.html',{'form': form})

@@ -14,10 +14,8 @@ import requests
 # Process Form data
 
 
-def search_users(email,display_name,company_name,invitation_status):
+def search_users(UserDetails):
 
-    BPG_GRP_NAME="NAT_AZURE_BPG_ILE_USR_DEV"#will be read from Env later
-    bpg_grp_id = ""
     response_body = []
     access_token = ""
     invitation_count = 0
@@ -27,30 +25,28 @@ def search_users(email,display_name,company_name,invitation_status):
             settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
         print(access_token)
 
-    if bpg_grp_id == "":
-        bpg_grp_id = get_bpg_group_id (BPG_GRP_NAME,access_token)
-        print('bpg_grp_id: '+bpg_grp_id)
         #return response_body
-    users_list = list_users (email,display_name,company_name,invitation_status,access_token)    
+    users_list = list_users (email = UserDetails.workEmail,firstName=UserDetails.firstName,lastName=UserDetails.lastName,company=UserDetails.company, scac=UserDetails.scac, duns=UserDetails.duns,invitationStatus=UserDetails.invitationStatus,access_token=access_token)    
     return users_list
 
 
-def list_users(email,display_name,company_name,invitation_status,access_token):
+def list_users(email,firstName,lastName,company, scac,duns,invitationStatus,access_token):
     users_list = []
     url = 'https://graph.microsoft.com/v1.0/users'
-    select='id,surname,givenName,companyName,mail,externalUserState,extension_9026d427583e4950bf6071088d21aefd_ILERPT_Session_UserID,extension_fe10b6b46b9f4cb68747ccf08f83782a_ILE_Alternate_UserID_1'
+    select='id,surname,givenName,displayName,companyName,mail,externalUserState'
     filter = "userType eq 'Guest'"
-    print("display_name"+display_name)
-    print("email"+email)
 
-    if display_name != "":
-        filter+=" and startswith(displayName,'"+display_name+"')"
+
+    if firstName != "":
+        filter+=" and startswith(displayName,'"+firstName+"')"
+    if lastName != "":
+        filter+=" and contains(displayName,'"+lastName+"')"
     if email !="":
         filter+=" and startswith(mail,'"+email+"')"
-    if company_name != "":
-        filter+=" and startswith(companyName,'"+company_name+"')"
-    if invitation_status != "":
-        filter+=" and externalUserState eq '"+invitation_status+"'"  
+    if company != "":
+        filter+=" and startswith(companyName,'"+company+"')"
+    if invitationStatus != "":
+        filter+=" and externalUserState eq '"+invitationStatus+"'"  
 
     req_params = {'$select': select, '$filter': filter, '$count': 'true'}
     print(req_params)
@@ -72,12 +68,18 @@ def list_users(email,display_name,company_name,invitation_status,access_token):
             
                     print(user['id'])
                     user_details = UserDetails()    
-                    user_details.uid = user['id']
+                    user_details.user_id = user['id']
                     user_details.firstName = user['givenName']
+                    if user_details.firstName == None:
+                        user_details.firstName = user['displayName'].split()[0:][0]
                     user_details.lastName = user['surname']
-                    user_details.email = user['mail']
+                    if user_details.lastName == None:
+                        user_details.lastName = user['displayName'].split()[-1:][0]
+                    user_details.workEmail = user['mail']
                     user_details.company = user['companyName']
                     user_details.invitationStatus = user['externalUserState']
+                    user_details.scac = "ABCD"
+                    user_details.duns = "12345678"
                    # user_details.supplierId = user['supplierId']
                     users_list.append(user_details)
             except Exception as e:

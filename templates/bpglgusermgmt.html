@@ -108,25 +108,26 @@
 
     </form>
   </div>
+  {% if users_list %}
   <div class="container" role="main" id="table-search">
     <div id="row-main-table" class="row">
       <table class="table table-sm table-striped table-bordered table-hover" id="tblUsers">
         <thead class="thead-dark">
           <tr class="table-primary">
-            <th scope="col" class="text-center">ACTION</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Company</th>
-            <th scope="col">SCAC</th>
-            <th scope="col">DUNS</th>
+            <th scope="col" class="text-center warning"></th>
+            <th scope="col" class="warning">Last Name</th>
+            <th scope="col" class="warning">First Name</th>
+            <th scope="col" class="warning">Email</th>
+            <th scope="col" class="warning">Company</th>
+            <th scope="col" class="warning">SCAC</th>
+            <th scope="col" class="warning">DUNS</th>
           </tr>
         </thead>
         <tbody>
 
           {% for user in users_list %}
           <tr>
-            <th scope="row"><button type="button" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i>Edit User Access</button></th>
+            <th scope="row"><button type="button" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Edit User Access</button></th>
             <td> {{ user.lastName }}</td>
             <td> {{ user.firstName }}</td>
             <td> {{ user.workEmail }}</td>
@@ -139,7 +140,7 @@
       </table>
     </div>
   </div>
-
+{% endif %}
 
   <footer class="footer">
     <div class="container small">

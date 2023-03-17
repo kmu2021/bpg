@@ -40,7 +40,7 @@ def list_users(email,firstName,lastName,company, scac,duns,invitationStatus,acce
     if firstName != "":
         filter+=" and startswith(displayName,'"+firstName+"')"
     if lastName != "":
-        filter+=" and contains(displayName,'"+lastName+"')"
+        filter+=" and startswith(surname,'"+lastName+"')"
     if email !="":
         filter+=" and startswith(mail,'"+email+"')"
     if company != "":

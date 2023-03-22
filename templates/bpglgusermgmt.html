@@ -101,6 +101,9 @@
                   src="{% static 'images/ajax-loader-t.gif' %}" alt="loading...">
               </div>
             </div>
+            <div class="row">
+              <span class="error-txt" id="formSearchErr"></span>
+            </div>
           </div>
         </div>
 
@@ -114,13 +117,13 @@
       <table class="table table-sm table-striped table-bordered table-hover" id="tblUsers">
         <thead class="thead-dark">
           <tr class="table-primary">
-            <th scope="col" class="text-center warning"></th>
-            <th scope="col" class="warning">Last Name</th>
-            <th scope="col" class="warning">First Name</th>
-            <th scope="col" class="warning">Email</th>
-            <th scope="col" class="warning">Company</th>
-            <th scope="col" class="warning">SCAC</th>
-            <th scope="col" class="warning">DUNS</th>
+            <th scope="col" class="text-center active"></th>
+            <th scope="col" class="active">Last Name</th>
+            <th scope="col" class="active">First Name</th>
+            <th scope="col" class="active">Email</th>
+            <th scope="col" class="active">Company</th>
+            <th scope="col" class="active">SCAC</th>
+            <th scope="col" class="active">DUNS</th>
           </tr>
         </thead>
         <tbody>
@@ -260,11 +263,19 @@
 
   <!-- Scripts to handle submission-->
   <script>
-    $('#searchUserForm').submit(function (event) {
-      // disable to avoid double submission
-      $('#btnSearchSubmit').attr('disabled', true);
-      $('#btnSearchSubmit').html('Please Wait');
-    });
+   $('#searchUserForm').submit(function(event) {
+    if ($('[name="lastName"]').val().length == 0 && $('[name="firstName"]').val().length == 0 && $('[name="workEmail"]').val().length == 0 && $('[name="company"]').val().length == 0) {
+        $('#formSearchErr').html("Please provide at least one of the value to search");
+        return false;
+    } else { // disable to avoid double submission
+        $('#login-ajax-loading-1').removeClass('hidden');
+        $('#btnSearchSubmit').attr('disabled', true);
+        $('#btnSearchSubmit').html('Please Wait');
+        $('#formSearchErr').text("")
+        
+        
+    }
+});
   </script>
 
 </body>

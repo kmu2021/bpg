@@ -204,3 +204,13 @@ def usermgmt(request):
         return render(request, "bpglgusermgmt.html", {'form': form,"users_list": users_list})
 
     return render(request, 'bpglgusermgmt.html',{'form': form})
+
+def resendinvite(request):    
+    if request.method == 'POST':
+        user_details = UserDetails()
+        user_details.firstName = request.POST['firstName']
+        user_details.lastName = request.POST['lastName']
+        user_details.workEmail = request.POST['workEmail']
+        user_details=send_invitation_to_user (user_details)
+        response_message = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."   
+        return HttpResponse(response_message,content_type="text/plain",status=200)    

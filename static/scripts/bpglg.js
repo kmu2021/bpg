@@ -84,3 +84,38 @@ function resendCountDown() {// Get refreence to span and button
         }
     }());
 }
+
+function resendInvitation(firstname,lastname,workEmail, btnId) {   
+    $('#'+btnId).attr('disabled', true);
+    $('#'+btnId).html('Resending');
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.post("/resendinvitation",
+        {
+
+            "csrfmiddlewaretoken": csrftoken,
+            "workEmail": workEmail,
+            "firstName": firstname,
+            "lastName": lastname
+        })
+        .done(function (data, status) {            
+            if (status == "success") {
+                $("#resendInvitationModalBody").html(data);                                
+                $('#resendInvitationModal').modal('show');      
+                $('#'+btnId).attr('disabled', false);
+                $('#'+btnId).html('Resend Invitation');      
+            }
+            else {
+                $("#resendInvitationModalBody").html(data);                                
+                $('#resendInvitationModal').modal('show'); 
+                $('#'+btnId).attr('disabled', false);
+                $('#'+btnId).html('Resend Invitation'); 
+            }
+        })
+        .fail(function(data,status){            
+            console.log( data);
+            $('#'+btnId).attr('disabled', false);
+            $('#'+btnId).html('Resend Invitation'); 
+        });
+    
+}

@@ -23,7 +23,7 @@ def search_users(UserDetails):
     if access_token == "":
         access_token = get_access_token(str(settings.AZURE_TENANT_ID), str(
             settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-        print(access_token)
+       # print(access_token)
 
         #return response_body
     users_list = list_users (email = UserDetails.workEmail,firstName=UserDetails.firstName,lastName=UserDetails.lastName,company=UserDetails.company, scac=UserDetails.scac, duns=UserDetails.duns,invitationStatus=UserDetails.invitationStatus,access_token=access_token)    
@@ -45,8 +45,8 @@ def list_users(email,firstName,lastName,company, scac,duns,invitationStatus,acce
         filter+=" and startswith(mail,'"+email+"')"
     if company != "":
         filter+=" and startswith(companyName,'"+company+"')"
-    if invitationStatus != "":
-        filter+=" and externalUserState eq '"+invitationStatus+"'"  
+    if invitationStatus:
+        filter+=" and externalUserState eq '"+"PendingAcceptance"+"'"  
 
     req_params = {'$select': select, '$filter': filter, '$count': 'true'}
     print(req_params)

@@ -42,6 +42,12 @@ class UserMgmtSearchForm(forms.Form):
         attrs={'class': 'form-control search-form', 'aria-label': 'SCAC', 'placeholder': "Search by SCAC"}))
     duns = forms.CharField(max_length=200, required=False, label='DUNS', widget=forms.TextInput(
         attrs={'class': 'form-control search-form',  'aria-label': 'DUNS', 'placeholder': "Search by DUNS"}))
+    
+    pendingInvitationFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Pending Invitation'}),
+        required=False,label='Pending Invitation'
+    )
 
 
 class UserDetails:

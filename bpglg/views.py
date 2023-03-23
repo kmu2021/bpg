@@ -182,6 +182,7 @@ def usermgmt(request):
         # check whether it's valid:
         if form.is_valid():
             print("Form Valid")
+            print(form)
             # process the data in form.cleaned_data as required
             user_details = UserDetails()
             user_details.firstName = form.cleaned_data['firstName'].strip()
@@ -190,7 +191,8 @@ def usermgmt(request):
             user_details.company = form.cleaned_data['company'].strip()
             user_details.scac = form.cleaned_data['scac'].strip()
             user_details.duns = form.cleaned_data['duns'].strip()
-            user_details.invitationStatus = ""#form.cleaned_data['duns'].strip()
+            user_details.invitationStatus = form.cleaned_data['pendingInvitationFlag']
+            print(user_details.invitationStatus)
             user_details.responseText=""
             user_details.user_id = ""
 

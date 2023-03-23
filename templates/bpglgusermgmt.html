@@ -70,9 +70,19 @@
           <div class="row">
 
             {% for field in form %}
-            {% if field.name != 'tncFlag' %}
+            {% if field.name == 'pendingInvitationFlag' %}
+            <div class="form-group col-xs-12 col-sm-9 col-md-2"
+            id="form-group-{{ field.id_for_label}}">
+            <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="switch">
+              {{ field }}
+              <span class="slider round"></span> 
+            </label><label>{{ field.label }} </label>
+            <span class="error-txt" id="error-{{ field.id_for_label}}"></span>
+            <span class="sr-only" id="sr-only-error-{{ field.id_for_label}}"></span>
+          </div>
+            {% else %}
 
-            <div class="form-group {{display_main_form}} col-xs-12 col-sm-9 col-md-2"
+            <div class="form-group col-xs-12 col-sm-9 col-md-2"
               id="form-group-{{ field.id_for_label}}">
               <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
                 <span>&nbsp; </span> {{ field.label }} </label>
@@ -83,6 +93,7 @@
             {% endif %}
 
             {% endfor %}
+          </div>
             <div class="row">
               <div class="col-xs-12 col-sm-9 col-md-3">
                 <div class="btn-wrap">
@@ -104,7 +115,7 @@
             <div class="row">
               <span class="error-txt" id="formSearchErr"></span>
             </div>
-          </div>
+<!--          </div> -->
         </div>
 
       </div>
@@ -130,8 +141,14 @@
 
           {% for user in users_list %}
           <tr>
-            <th scope="row"><button type="button" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i>Edit User Access</button></th>
-            <td> {{ user.lastName }}</td>
+            <th scope="row">
+            {% if user.invitationStatus == "PendingAcceptance" %}
+            <button type="button" class="btn btn-warning"><i class="fa-solid fa-rotate-right"></i> Resend Invitation</button>
+            {% else %}
+              <button type="button" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i> Edit User Access</button>
+            {% endif %}
+            </th>
+            <td> {{ user.lastName}}</td>
             <td> {{ user.firstName }}</td>
             <td> {{ user.workEmail }}</td>
             <td> {{ user.company }}</td>

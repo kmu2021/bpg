@@ -34,7 +34,7 @@ class UserMgmtSearchForm(forms.Form):
         attrs={'class': 'form-control search-form', 'aria-label': 'Last Name', 'placeholder': "Search by Last Name"}))
     firstName = forms.CharField(max_length=200, required=False, label='First Name', widget=forms.TextInput(
         attrs={'class': 'form-control search-form',  'aria-label': 'First Name', 'placeholder': "Search by First Name"}))
-    workEmail = forms.EmailField(max_length=400, required=False, label='Email', widget=forms.EmailInput(
+    workEmail = forms.CharField(max_length=400, required=False, label='Email', widget=forms.TextInput(
         attrs={'class': 'form-control search-form', 'aria-label': 'Email', 'placeholder': "Search by Email"}))
     company = forms.CharField(max_length=200, required=False, label='Company', widget=forms.TextInput(
         attrs={'class': 'form-control search-form', 'aria-label': 'Company', 'placeholder': "Search by Company"}))

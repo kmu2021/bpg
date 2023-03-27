@@ -12,6 +12,8 @@ import requests
 
 # Process Form data
 
+G_ACCESS_TOKEN = "" #Global variable for access token
+
 
 def processForm(users, redirectUrl):
 
@@ -73,6 +75,7 @@ def processForm(users, redirectUrl):
 
 
 def get_access_token(tenant_id, client_id, client_secret):
+    global G_ACCESS_TOKEN
     scope = 'https://graph.microsoft.com/.default'
     grant_type = 'client_credentials'
     token_url = 'https://login.microsoftonline.com/'+tenant_id+'/oauth2/v2.0/token'
@@ -95,6 +98,7 @@ def get_access_token(tenant_id, client_id, client_secret):
     else:
         if "access_token" in access_token_json:
             access_token = access_token_json["access_token"]
+            G_ACCESS_TOKEN = access_token
 
     return access_token
 
@@ -164,7 +168,10 @@ def invite_user(email, display_name, redirect_url, access_token):
 
 
 def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token):
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN if access_token is None else access_token
     print('update_user_details user_id:'+user_id)
+    print("access_token"+access_token)
     url = 'https://graph.microsoft.com/v1.0/users/'+user_id
 
     req_body = {
@@ -193,7 +200,8 @@ def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, 
         return 'Error in Updating User'
     else:
         print('User Update Pass')
-        add_to_group(user_id, bpg_grp_id, access_token)
+        if bpg_grp_id != "":
+            add_to_group(user_id, bpg_grp_id, access_token)
     return 'User Attributes Updated'
 
 def get_bpg_group_id (BPG_GRP_NAME,access_token):

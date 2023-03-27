@@ -26,7 +26,9 @@ def search_users(UserDetails):
        # print(access_token)
 
         #return response_body
+    print ("inside 1")
     users_list = list_users (email = UserDetails.workEmail,firstName=UserDetails.firstName,lastName=UserDetails.lastName,company=UserDetails.company, scac=UserDetails.scac, duns=UserDetails.duns,invitationStatus=UserDetails.invitationStatus,access_token=access_token)    
+    print ("inside 1.1")
     return users_list
 
 

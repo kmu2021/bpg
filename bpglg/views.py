@@ -14,7 +14,7 @@ from .uspsMail import *
 
 from .search import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
-from .graph import does_user_exists, send_invitation_to_user
+from .graph import does_user_exists, send_invitation_to_user,update_user_details
 
 # Logout Function
 
@@ -119,6 +119,9 @@ def init(request):
                         otp_validated_flag = 'Y'
                         user_details=send_invitation_to_user (user_details)
                         response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
+                        if user_details.user_id != "":
+                           user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
+                           print(user_details_update_response)                        
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
                         del request.session['OTP_EXPIRES_AT']
@@ -196,8 +199,7 @@ def usermgmt(request):
             user_details.responseText=""
             user_details.user_id = ""
 
-            users_list = search_users(
-            user_details)
+            users_list = search_users(user_details)
         print("CONTEXT****")
         # print(context['users_list'][0].uid)
 

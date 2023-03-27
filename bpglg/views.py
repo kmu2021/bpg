@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
+# import the logging library
+import logging
+
 
 from pathlib import Path
 import json
@@ -15,6 +18,9 @@ from .uspsMail import *
 from .search import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
 from .graph import does_user_exists, send_invitation_to_user,update_user_details
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 # Logout Function
 
@@ -52,6 +58,8 @@ def search(request):
 
 
 def init(request):
+    logger.info('Homepage was accessed at')
+    #logger.info(__name__)
     
     response_message = {"validation_error":"",
                         "invitation_message":""}
@@ -124,8 +132,7 @@ def init(request):
                            print(user_details_update_response)                        
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
-                        del request.session['OTP_EXPIRES_AT']
-                        #return render(request, 'bpglgindex.html', {'form': form,  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                        del request.session['OTP_EXPIRES_AT']                        
                         request.session['PROCESSING_STATUS'] = 'COMPLETE'
                         return render(request, 'bpglgindex.html', {  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
                     else:

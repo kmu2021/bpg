@@ -150,3 +150,37 @@ AZURE_EMAIL_ACCESS_KEY = os.environ.get('AZURE_EMAIL_ACCESS_KEY');
 
 #Set Azure Email Endpoint
 AZURE_EMAIL_ENDPOINT = os.environ.get('AZURE_EMAIL_ENDPOINT');
+
+#Configure Logging
+LOGGING = {
+    'version': 1,
+    # The version number of our log
+    'disable_existing_loggers': False,
+   'formatters': {
+        'verbose': {
+            'format': 'APPLOG: {levelname} {asctime} {module}.{funcName} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    # django uses some of its own loggers for internal operations. In case you want to disable them just replace the False above with true.
+    # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+    },
+    # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
+    'loggers': {
+       # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+        '': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+    },
+}

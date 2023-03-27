@@ -10,12 +10,16 @@ import os
 import random
 
 import requests
-
+# import the logging library
+import logging
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 # Process Form data
 
 
 def search_users(UserDetails):
-
+    logger.info('Searching User')
+    logger.warning('Searching User - Warning Log Level')
     response_body = []
     access_token = ""
     invitation_count = 0
@@ -25,10 +29,8 @@ def search_users(UserDetails):
             settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
        # print(access_token)
 
-        #return response_body
-    print ("inside 1")
+        #return response_body    
     users_list = list_users (email = UserDetails.workEmail,firstName=UserDetails.firstName,lastName=UserDetails.lastName,company=UserDetails.company, scac=UserDetails.scac, duns=UserDetails.duns,invitationStatus=UserDetails.invitationStatus,access_token=access_token)    
-    print ("inside 1.1")
     return users_list
 
 

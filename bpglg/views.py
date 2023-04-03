@@ -3,8 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.conf import settings
-# import the logging library
-import logging
+
 
 
 from pathlib import Path
@@ -18,9 +17,10 @@ from .uspsMail import *
 from .search import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
 from .graph import does_user_exists, send_invitation_to_user,update_user_details
+from .clsgraph import fetch_supplier_wrapper
 
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
+#Import Custom Logger Module
+from .uspslogger import printlog,setlogenv
 
 # Logout Function
 
@@ -30,36 +30,16 @@ def logout(request):
     print("Logout Initiated")
     return HttpResponseRedirect("/.auth/logout")
 
-# Search Function
-
-
-def search(request):
-    # Redirect to the Search Page
-    print("Redirecting to Search Page")
-    context = {}
-    users_list = []
-    if request.method == 'POST':
-        # displayName = request.
-        display_name = request.POST['srchDisplayName']
-        email = request.POST['srchEmail']
-        company_name = request.POST['srchCompanyName']
-        invitation_status = request.POST.get('srchInvitationStatus', '')
-        #user_details = UserDetails()
-        users_list = search_users(
-            email, display_name, company_name, invitation_status)
-        print("CONTEXT****")
-        # print(context['users_list'][0].uid)
-
-        return render(request, "bpgrgsearch.html", {"users_list": users_list})
-    else:
-        return render(request, "bpgrgsearch.html", context)
-
 # Main Init Function
 
 
 def init(request):
-    logger.info('Homepage was accessed at')
-    #logger.info(__name__)
+    #OPTIONAL: Set the custom Log Environment before first use. Make sure request is passed.
+    setlogenv(request)
+    #Call Log Function to print Log
+    printlog('Logger has been activated')
+    #optionally call logger with log level
+    printlog('Logger has been activated in WARNING mode','WARNING')
     
     response_message = {"validation_error":"",
                         "invitation_message":""}
@@ -125,16 +105,24 @@ def init(request):
 
                     if (validate_otp_result==""):
                         otp_validated_flag = 'Y'
+                        '''supplier_result = fetch_supplier_wrapper(user_details)
+                        if (supplier_result['clsj1Id'] == ""):                            
+                            del request.session['OTP_COUNTER']
+                            del request.session['OTP']
+                            del request.session['OTP_EXPIRES_AT']
+                            response_message['validation_error']=supplier_result['statusMessage']
+                            return render(request, 'bpglgindex.html', {'form': form, "response_message":response_message})                        
+                        else:'''
                         user_details=send_invitation_to_user (user_details)
                         response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
                         if user_details.user_id != "":
-                           user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
-                           print(user_details_update_response)                        
+                            user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
+                            print(user_details_update_response)                        
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
                         del request.session['OTP_EXPIRES_AT']                        
                         request.session['PROCESSING_STATUS'] = 'COMPLETE'
-                        return render(request, 'bpglgindex.html', {  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})
+                        return render(request, 'bpglgindex.html', {  'display_main_form': 'hidden', 'otp_flag': 'N',"response_message":response_message})                    
                     else:
                         response_message = {"error_twoFactorCode":validate_otp_result}
             else:

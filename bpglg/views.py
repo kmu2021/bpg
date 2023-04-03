@@ -14,7 +14,7 @@ from django.shortcuts import render
 from .uspsOtp import *
 from .uspsMail import *
 
-from .search import search_users
+from .uspsSearch import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
 from .graph import does_user_exists, send_invitation_to_user,update_user_details
 from .clsgraph import fetch_supplier_wrapper
@@ -173,14 +173,12 @@ def usermgmt(request):
         return render(request, 'bpglgusermgmt.html',{'form': form})
     # if this is a POST request we need to process the form data
     elif request.method == 'POST':
-        print(request.POST)
-        print("POST Printed")
+        print(request.POST)        
         form = UserMgmtSearchForm(data=request.POST)
-        print("Checking form Valid")
         # check whether it's valid:
         if form.is_valid():
             print("Form Valid")
-            print(form)
+            
             # process the data in form.cleaned_data as required
             user_details = UserDetails()
             user_details.firstName = form.cleaned_data['firstName'].strip()
@@ -189,16 +187,25 @@ def usermgmt(request):
             user_details.company = form.cleaned_data['company'].strip()
             user_details.scac = form.cleaned_data['scac'].strip()
             user_details.duns = form.cleaned_data['duns'].strip()
-            user_details.invitationStatus = form.cleaned_data['pendingInvitationFlag']
-            print(user_details.invitationStatus)
+            user_details.invitationStatus = form.cleaned_data['pendingInvitationFlag']            
             user_details.responseText=""
             user_details.user_id = ""
-
-            users_list = search_users(user_details)
-        print("CONTEXT****")
-        # print(context['users_list'][0].uid)
-
-        return render(request, "bpglgusermgmt.html", {'form': form,"users_list": users_list})
+            if (request.POST.get('registerUserToggle','NO')=="YES"):
+                printlog("Registering User")
+                user_details=does_user_exists (user_details)            
+                if (user_details.responseText!=""):
+                    registerUserMessage=user_details.responseText
+                else:
+                    user_details=send_invitation_to_user (user_details)
+                    registerUserMessage = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
+                    if user_details.user_id != "":
+                        user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
+                
+                return render(request, "bpglgusermgmt.html", {'form': form, 'registerUserMessage':registerUserMessage})                
+            else:
+                users_list = search_users(user_details)
+                return render(request, "bpglgusermgmt.html", {'form': form,"users_list": users_list})
+                
 
     return render(request, 'bpglgusermgmt.html',{'form': form})
 

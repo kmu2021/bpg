@@ -103,8 +103,9 @@
               </div>
               <div class="col-xs-12 col-sm-9 col-md-3">
                 <div class="btn-wrap">
-                  <button type="button" class="btn btn-secondary btn-sm" id="btnRegisterUsersubmit"
-                    tabindex="15">Register User</button>
+                  <input type="hidden" name="registerUserToggle" id="registerUserToggle" value="NO">
+                  <button type="submit" class="btn btn-secondary btn-sm" id="btnRegisterUsersubmit"
+                    tabindex="15" onclick="javascript:document.getElementById('registerUserToggle').value='YES';">Register User</button>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-3 col-md-7">
@@ -161,6 +162,7 @@
     </div>
   </div>
 {% endif %}
+
 
   <footer class="footer">
     <div class="container small">
@@ -303,9 +305,37 @@ aria-labelledby="resendInvitationModalLabel" aria-hidden="true">
 </div>
 <!-- END Modal Resend Invitation -->
 
+<!-- Modal Register User -->
+<div class="modal fade" id="registerUserModal" tabindex="-1" role="dialog"
+aria-labelledby="registerUserModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"
+        aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="registerUserModalLabel">Register New User
+      </h4>
+    </div>
+
+    <div class="modal-body" id="registerUserModalBody">
+      {{ registerUserMessage }}      
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary"
+        data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+<!-- END Modal Register User -->
+
   <!-- Scripts to handle submission-->
   <script>
    $('#searchUserForm').submit(function(event) {
+    console.log($('[name="registerUserToggle"]').val());
+    if ($('[name="registerUserToggle"]') == "NO"){
     if ($('[name="lastName"]').val().length == 0 && $('[name="firstName"]').val().length == 0 && $('[name="workEmail"]').val().length == 0 && $('[name="company"]').val().length == 0) {
         $('#formSearchErr').html("Please provide at least one of the value to search");
         return false;
@@ -313,12 +343,37 @@ aria-labelledby="resendInvitationModalLabel" aria-hidden="true">
         $('#login-ajax-loading-1').removeClass('hidden');
         $('#btnSearchSubmit').attr('disabled', true);
         $('#btnSearchSubmit').html('Please Wait');
+        $('#formSearchErr').text("")               
+    }
+  }
+  else
+  {
+    if ($('[name="lastName"]').val().length == 0 ||
+     $('[name="firstName"]').val().length == 0 ||
+      $('[name="workEmail"]').val().length == 0 ||
+     $('[name="company"]').val().length == 0 ||
+     $('[name="scac"]').val().length == 0 ||
+     $('[name="duns"]').val().length == 0) {
+        $('#formSearchErr').html("Please fill all the fields to create a new User ");
+        return false;
+    } else { // disable to avoid double submission
+        $('#login-ajax-loading-1').removeClass('hidden');
+        $('#btnRegisterUsersubmit').attr('disabled', true);
+        $('#btnRegisterUsersubmit').html('Please Wait');
         $('#formSearchErr').text("")
         
         
     }
+  }
 });
   </script>
+
+<!-- Display the Register User Modal only if Register User has been called and responded with a message -->
+{% if registerUserMessage %}
+    <script>
+    $('#registerUserModal').modal('show'); 
+    </script>
+{% endif %}
 
 </body>
 

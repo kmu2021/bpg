@@ -154,6 +154,9 @@ AZURE_EMAIL_ACCESS_KEY = os.environ.get('AZURE_EMAIL_ACCESS_KEY');
 #Set Azure Email Endpoint
 AZURE_EMAIL_ENDPOINT = os.environ.get('AZURE_EMAIL_ENDPOINT');
 
+#Website Host Name
+WEBSITE_URL = os.environ.get('WEBSITE_URL','https://bpg-dev-rg.azurewebsites.net/')
+
 # CLS API Call related variables
 CLS_HOST_NAME = os.environ.get('CLS_HOST_NAME')
 CLS_API_KEY = os.environ.get('CLS_API_KEY')

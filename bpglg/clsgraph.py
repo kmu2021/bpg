@@ -1,10 +1,10 @@
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+'''from django.views.decorators.csrf import csrf_exempt
 import json
 from time import sleep
 import os
-import random
+import random'''
 from .models import UserDetails
 
 import requests
@@ -26,7 +26,7 @@ def fetch_supplier(scac_duns, search_by):
 
     clsHostanme = settings.CLS_HOST_NAME
     ClsApikey = settings.CLS_API_KEY
-    ClsVerify = settings.CLS_VERIFY
+    ClsVerify = eval(settings.CLS_VERIFY)
 
     url = 'https://{}{}{}'.format(clsHostanme, url_p2, scac_duns)
     req_header = {"X-Api-Key": ClsApikey}
@@ -102,7 +102,7 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
     try:
         clsHostanme = settings.CLS_HOST_NAME
         ClsApikey = settings.CLS_API_KEY
-        ClsVerify = settings.CLS_VERIFY
+        ClsVerify = eval(settings.CLS_VERIFY)
 
         url_p2 = '/cls/supplier'
         url = 'https://{}{}'.format(clsHostanme, url_p2)
@@ -190,7 +190,7 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
     try:
         clsHostanme = settings.CLS_HOST_NAME
         ClsApikey = settings.CLS_API_KEY
-        ClsVerify = settings.CLS_VERIFY
+        ClsVerify = eval(settings.CLS_VERIFY)
 
         url_p2 = '/cls/supplier/user'
         url = 'https://{}{}'.format(clsHostanme, url_p2)

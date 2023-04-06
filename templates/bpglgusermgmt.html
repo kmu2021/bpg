@@ -116,7 +116,7 @@
             <div class="row">
               <span class="error-txt" id="formSearchErr"></span>
             </div>
-<!--          </div> -->
+
         </div>
 
       </div>
@@ -331,11 +331,31 @@ aria-labelledby="registerUserModalLabel" aria-hidden="true">
 </div>
 <!-- END Modal Register User -->
 
+<!-- Modal Processing -->
+<div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">Processing</h4>
+          </div>
+          <div class="modal-body">
+              <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%; height: 40px">
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- END Modal Processing -->
+
+
   <!-- Scripts to handle submission-->
   <script>
    $('#searchUserForm').submit(function(event) {
     console.log($('[name="registerUserToggle"]').val());
-    if ($('[name="registerUserToggle"]') == "NO"){
+    if ($('[name="registerUserToggle"]').val() == "NO"){
     if ($('[name="lastName"]').val().length == 0 && $('[name="firstName"]').val().length == 0 && $('[name="workEmail"]').val().length == 0 && $('[name="company"]').val().length == 0) {
         $('#formSearchErr').html("Please provide at least one of the value to search");
         return false;
@@ -357,7 +377,8 @@ aria-labelledby="registerUserModalLabel" aria-hidden="true">
         $('#formSearchErr').html("Please fill all the fields to create a new User ");
         return false;
     } else { // disable to avoid double submission
-        $('#login-ajax-loading-1').removeClass('hidden');
+        //$('#login-ajax-loading-1').removeClass('hidden');
+        $('#pleaseWaitDialog').modal('show');   
         $('#btnRegisterUsersubmit').attr('disabled', true);
         $('#btnRegisterUsersubmit').html('Please Wait');
         $('#formSearchErr').text("")

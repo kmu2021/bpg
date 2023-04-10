@@ -1,0 +1,24 @@
+{% load static %}
+
+
+<form id="userAccessControlForm" name="userAccessControlForm" action="" method="POST" class="form-group was-validated">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="row" >
+    
+    <div class="col-xs-2 col-sm-2 col-md-2 no-gutters">
+      <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="switch">
+        {{ field }}
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-6" id="form-group-{{ field.id_for_label}}">
+      <label style="padding-top: 15px">{{ field.label }} </label>
+    </div>
+
+  </div>
+  </div>
+
+  {% endfor %}
+
+</form>

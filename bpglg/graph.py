@@ -287,22 +287,17 @@ def add_groups_to_user(user_id,group_id_list):
         print(req_body)
         for ctr in range(5):
             response = requests.post(post_url, data=json.dumps(req_body), headers=req_header)   
-            print('response.status_code='+ str(response.status_code) )
-            print (int(response.status_code) < 200 )
-            print(int(response.status_code) > 229)
-            print(int(response.status_code)!=400)
+
             if (int(response.status_code) == 204):
                 print('Assigning Group Passed')
                 break         
             else:
-                message='Group Addition Failed'
-                print(message)
+                message='Group Addition Failed'                
                 try:
                     print(response.json())
                 except Exception as e:
                     message='Exception while parsing JSON'
                     print(message)
-                sleep(2)                 
-    print('uid='+user_id)      
+                sleep(2)                     
     return 'Groups Assigned'
     

@@ -37,6 +37,46 @@
 																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/html5shiv.min.js"></script>
 																	<script src="/entreg/assets/js/vendor/bootstrap/3.3.5/respond.min.js"></script>
 																	<![endif]-->
+
+<script>
+  function displayUserAccessControl(user_id, firstname,lastname,workEmail, btnId) {   
+    //$('#'+btnId).attr('disabled', true);
+    //$('#'+btnId).html('Resending');
+    
+
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.post("/getuseraccesscontrolform",
+        {
+
+            "csrfmiddlewaretoken": csrftoken,
+            "user_id": user_id,
+            "workEmail": workEmail,
+            "firstName": firstname,
+            "lastName": lastname
+        })
+        .done(function (data, status) {            
+            if (status == "success") {
+                $("#userAccessControlModalLabel").html('User: ' + firstname + ' ' + lastname);
+                $("#userAccessControlModalBody").html(data);                                
+                $('#userAccessControlModal').modal('show');      
+                // $('#'+btnId).attr('disabled', false);
+                // $('#'+btnId).html('Resend Invitation');      
+            }
+            else {
+                $("#userAccessControlModalBody").html(data);                                
+                $('#userAccessControlModal').modal('show'); 
+              //  $('#'+btnId).attr('disabled', false);
+                // $('#'+btnId).html('Resend Invitation'); 
+            }
+        })
+        .fail(function(data,status){            
+            console.log( data);
+            //$('#'+btnId).attr('disabled', false);
+            // $('#'+btnId).html('Resend Invitation'); 
+        });
+    
+}
+                              </script>                                
 </head>
 
 <body>
@@ -146,7 +186,7 @@
             {% if user.invitationStatus == "PendingAcceptance" %}
             <button type="button" class="btn btn-warning" id="resendButton{{ forloop.counter }}" onClick="javascript:resendInvitation('{{ user.firstName }}', '{{ user.lastName}}', '{{ user.workEmail }}', this.id );"><i class="fa-solid fa-rotate-right"></i> Resend Invitation</button>
             {% else %}
-              <button type="button" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i> Edit User Access</button>
+              <button type="button" class="btn btn-info" id="editUserAccessControl{{ forloop.counter }}" onClick="javascript:displayUserAccessControl('{{ user.user_id }}','{{ user.firstName }}', '{{ user.lastName}}', '{{ user.workEmail }}', this.id );"><i class="fa-solid fa-pen-to-square"></i> Edit User Access</button>
             {% endif %}
             </th>
             <td> {{ user.lastName}}</td>
@@ -330,6 +370,33 @@ aria-labelledby="registerUserModalLabel" aria-hidden="true">
 </div>
 </div>
 <!-- END Modal Register User -->
+
+<!-- Modal User Access Control -->
+<div class="modal fade" id="userAccessControlModal" tabindex="-1" role="dialog"
+aria-labelledby="userAccessControlModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-scrollable" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"
+        aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3 class="modal-title" id="userAccessControlModalLabel">
+      </h3>
+      You can set permissions here for this user
+    </div>
+
+    <div class="modal-body" id="userAccessControlModalBody">      
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary"
+        data-dismiss="modal">Save</button>
+    </div>
+  </div>
+</div>
+</div>
+<!-- END User Access Control -->
+
 
 <!-- Modal Processing -->
 <div class="modal" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">

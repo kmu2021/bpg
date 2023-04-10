@@ -49,6 +49,64 @@ class UserMgmtSearchForm(forms.Form):
         required=False,label='Pending Invitation'
     )
 
+class UserAccessControlForm(forms.Form):
+    activeUserFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Active User'}),
+        required=False,label='Active User'
+    )
+    adminFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Admin Flag'}),
+        required=False,label='Admin Flag'
+    )
+    supplierContractsFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Supplier & Contracts'}),
+        required=False,label='Supplier & Contracts'
+    )
+
+    manageMyRatesFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Manage My Rates'}),
+        required=False,label='Manage My Rates'
+    )
+
+    sourcingEventsFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Sourcing Events'}),
+        required=False,label='Sourcing Events'
+    )
+
+    manageMyTripsFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Manage My Trips'}),
+        required=False,label='Manage My Trips'
+    )  
+
+    transReportsFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Trans Reports'}),
+        required=False,label='Trans Reports'
+    )  
+
+    assesorialChargesFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Assesorial Charges'}),
+        required=False,label='Assesorial Charges'
+    )  
+
+    gpsTrackingFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'GPS Tracking'}),
+        required=False,label='GPS Tracking'
+    )     
+
+    electronicMessagingFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input','aria-label': 'Electronic Messaging'}),
+        required=False,label='Electronic Messaging'
+    ) 
 
 class UserDetails:
     uid: int

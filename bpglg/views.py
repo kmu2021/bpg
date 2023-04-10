@@ -15,7 +15,7 @@ from .uspsOtp import *
 from .uspsMail import *
 
 from .uspsSearch import search_users
-from .models import RegistrationForm, UserDetails, UserMgmtSearchForm
+from .models import RegistrationForm, UserDetails, UserMgmtSearchForm, UserAccessControlForm
 from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user
 from .clsgraph import fetch_supplier_wrapper
 
@@ -118,11 +118,8 @@ def init(request):
                         if user_details.user_id != "":
                             user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
                             print(user_details_update_response)
-                            groups_list = get_group_id_list()
-                            print("GROUP LIST IS")
-                            print(groups_list)  
-                            group_assignment_result=add_groups_to_user(user_details.user_id,groups_list)
-                            print(group_assignment_result)                    
+                            groups_list = get_group_id_list()                           
+                            group_assignment_result=add_groups_to_user(user_details.user_id,groups_list)                 
                         del request.session['OTP_COUNTER']
                         del request.session['OTP']
                         del request.session['OTP_EXPIRES_AT']                        
@@ -206,12 +203,7 @@ def usermgmt(request):
                     if user_details.user_id != "":
                         user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
                         groups_list = get_group_id_list()
-                        print("GROUP LIST IS")
-                        print(groups_list)  
-                        group_assignment_result=add_groups_to_user(user_details.user_id,groups_list)
-                        print(group_assignment_result)
-
-                
+                        group_assignment_result=add_groups_to_user(user_details.user_id,groups_list)                                   
                 return render(request, "bpglgusermgmt.html", {'form': form, 'registerUserMessage':registerUserMessage})                
             else:
                 users_list = search_users(user_details)
@@ -229,3 +221,16 @@ def resendinvite(request):
         user_details=send_invitation_to_user (user_details)
         response_message = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."   
         return HttpResponse(response_message,content_type="text/plain",status=200)    
+    
+def get_user_access_control_form(request):
+    print("get_user_access_control_form")
+    form = UserAccessControlForm(initial={'activeUserFlag': True})
+    #form.activeUserFlag=True
+    print(form)
+
+    context = {
+        'form':form
+    }
+    print(context)
+    return render(request, 'useraccesscontrolform.html', context)
+

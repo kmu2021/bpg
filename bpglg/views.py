@@ -16,7 +16,7 @@ from .uspsMail import *
 
 from .uspsSearch import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm, UserAccessControlForm
-from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user
+from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user,get_user_status, set_user_status
 from .clsgraph import fetch_supplier_wrapper
 
 #Import Custom Logger Module
@@ -223,14 +223,24 @@ def resendinvite(request):
         return HttpResponse(response_message,content_type="text/plain",status=200)    
     
 def get_user_access_control_form(request):
-    print("get_user_access_control_form")
-    form = UserAccessControlForm(initial={'activeUserFlag': True})
-    #form.activeUserFlag=True
-    print(form)
-
-    context = {
-        'form':form
+    if request.method == 'GET':
+        active_flag = get_user_status (request.GET['user_id'])
+        form = UserAccessControlForm(initial={'activeUserFlag': active_flag})
+        context = {
+        'form':form,"user_id":request.GET['user_id']
     }
-    print(context)
+    elif request.method == 'POST':  
+        
+        form = UserAccessControlForm(data=request.POST)
+        print(request.POST)
+        if form.is_valid():
+            print("Valid Form")            
+            print(request.POST.get('user_id'))
+            print (form.cleaned_data['activeUserFlag']) 
+            set_user_status(request.POST.get('user_id'),form.cleaned_data['activeUserFlag'])           
+            context = { 'form':form }
+        else:
+            print(form.errors)
+                                    
     return render(request, 'useraccesscontrolform.html', context)
 

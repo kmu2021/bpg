@@ -226,7 +226,9 @@ def send_invitation_to_user(user_details):
 
 #Get List of Groups IDs
 def get_group_id_list():
-    access_token = ""
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN if access_token is None else access_token
+
     groups_list = []
     url = 'https://graph.microsoft.com/v1.0/groups'
     select='id'
@@ -267,7 +269,9 @@ def get_group_id_list():
 
 #Add Groups to User
 def add_groups_to_user(user_id,group_id_list):
-    access_token = ""    
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+     
     url = 'https://graph.microsoft.com/v1.0/groups/{}/members/$ref'
     
 
@@ -301,3 +305,64 @@ def add_groups_to_user(user_id,group_id_list):
                 sleep(2)                     
     return 'Groups Assigned'
     
+#Check if User is Active
+def get_user_status(user_id):   
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+
+    if access_token == "":
+       access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    account_enabled = False
+
+    url = 'https://graph.microsoft.com/v1.0/users'
+    req_params = {'$select': 'accountEnabled', '$filter': 'id eq \''+user_id+'\''}
+    req_header = {'Authorization': 'Bearer ' + access_token}
+    response = requests.get(url, params=req_params, headers=req_header)
+    response_json = response.json()
+    user_id = ''
+    if not response.ok:
+        if "error" in response_json:
+            print(response_json["error"]["code"])
+            print(response.status_code)
+    else:
+        print('User Check Result')
+        print(response_json)
+        try:            
+            account_enabled = response_json['value'][0]['accountEnabled']
+        except Exception as e:
+            print(e)
+            account_enabled = False
+    return account_enabled
+#set user status
+def set_user_status(user_id, user_status):   
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+
+    if access_token == "":
+       access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    account_enabled = False
+
+    url = 'https://graph.microsoft.com/v1.0/users/'+user_id
+
+    req_body = {
+        "accountEnabled": user_status
+    }
+    print (req_body)
+
+    req_header = {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + access_token}
+    response = requests.patch(url, json=req_body, headers=req_header)
+
+    
+    print(response.status_code)   
+    
+    if (response.status_code < 200 or response.status_code > 229):
+        print('User Update Fail')
+        try:
+            print(response.json())
+        except Exception as e:
+            print('Exception while parsing JSON')
+        return False
+    else:
+        print('User Update Pass')
+        return True

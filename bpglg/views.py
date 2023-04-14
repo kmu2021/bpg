@@ -16,7 +16,7 @@ from .uspsMail import *
 
 from .uspsSearch import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm, UserAccessControlForm
-from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user,get_user_status, set_user_status
+from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user,get_user_status, set_user_status, init_user_access_control,groups_assign_to_user, groups_unassign_to_user
 from .clsgraph import fetch_supplier_wrapper
 
 #Import Custom Logger Module
@@ -224,8 +224,42 @@ def resendinvite(request):
     
 def get_user_access_control_form(request):
     if request.method == 'GET':
+        form_initial = {}
+        list_form_initial = []
+
+        
+        form = UserAccessControlForm()
         active_flag = get_user_status (request.GET['user_id'])
-        form = UserAccessControlForm(initial={'activeUserFlag': active_flag})
+        form_initial['activeUserFlag'] = active_flag
+        form['activeUserFlag'].field.widget.attrs.update({'data-group-initial-status': str(active_flag)})
+
+        list_form_initial.append ({
+            'fieldName':'activeUserFlag',
+            "fieldValue": active_flag,
+            'data-group-initial-status': str(active_flag),
+            'data-group-name': ""            
+        })
+
+        for fields in form:
+            print(fields.name)
+            if fields.name!='activeUserFlag':
+                if 'data-group-name' in fields.field.widget.attrs:
+                        list_form_initial.append ({
+                            'fieldName':fields.name,
+                            "fieldValue": False,
+                            'data-group-initial-status': str(False),
+                            'data-group-name': fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT            
+        })
+                        
+        init_user_access_control(list_form_initial, request.GET.get('user_id'))
+        for fields in list_form_initial:
+            form_initial[fields['fieldName']]=fields['fieldValue']            
+            form[fields['fieldName']].field.widget.attrs.update({'data-group-name': fields['data-group-name']})
+            form[fields['fieldName']].field.widget.attrs.update({'data-group-initial-status': fields['data-group-initial-status']})
+            #print(fields['fieldName'] + fields['data-group-name'])
+
+        form.initial=form_initial
+        
         context = {
         'form':form,"user_id":request.GET['user_id']
     }
@@ -236,37 +270,34 @@ def get_user_access_control_form(request):
         if form.is_valid():
             print("Valid Form")            
             print(request.POST.get('user_id'))
+            print(form.cleaned_data)
             print (form.cleaned_data['activeUserFlag']) 
+            
             set_user_status(request.POST.get('user_id'),form.cleaned_data['activeUserFlag'])
             
             groups_to_remove = []
             groups_to_add = []
-            if (form.cleaned_data['logisticsGatewayFlag']):
-                groups_to_add.append('NAT_AZURE_BPG_ILE'+'_USR_'+settings.ENVIRONMENT)
-            else:
-                groups_to_remove.append('NAT_AZURE_BPG_ILE'+'_USR_'+settings.ENVIRONMENT)
-
-            if (form.cleaned_data['freightAuctionFlag']):
-                groups_to_add.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
-            else:
-                groups_to_remove.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
-
-            if (form.cleaned_data['stafFlag']):
-                groups_to_add.append('NAT_AZURE_STAF_ILE'+'_USR_'+settings.ENVIRONMENT)
-            else:
-                groups_to_remove.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
-
-            if (form.cleaned_data['clearSupplierFlag']):
-                groups_to_add.append('NAT_AZURE_CLEAR_ILE'+'_USR_'+settings.ENVIRONMENT)
-            else:
-                groups_to_remove.append('NAT_AZURE_CLEAR_ILE'+'_USR_'+settings.ENVIRONMENT)
-            print(groups_to_add)
-            print (groups_to_remove)
            # add_groups_to_user(request.POST.get('user_id'),groups_to_add)
 
-            #for fields in form:
-            #    if fields.label=='Active User':
-            #        print(fields.value)
+            for fields in form:
+                print(fields)
+                if (fields.value()):
+                    if 'data-group-name' in fields.field.widget.attrs:
+                        print("init: "+ (fields.field.widget.attrs['data-group-initial-status']))
+                        #if fields.field.widget.attrs['data-group-initial-status'] != "" and eval(fields.field.widget.attrs['data-group-initial-status']) == False:
+                        groups_to_add.append(fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT)
+                else:
+                    if 'data-group-name' in fields.field.widget.attrs:
+                        print("init2: "+ (fields.field.widget.attrs['data-group-initial-status']))
+                        #if fields.field.widget.attrs['data-group-initial-status'] != "" and eval(fields.field.widget.attrs['data-group-initial-status']) == True:
+                        groups_to_remove.append(fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT)
+                
+            print(groups_to_add)
+            print (groups_to_remove)
+
+            groups_assign_to_user (groups_to_add,request.POST.get('user_id'))
+            groups_unassign_to_user (groups_to_remove,request.POST.get('user_id'))
+
             context = { 'form':form }
         else:
             print(form.errors)

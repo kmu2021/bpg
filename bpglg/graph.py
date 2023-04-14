@@ -225,22 +225,27 @@ def send_invitation_to_user(user_details):
     return user_details
 
 #Get List of Groups IDs
-def get_group_id_list():
+def get_group_id_list(group_name_list = None):
     global G_ACCESS_TOKEN
     access_token = G_ACCESS_TOKEN
 
     groups_list = []
+    group_search_string = ""
     url = 'https://graph.microsoft.com/v1.0/groups'
     select='id'
 
     if access_token == "":
         access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-    with open(os.path.join(os.path.dirname(__file__),'config/groups.json'),'r') as group_file:
-        parsed_json = json.load(group_file)
-    group_search_string = ""
-    for group_name in parsed_json[settings.ENVIRONMENT]:
-        group_search_string = group_search_string + '"displayName:' + group_name + '" OR '
-    
+    if group_name_list is None:
+        with open(os.path.join(os.path.dirname(__file__),'config/groups.json'),'r') as group_file:
+            parsed_json = json.load(group_file)
+        group_search_string = ""
+        for group_name in parsed_json[settings.ENVIRONMENT]:
+            group_search_string = group_search_string + '"displayName:' + group_name + '" OR '
+    else:
+        for group_name in group_name_list:
+            group_search_string = group_search_string + '"displayName:' + group_name + '" OR '
+
     if group_search_string != "":
         group_search_string = group_search_string.rstrip(' OR ')
     
@@ -251,7 +256,7 @@ def get_group_id_list():
     req_header = {'Authorization': 'Bearer ' + access_token, 'ConsistencyLevel': 'Eventual'}
     response = requests.get(url, params=req_params, headers=req_header)
     response_json = response.json()
-    print(response_json['value'])
+    #print(response_json['value'])
     if not response.ok:
         if "error" in response_json:
             print(response_json["error"]["code"])
@@ -291,8 +296,9 @@ def add_groups_to_user(user_id,group_id_list):
         print(req_body)
         for ctr in range(5):
             response = requests.post(post_url, data=json.dumps(req_body), headers=req_header)   
-
-            if (int(response.status_code) == 204):
+            print(ctr)
+            print(int(response.status_code) )
+            if (int(response.status_code) == 204 or int(response.status_code) == 400 ):
                 print('Assigning Group Passed')
                 break         
             else:
@@ -366,3 +372,92 @@ def set_user_status(user_id, user_status):
     else:
         print('User Update Pass')
         return True
+
+def init_user_access_control(list_form_initial, user_id):
+    user_group_name_list = fetch_user_groups(user_id)
+    print(user_group_name_list)
+    for records in list_form_initial:
+        print(records)
+        if records['data-group-name'] in user_group_name_list:
+            records['fieldValue']=True
+            records['data-group-initial-status']="True"
+    return list_form_initial
+
+def groups_assign_to_user (groups_to_add,user_id):
+    if len(groups_to_add):
+        add_groups_to_user(user_id,get_group_id_list(groups_to_add))
+
+def groups_unassign_to_user (groups_to_remove,user_id):
+    print(get_group_id_list(groups_to_remove))    
+    if len(groups_to_remove):
+        remove_groups_from_user(user_id,get_group_id_list(groups_to_remove))
+
+#Fetch Groups for an user
+def fetch_user_groups(user_id):
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+     
+    url = 'https://graph.microsoft.com/v1.0/users/{}/memberOf?$select=id,displayName'.format(user_id)
+    
+    
+    print('ur is '+url)
+    if access_token == "":
+        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    
+    req_header = {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + access_token}
+    
+    response = requests.get(url, headers=req_header)
+    response_json = response.json()
+    group_name_list = []
+
+    if not response.ok:
+        if "error" in response_json:
+            print(response_json["error"]["code"])
+            print(response.status_code)
+    else:
+        for groups in response_json['value']:
+            try:                            
+                group_name_list.append(groups['displayName'])
+            except Exception as e:
+                print("EXCEPTION PARSING RESPONSE")            
+                print (e)  
+
+    return group_name_list
+    
+
+#Add Groups to User
+def remove_groups_from_user(user_id,group_id_list):
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+     
+    url = 'https://graph.microsoft.com/v1.0/groups/{}/members/{}/$ref'
+    
+
+    if access_token == "":
+        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    
+    req_header = {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + access_token}
+    
+    message = ""
+    
+    for idx in range(len(group_id_list)):
+        del_url = url.format(group_id_list[idx],user_id)
+       
+        print("delurl: "+del_url)
+        response = requests.delete(del_url, headers=req_header)   
+        
+        print(int(response.status_code) )
+        if (int(response.status_code) == 204 or int(response.status_code) == 400 ):
+            print('Group Removed')
+            break         
+        else:
+            message='Group Removal Failed'                
+            try:
+                print(response.json())
+            except Exception as e:
+                message='Exception while parsing JSON'
+                print(message)
+                                    
+    return 'Groups Removed'    

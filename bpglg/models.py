@@ -50,7 +50,7 @@ class UserMgmtSearchForm(forms.Form):
     )
 
 
-class UserAccessControlForm(forms.Form):
+class UserAccessControlForm_Old(forms.Form):
     activeUserFlag = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={'class': 'form-check-input', 'aria-label': 'Active User','data-group-name':'NAT_AZURE'}),
@@ -108,6 +108,38 @@ class UserAccessControlForm(forms.Form):
             attrs={'class': 'form-check-input', 'aria-label': 'Electronic Messaging'}),
         required=False, label='Electronic Messaging'
     )
+
+
+
+class UserAccessControlForm(forms.Form):
+    activeUserFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'Active User','data_group_name':'NAT_AZURE'}),
+        required=False, label='Active User'
+    )
+    logisticsGatewayFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'Logistics Gateway', 'data-group-name':'NAT_AZURE_BPG_ILE'}),
+        required=False, label='Logistics Gateway'
+    )
+    freightAuctionFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'Freight Auction', 'data-group-name':'NAT_AZURE_FA_ILE'}),
+        required=False, label='Freight Auction'
+    )
+
+    stafFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'Surface Transportation','data-group-name':'NAT_AZURE_STAF_ILE'}),
+        required=False, label='Surface Transportation'
+    )
+
+    clearSupplierFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'CLEAR Supplier','data-group-name':'NAT_AZURE_CLEAR_ILE'}),
+        required=False, label='CLEAR Supplier'
+    )
+
 
 
 class UserDetails:

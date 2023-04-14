@@ -227,7 +227,7 @@ def send_invitation_to_user(user_details):
 #Get List of Groups IDs
 def get_group_id_list():
     global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN if access_token is None else access_token
+    access_token = G_ACCESS_TOKEN
 
     groups_list = []
     url = 'https://graph.microsoft.com/v1.0/groups'

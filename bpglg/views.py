@@ -237,7 +237,36 @@ def get_user_access_control_form(request):
             print("Valid Form")            
             print(request.POST.get('user_id'))
             print (form.cleaned_data['activeUserFlag']) 
-            set_user_status(request.POST.get('user_id'),form.cleaned_data['activeUserFlag'])           
+            set_user_status(request.POST.get('user_id'),form.cleaned_data['activeUserFlag'])
+            
+            groups_to_remove = []
+            groups_to_add = []
+            if (form.cleaned_data['logisticsGatewayFlag']):
+                groups_to_add.append('NAT_AZURE_BPG_ILE'+'_USR_'+settings.ENVIRONMENT)
+            else:
+                groups_to_remove.append('NAT_AZURE_BPG_ILE'+'_USR_'+settings.ENVIRONMENT)
+
+            if (form.cleaned_data['freightAuctionFlag']):
+                groups_to_add.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
+            else:
+                groups_to_remove.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
+
+            if (form.cleaned_data['stafFlag']):
+                groups_to_add.append('NAT_AZURE_STAF_ILE'+'_USR_'+settings.ENVIRONMENT)
+            else:
+                groups_to_remove.append('NAT_AZURE_FA_ILE'+'_USR_'+settings.ENVIRONMENT)
+
+            if (form.cleaned_data['clearSupplierFlag']):
+                groups_to_add.append('NAT_AZURE_CLEAR_ILE'+'_USR_'+settings.ENVIRONMENT)
+            else:
+                groups_to_remove.append('NAT_AZURE_CLEAR_ILE'+'_USR_'+settings.ENVIRONMENT)
+            print(groups_to_add)
+            print (groups_to_remove)
+           # add_groups_to_user(request.POST.get('user_id'),groups_to_add)
+
+            #for fields in form:
+            #    if fields.label=='Active User':
+            #        print(fields.value)
             context = { 'form':form }
         else:
             print(form.errors)

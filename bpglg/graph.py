@@ -442,6 +442,7 @@ def remove_groups_from_user(user_id,group_id_list):
     
     message = ""
     print("inside Remove groups")
+    print(group_id_list)
     for idx in range(len(group_id_list)):
         del_url = url.format(group_id_list[idx],user_id)
        

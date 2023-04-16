@@ -117,6 +117,13 @@ class UserAccessControlForm(forms.Form):
             attrs={'class': 'form-check-input', 'aria-label': 'Active User'}),
         required=False, label='Active User'
     )
+
+    adminFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'Administrator'}),
+        required=False, label='Administrator'
+    )
+
     logisticsGatewayFlag = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={'class': 'form-check-input', 'aria-label': 'Logistics Gateway', 'data-group-initial-status':"False", 'data-group-name':'NAT_AZURE_BPG_ILE'}),
@@ -136,8 +143,14 @@ class UserAccessControlForm(forms.Form):
 
     clearSupplierFlag = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={'class': 'form-check-input', 'aria-label': 'CLEAR Supplier','data-group-initial-status':"False", 'data-group-name':'NAT_AZURE_CLEAR_ILE'}),
-        required=False, label='CLEAR Supplier'
+            attrs={'class': 'form-check-input', 'aria-label': 'CLEAR Supplier Management','data-group-initial-status':"False", 'data-group-name':'NAT_AZURE_CLEAR_ILE'}),
+        required=False, label='CLEAR Supplier Management'
+    )
+
+    clearRateFlag = forms.BooleanField(
+        widget=forms.CheckboxInput(
+            attrs={'class': 'form-check-input', 'aria-label': 'CLEAR Rate Management','data-group-initial-status':"False", 'data-group-name':'NAT_AZURE_CLEAR_ILE'}),
+        required=False, label='CLEAR Rate Management'
     )
 
 

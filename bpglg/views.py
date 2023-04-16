@@ -16,7 +16,7 @@ from .uspsMail import *
 
 from .uspsSearch import search_users
 from .models import RegistrationForm, UserDetails, UserMgmtSearchForm, UserAccessControlForm
-from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user,get_user_status, set_user_status, init_user_access_control,groups_assign_to_user, groups_unassign_to_user
+from .graph import does_user_exists, send_invitation_to_user,update_user_details,get_group_id_list,add_groups_to_user,get_user_status, set_user_status, init_user_access_control,groups_assign_to_user, groups_unassign_to_user, fetch_user_groups
 from .clsgraph import fetch_supplier_wrapper
 
 #Import Custom Logger Module
@@ -240,6 +240,9 @@ def get_user_access_control_form(request):
             'data-group-name': ""            
         })
 
+        admin_flag=False
+        group_name_list=fetch_user_groups(request.GET['user_id'])        
+
         for fields in form:
             print(fields.name)
             if fields.name!='activeUserFlag':
@@ -250,7 +253,16 @@ def get_user_access_control_form(request):
                             'data-group-initial-status': str(False),
                             'data-group-name': fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT            
         })
+                        if fields.field.widget.attrs['data-group-name']+'_ADM_'+settings.ENVIRONMENT in group_name_list:
+                            admin_flag = True
                         
+        list_form_initial.append ({
+            'fieldName':'adminFlag',
+            "fieldValue": admin_flag,
+            'data-group-initial-status': str(admin_flag),
+            'data-group-name': ""            
+        })
+        
         init_user_access_control(list_form_initial, request.GET.get('user_id'))
         for fields in list_form_initial:
             form_initial[fields['fieldName']]=fields['fieldValue']            
@@ -279,6 +291,8 @@ def get_user_access_control_form(request):
             groups_to_add = []
            # add_groups_to_user(request.POST.get('user_id'),groups_to_add)
 
+            adminFlag = form.cleaned_data['adminFlag']
+
             for fields in form:
                 print(fields)
                 if (fields.value()):
@@ -286,17 +300,26 @@ def get_user_access_control_form(request):
                         print("init: "+ (fields.field.widget.attrs['data-group-initial-status']))
                         #if fields.field.widget.attrs['data-group-initial-status'] != "" and eval(fields.field.widget.attrs['data-group-initial-status']) == False:
                         groups_to_add.append(fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT)
+                        if (adminFlag):
+                            groups_to_add.append(fields.field.widget.attrs['data-group-name']+'_ADM_'+settings.ENVIRONMENT)
+
                 else:
                     if 'data-group-name' in fields.field.widget.attrs:
                         print("init2: "+ (fields.field.widget.attrs['data-group-initial-status']))
                         #if fields.field.widget.attrs['data-group-initial-status'] != "" and eval(fields.field.widget.attrs['data-group-initial-status']) == True:
                         groups_to_remove.append(fields.field.widget.attrs['data-group-name']+'_USR_'+settings.ENVIRONMENT)
-                
+                        groups_to_remove.append(fields.field.widget.attrs['data-group-name']+'_ADM_'+settings.ENVIRONMENT)
+                            
+            for groups in groups_to_remove:
+                if (groups in groups_to_add):
+                        groups_to_remove.remove(groups)
             print(groups_to_add)
             print (groups_to_remove)
 
-            groups_assign_to_user (groups_to_add,request.POST.get('user_id'))
-            groups_unassign_to_user (groups_to_remove,request.POST.get('user_id'))
+            if len(groups_to_add)>0:
+                groups_assign_to_user (groups_to_add,request.POST.get('user_id'))
+            if len(groups_to_remove)>0:
+                groups_unassign_to_user (groups_to_remove,request.POST.get('user_id'))
 
             context = { 'form':form }
         else:

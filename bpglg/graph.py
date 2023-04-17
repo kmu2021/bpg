@@ -426,7 +426,7 @@ def fetch_user_groups(user_id):
     return group_name_list
     
 
-#Add Groups to User
+#Remove Groups From User
 def remove_groups_from_user(user_id,group_id_list):
     global G_ACCESS_TOKEN
     access_token = G_ACCESS_TOKEN
@@ -461,4 +461,63 @@ def remove_groups_from_user(user_id,group_id_list):
                 message='Exception while parsing JSON'
                 print(message)
                                     
-    return 'Groups Removed'    
+    return 'Groups Removed' 
+
+#Create a Supplier Group and return ID   
+def create_supplier_group (group_name, group_description):
+    global G_ACCESS_TOKEN
+    access_token = G_ACCESS_TOKEN
+     
+    url = 'https://graph.microsoft.com/v1.0/groups'
+    group_id = ""
+    
+
+    if access_token == "":
+        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    
+    req_header = {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + access_token}
+    
+    req_body = {
+        "description": json.dumps(group_description),
+        "displayName": group_name,
+        "mailEnabled": False,
+        "groupTypes": [
+        "Unified"
+    ],
+    "mailNickname": group_name,
+    "securityEnabled": False
+    }
+    print('req_body: ')
+    print(req_body)
+    response = requests.post(url, json=req_body, headers=req_header)
+
+    response_json = response.json()
+
+    print(response_json)
+    if not response.ok:
+        print('Group Creation Failed')
+        if "error" in response_json:
+            print(response_json["error"]["code"])
+            print(response.status_code)
+    else:
+        print('Group Creation Success')
+        print(response_json)
+        try:
+            group_id = response_json['id']
+        except Exception as e:
+            group_id = ''
+    return group_id
+    
+
+#Create a Supplier Group    
+def get_supplier_group_id (group_name, group_description):
+    print('calling get_group_id_list: '+group_name)
+        
+    supplier_group_id_list = get_group_id_list([group_name]) 
+    if len(supplier_group_id_list) == 0:
+        supplier_group_id = create_supplier_group (group_name,group_description)
+    else:
+        supplier_group_id = supplier_group_id_list[0]
+    print("supplier_group_id="+str(supplier_group_id))
+    return supplier_group_id

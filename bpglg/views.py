@@ -126,8 +126,12 @@ def init(request):
                             return render(request, 'bpglgindex.html', {'form': form, "response_message":response_message})                        
                         else:'''
                         #TEST
-                        supplier_group_name = "NAT_AZURE_SUPPLIER_{}_ILE_{}".format("90909",settings.ENVIRONMENT)  
-                        print("supplier_group_name="+supplier_group_name)                          
+                        
+                        jpid = 0
+                        for character in user_details.company:
+                            jpid = jpid + ord(character)
+                        supplier_group_name = "NAT_AZURE_SUPPLIER_{}_ILE_{}".format(str(jpid),settings.ENVIRONMENT)  
+                        print("supplier_group_name="+supplier_group_name)
                         supplier_group_description = {
                                 "supplierName": user_details.company,
                                 "supplierDomainName": user_details.workEmail.split('@')[1],

@@ -109,7 +109,7 @@ def invite_user(email, display_name, redirect_url, access_token):
     return user_id
 
 
-def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token):
+def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token, extension_attributes):
     global G_ACCESS_TOKEN
     access_token = G_ACCESS_TOKEN if access_token is None else access_token
     print('update_user_details user_id:'+user_id)
@@ -144,6 +144,20 @@ def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, 
         print('User Update Pass')
         if bpg_grp_id != "":
             add_to_group(user_id, bpg_grp_id, access_token)
+    
+    
+    if len(extension_attributes)>0:
+        req_body = extension_attributes
+        response = requests.patch(url, json=req_body, headers=req_header)
+        print('Updating Extension Attribute')
+        print(response)
+        if (response.status_code < 200 or response.status_code > 229):
+            print('Extension Attribute Update Fail')
+        try:
+            print(response.json())
+        except Exception as e:
+            print('Exception while parsing JSON')
+
     return 'User Attributes Updated'
 
 def get_bpg_group_id (BPG_GRP_NAME,access_token):
@@ -483,10 +497,9 @@ def create_supplier_group (group_name, group_description):
         "displayName": group_name,
         "mailEnabled": False,
         "groupTypes": [
-        "Unified"
     ],
     "mailNickname": group_name,
-    "securityEnabled": False
+    "securityEnabled": True
     }
     print('req_body: ')
     print(req_body)

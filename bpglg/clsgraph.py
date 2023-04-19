@@ -1,10 +1,10 @@
 #from django.http import HttpResponse
 from django.conf import settings
-'''from django.views.decorators.csrf import csrf_exempt
-import json
-from time import sleep
-import os
-import random'''
+from django.views.decorators.csrf import csrf_exempt
+#import json
+#from time import sleep
+#import os
+#import random
 from .models import UserDetails
 
 import requests
@@ -29,6 +29,7 @@ def fetch_supplier(scac_duns, search_by):
     ClsVerify = eval(settings.CLS_VERIFY)
 
     url = 'https://{}{}{}'.format(clsHostanme, url_p2, scac_duns)
+    print("Fetch Supplier URL : "+url)
     req_header = {"X-Api-Key": ClsApikey}
     try:
         response = requests.get(url, headers=req_header, verify=ClsVerify)
@@ -39,7 +40,7 @@ def fetch_supplier(scac_duns, search_by):
         # 400: Invalid or blank SCAC/DUNS value.
         # 401: Unauthenticated request or authentication failure.
 
-        if (response.statusCode == 200):
+        if (response.status_code == 200):
             try:
                 response_dict = response.json()
                 return_dict = {"statusCode": 200,
@@ -53,7 +54,7 @@ def fetch_supplier(scac_duns, search_by):
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in while parsing the Status code 200 response - "+str(e)
                                }
-        elif (response.statusCode == 204):
+        elif (response.status_code == 204):
             try:
                 return_dict = {"statusCode": 204,
                                "statusDesc": "Successfully processed but the supplier was not found."
@@ -62,7 +63,7 @@ def fetch_supplier(scac_duns, search_by):
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in while parsing the Status code 204 response - "+str(e)
                                }
-        elif (response.statusCode == 400):
+        elif (response.status_code == 400):
 
             try:
                 return_dict = {"statusCode": 400,
@@ -73,7 +74,7 @@ def fetch_supplier(scac_duns, search_by):
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in while parsing the Status code 400 response - "+str(e)
                                }
-        elif (response.statusCode == 401):
+        elif (response.status_code == 401):
 
             try:
                 return_dict = {"statusCode": 401,
@@ -85,9 +86,13 @@ def fetch_supplier(scac_duns, search_by):
                                "statusDesc": "Exception in while parsing the Status code 401 response - "+str(e)
                                }
         else:
-            print(response.json())
-            return_dict = {"statusCode": 999,
-                           "statusDesc": "Invalid FETCH SUPPLIER API response"
+            try:
+                return_dict = {"statusCode":  response.status_code,
+                           "statusDesc": "Invalid FETCH SUPPLIER API response "+str(response.json()) 
+                           }
+            except Exception as e:
+                return_dict = {"statusCode": 999,
+                           "statusDesc": "Invalid FETCH SUPPLIER API response"+str(e)
                            }
     except Exception as e:
         return_dict = {"statusCode": 999,
@@ -106,6 +111,7 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
 
         url_p2 = '/cls/supplier'
         url = 'https://{}{}'.format(clsHostanme, url_p2)
+        print("Create Supplier URL : "+url)
         req_header = {"X-Api-Key": ClsApikey}
         req_body = {
             "companyName": company_name,
@@ -137,7 +143,7 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
         #         "errorDetails": "Invalid or blank admin email address."
         #     }
 
-        if (response.statusCode == 200):
+        if (response.status_code == 200):
             try:
                 response_dict = response.json()
                 return_dict = {"statusCode": 200,
@@ -151,7 +157,7 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in Cleate Supplier API call while parsing the Status code 200 response - "+str(e)
                                }
-        elif (response.statusCode == 400):
+        elif (response.status_code == 400):
             try:
                 response_dict = response.json()
                 return_dict = {"statusCode": 400,
@@ -163,7 +169,7 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in Cleate Supplier API call while parsing the Status code 400 response - "+str(e)
                                }
-        elif (response.statusCode == 401):
+        elif (response.status_code == 401):
             try:
                 return_dict = {"statusCode": 401,
                                "statusDesc": "Unauthenticated request or authentication failure."
@@ -173,8 +179,13 @@ def create_supplier(company_name, scac, duns, first_name, last_name, work_email)
                                "statusDesc": "Exception in Cleate Supplier API call while parsing the Status code 401 response - "+str(e)
                                }
         else:
-            return_dict = {"statusCode": 999,
-                           "statusDesc": "Invalid CREATE SUPPLIER API response"
+            try:
+                return_dict = {"statusCode":  response.status_code,
+                           "statusDesc": "Invalid CREATE SUPPLIER API response "+str(response.json()) 
+                           }
+            except Exception as e:
+                return_dict = {"statusCode": 999,
+                           "statusDesc": "Invalid CREATE SUPPLIER API response"+str(e)
                            }
     except Exception as e:
         return_dict = {"statusCode": 999,
@@ -194,6 +205,7 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
 
         url_p2 = '/cls/supplier/user'
         url = 'https://{}{}'.format(clsHostanme, url_p2)
+        print("Supplier User Upsert URL : "+url)
         req_header = {"X-Api-Key": ClsApikey}
 
         req_body = {
@@ -221,7 +233,7 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
         #     "errorDetails": "Cannot deactivate user that is not associated with the supplier. "
         # }
 
-        if (response.statusCode == 204):
+        if (response.status_code == 204):
             try:
                 return_dict = {"statusCode": 204,
                                "statusDesc": "Successfully processed – no response"
@@ -230,7 +242,7 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in User upsert API call while parsing the Status code 200 response - "+str(e)
                                }
-        elif (response.statusCode == 400):
+        elif (response.status_code == 400):
             try:
                 response_dict = response.json()
                 return_dict = {"statusCode": 400,
@@ -241,7 +253,7 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
                 return_dict = {"statusCode": 999,
                                "statusDesc": "Exception in User upsert API call while parsing the Status code 400 response - "+str(e)
                                }
-        elif (response.statusCode == 401):
+        elif (response.status_code == 401):
             try:
                 return_dict = {"statusCode": 401,
                                "statusDesc": "Unauthenticated request or authentication failure."
@@ -251,8 +263,13 @@ def create_supuser_upsert(erpNumber, j1Id, active, first_name, last_name, work_e
                                "statusDesc": "Exception in User upsert API call while parsing the Status code 401 response - "+str(e)
                                }
         else:
-            return_dict = {"statusCode": 999,
-                           "statusDesc": "Invalid User upsert API response"
+            try:
+                return_dict = {"statusCode":  response.status_code,
+                           "statusDesc": "Invalid User upsert API response "+str(response.json()) 
+                           }
+            except Exception as e:
+                return_dict = {"statusCode": 999,
+                           "statusDesc": "Invalid User upsert API response"+str(e)
                            }
     except Exception as e:
         return_dict = {"statusCode": 999,
@@ -273,7 +290,8 @@ def fetch_supplier_wrapper(user_details):
     try:
         # Call Fetch supplier to check if supplier exists in CLS
         fsapi_response = fetch_supplier(user_details.scac, 'SCAC')
-        print('fetch_supplier call')
+        print('Fetch Supplier API Response')
+        print(fsapi_response)
         statusCode = fsapi_response['statusCode']
 
         if (fsapi_response['statusCode'] == 204):
@@ -283,7 +301,8 @@ def fetch_supplier_wrapper(user_details):
             try:
                 csapi_response = create_supplier(user_details.company, user_details.scac, user_details.duns,
                                                  user_details.firstname, user_details.lastname, user_details.workEmail)
-                print('create_supplier call')
+                print('Create Supplier API Response ')
+                print(csapi_response)
                 statusCode = csapi_response['statusCode']
                 if (csapi_response['statusCode'] == 200):
                     # create_supplier success
@@ -294,7 +313,8 @@ def fetch_supplier_wrapper(user_details):
                         csuapi_response = create_supuser_upsert(
                             clserpNum, clsj1Id, user_details.firstname, user_details.lastname, user_details.workEmail)
                         statusCode = csuapi_response['statusCode']
-                        print('create_supuser_upsert call')
+                        print('Supplier User Upsert API Response')
+                        print(csuapi_response)
                         if (csuapi_response['statusCode'] == 204):
                             # create_supuser_upsert success
                             print(csuapi_response['statusDesc'])
@@ -334,7 +354,8 @@ def fetch_supplier_wrapper(user_details):
             try:
                 csuapi_response = create_supuser_upsert(
                     clserpNum, clsj1Id, user_details.firstname, user_details.lastname, user_details.workEmail)
-                print('create_supuser_upsert call')
+                print('Supplier User Upsert API Response')
+                print(csuapi_response)
                 statusCode = csuapi_response['statusCode']
                 if (csuapi_response['statusCode'] == 204):
                     # create_supuser_upsert success

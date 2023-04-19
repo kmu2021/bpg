@@ -115,7 +115,7 @@ def init(request):
                                 "supplierName": user_details.company,
                                 "supplierDomainName": user_details.workEmail.split('@')[1],
                                 "supplierID": supplier_result['clsj1Id'],
-                                "APEXID": supplier_result['apexSupplierNumber'],
+                                "APEXID": "",
                                 "SCAC": user_details.scac,
                                 "DUNS": user_details.duns
                             }
@@ -143,8 +143,13 @@ def init(request):
                         #ENDTEST
                         user_details=send_invitation_to_user (user_details)
                         response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
+                        extension_attributes = {
+                            "extension_a037f2abeebd4a1dbf8f8f8e0789d52f_ILERPT_Session_UserID": user_details.user_id,
+                            "extension_bd7ea6b1f947459dad5a0ea3fc55cc85_ILE_Alternate_UserID_1": "ILERPT|{}|99999|{}|TRUE|678765|{}|USR|{}".format(user_details.user_id,user_details.company,settings.ENVIRONMENT,user_details.workEmail.split('@')[1])
+                        }
+                        print(extension_attributes)
                         if user_details.user_id != "":
-                            user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None)
+                            user_details_update_response = update_user_details(user_details.user_id,user_details.firstName,user_details.lastName,user_details.company,"",None,extension_attributes)
                             print(user_details_update_response)
                             groups_list = get_group_id_list()
                             groups_list.append(get_supplier_group_id (supplier_group_name, supplier_group_description))

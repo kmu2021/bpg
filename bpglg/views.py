@@ -62,7 +62,7 @@ def init(request):
             user_details.workEmail = form.cleaned_data['workEmail'].strip()
             user_details.company = form.cleaned_data['company'].strip()
             user_details.scac = form.cleaned_data['scac'].strip()
-            user_details.duns = form.cleaned_data['duns'].strip()
+            user_details.duns = form.cleaned_data['duns']
             user_details.responseText=""
             user_details.user_id = ""
 
@@ -140,7 +140,7 @@ def init(request):
                                 "SCAC": user_details.scac,
                                 "DUNS": user_details.duns
                             }
-                        #ENDTEST
+                        
                         user_details=send_invitation_to_user (user_details)
                         response_message['invitation_message'] = "An invitation has been sent to " + user_details.workEmail + ".\nPlease check your mails and Accept the invitation."                        
                         extension_attributes = {
@@ -173,7 +173,8 @@ def init(request):
                 email_html_text = get_otp_html(user_details.firstName + " " + user_details.lastName,request.session['OTP'])#"<html><head><title>OTP</title></head><body><h2>Please use following One Time Code for registering: " + request.session['OTP'] + "</h2><h3>Note: The Code is valid for " + str(int(OTP_EXPIRATION_SECONDS/60)) + " minutes</h3></body></html>"
                 send_email_wrapper(email_from="", email_to_arr=email_to_arr, email_subject=email_subject, email_plain_text=email_plain_text, email_html_text=email_html_text)                
             return render(request, 'bpglgindex.html', {'form': form, 'otp_flag': 'Y',  'display_main_form': 'hidden', 'otp_validated_flag': otp_validated_flag,"response_message":response_message})            
-
+        else: #If form is not Valid
+            return render(request, 'bpglgindex.html', {'form': form})                         
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def generateotp(request):
     print(request.method)
@@ -322,6 +323,13 @@ def get_user_access_control_form(request):
             print (form.cleaned_data['activeUserFlag']) 
             
             set_user_status(request.POST.get('user_id'),form.cleaned_data['activeUserFlag'])
+
+            if form.cleaned_data['activeUserFlag'] == True and form.cleaned_data['resendInvitationFlag'] == True:
+                user_details = UserDetails()
+                user_details.firstName = request.POST['first_name']
+                user_details.lastName = request.POST['last_name']
+                user_details.workEmail = request.POST['work_email']
+                user_details=send_invitation_to_user (user_details)
             
             groups_to_remove = []
             groups_to_add = []

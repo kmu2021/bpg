@@ -106,11 +106,14 @@
             {% if form %}
             <!-- Form Errors -->
             {% if form.errors %}
-            <ul class="errors">
+            <div class="text-danger">
+              <strong>Please fix errors on the following fields: </strong>
+              <ul class="errors">              
               {% for error in form.errors %}
-              <li>{{ error }}</li>
+              <li>{{ error|upper }}</li>
               {% endfor %}
             </ul>
+          </div>
             {% endif %}
             <!-- Display Form -->
             <form id="registerForm" name="registerForm" action="" method="POST" class="form-group was-validated">
@@ -126,8 +129,8 @@
               <div class="form-group has-feedback {{display_main_form}}" id="form-group-{{ field.id_for_label}}">
                 <label id="for-{{ field.id_for_label}}" for="{{ field.id_for_label}}" class="control-label">
                   <span class="required">*</span> {{ field.label }} </label>
-                {{ field }}
-                <span class="error-txt" id="error-{{ field.id_for_label}}"></span>
+                {{ field }}                
+                <span class="error-txt" id="error-{{ field.id_for_label}}">{{ field.errors }}</span>
                 <span class="sr-only" id="sr-only-error-{{ field.id_for_label}}"></span>
               </div>
               {% endif %}

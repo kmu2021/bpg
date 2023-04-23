@@ -1,23 +1,31 @@
-from django.http import HttpResponse
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from .models import UserDetails
+
 from django.conf import settings
 import json
 from time import sleep
 import os
-import random
-
 import requests
 
-# Process Form data
 
 G_ACCESS_TOKEN = "" #Global variable for access token
+G_INVITATION_ACCESS_TOKEN = "" #Global variable for invitation access token
 
+#Fetch Access Token
+def fetch_access_token ():
+    global G_ACCESS_TOKEN
+    if G_ACCESS_TOKEN == "":
+        G_ACCESS_TOKEN = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    return G_ACCESS_TOKEN
+
+#Fetch Invitation Access Token
+def fetch_invitation_access_token():
+    global G_INVITATION_ACCESS_TOKEN
+    if G_INVITATION_ACCESS_TOKEN == "":
+        G_INVITATION_ACCESS_TOKEN = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_INVITATION_CLIENT_ID), str(settings.AZURE_INVITATION_CLIENT_SECRET))
+    return G_INVITATION_ACCESS_TOKEN
 
 
 def get_access_token(tenant_id, client_id, client_secret):
-    global G_ACCESS_TOKEN
+#    global G_ACCESS_TOKEN
     scope = 'https://graph.microsoft.com/.default'
     grant_type = 'client_credentials'
     token_url = 'https://login.microsoftonline.com/'+tenant_id+'/oauth2/v2.0/token'
@@ -40,7 +48,7 @@ def get_access_token(tenant_id, client_id, client_secret):
     else:
         if "access_token" in access_token_json:
             access_token = access_token_json["access_token"]
-            G_ACCESS_TOKEN = access_token
+ #           G_ACCESS_TOKEN = access_token
 
     return access_token
 
@@ -110,8 +118,8 @@ def invite_user(email, display_name, redirect_url, access_token):
 
 
 def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token, extension_attributes):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN if access_token is None else access_token
+   # global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
     print('update_user_details user_id:'+user_id)
     print("access_token"+access_token)
     url = 'https://graph.microsoft.com/v1.0/users/'+user_id
@@ -214,9 +222,9 @@ def add_to_group(user_id, bpg_grp_id, access_token):
 
 #Check if User Exists or Not
 def does_user_exists(user_details):
-    access_token = ""
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    access_token = fetch_access_token()
+    #if access_token == "":
+     #   access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
         
 
     user_id = get_user_id(user_details.workEmail, access_token)
@@ -228,9 +236,9 @@ def does_user_exists(user_details):
 
 #Send Invitation to User - Wrapper Function
 def send_invitation_to_user(user_details):
-    access_token = ""
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    access_token = fetch_invitation_access_token()
+  #  if access_token == "":
+   #     access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_INVITATION_CLIENT_ID), str(settings.AZURE_INVITATION_CLIENT_SECRET))
     redirectUrl = settings.WEBSITE_URL
     user_details.user_id = invite_user(user_details.workEmail, user_details.firstName +
                                                ' '+user_details.lastName,  redirectUrl, access_token)
@@ -240,16 +248,16 @@ def send_invitation_to_user(user_details):
 
 #Get List of Groups IDs
 def get_group_id_list(group_name_list = None):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+   # global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
 
     groups_list = []
     group_search_string = ""
     url = 'https://graph.microsoft.com/v1.0/groups'
     select='id'
 
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+   # if access_token == "":
+    #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     if group_name_list is None:
         with open(os.path.join(os.path.dirname(__file__),'config/groups.json'),'r') as group_file:
             parsed_json = json.load(group_file)
@@ -288,14 +296,14 @@ def get_group_id_list(group_name_list = None):
 
 #Add Groups to User
 def add_groups_to_user(user_id,group_id_list):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+   # global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
      
     url = 'https://graph.microsoft.com/v1.0/groups/{}/members/$ref'
     
 
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+   # if access_token == "":
+    #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     
     req_header = {'Content-Type': 'application/json',
                   'Authorization': 'Bearer ' + access_token}
@@ -327,11 +335,11 @@ def add_groups_to_user(user_id,group_id_list):
     
 #Check if User is Active
 def get_user_status(user_id):   
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+   # global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
 
-    if access_token == "":
-       access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+ #   if access_token == "":
+  #     access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     account_enabled = False
 
     url = 'https://graph.microsoft.com/v1.0/users'
@@ -353,14 +361,15 @@ def get_user_status(user_id):
             print(e)
             account_enabled = False
     return account_enabled
+
 #set user status
 def set_user_status(user_id, user_status):   
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+   # global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
 
-    if access_token == "":
-       access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
-    account_enabled = False
+  #  if access_token == "":
+   #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+    #account_enabled = False
 
     url = 'https://graph.microsoft.com/v1.0/users/'+user_id
 
@@ -408,15 +417,15 @@ def groups_unassign_to_user (groups_to_remove,user_id):
 
 #Fetch Groups for an user
 def fetch_user_groups(user_id):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+    #global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
      
     url = 'https://graph.microsoft.com/v1.0/users/{}/memberOf?$select=id,displayName'.format(user_id)
     
     
-    print('ur is '+url)
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+   
+   # if access_token == "":
+    #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     
     req_header = {'Content-Type': 'application/json',
                   'Authorization': 'Bearer ' + access_token}
@@ -442,14 +451,14 @@ def fetch_user_groups(user_id):
 
 #Remove Groups From User
 def remove_groups_from_user(user_id,group_id_list):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+    #global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
      
     url = 'https://graph.microsoft.com/v1.0/groups/{}/members/{}/$ref'
     
 
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+   # if access_token == "":
+    #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     
     req_header = {'Content-Type': 'application/json',
                   'Authorization': 'Bearer ' + access_token}
@@ -479,15 +488,15 @@ def remove_groups_from_user(user_id,group_id_list):
 
 #Create a Supplier Group and return ID   
 def create_supplier_group (group_name, group_description):
-    global G_ACCESS_TOKEN
-    access_token = G_ACCESS_TOKEN
+    #global G_ACCESS_TOKEN
+    access_token = fetch_access_token()
      
     url = 'https://graph.microsoft.com/v1.0/groups'
     group_id = ""
     
 
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+   # if access_token == "":
+    #    access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
     
     req_header = {'Content-Type': 'application/json',
                   'Authorization': 'Bearer ' + access_token}

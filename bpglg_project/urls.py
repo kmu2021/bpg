@@ -21,8 +21,15 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 '''
+#Commented for Web Services change
+'''urlpatterns = [    
+    path('', include('bpglg.urls')), path('', include('supmgn.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)'''
 
+
+#Start Modification for Web Services
 urlpatterns = [    
-    path('', include('bpglg.urls')),
+    path('', include('bpglg.urls')), path('', include('supmgn.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+#End Modification for Web Services

@@ -145,6 +145,12 @@ AZURE_CLIENT_ID = os.environ.get('AZURE_CLIENT_ID');
 #Set Client Secret
 AZURE_CLIENT_SECRET = os.environ.get('AZURE_CLIENT_SECRET');
 
+#Set Invitation Client ID
+AZURE_INVITATION_CLIENT_ID = os.environ.get('AZURE_INVITATION_CLIENT_ID');
+
+#Set Invitation Client Secret
+AZURE_INVITATION_CLIENT_SECRET = os.environ.get('AZURE_INVITATION_CLIENT_SECRET');
+
 #Set Azure From Email ID
 AZURE_EMAIL_FROM_ADDRESS = os.environ.get('AZURE_EMAIL_FROM_ADDRESS');
 
@@ -161,3 +167,15 @@ WEBSITE_URL = os.environ.get('WEBSITE_URL','https://bpg-dev-rg.azurewebsites.net
 CLS_HOST_NAME = os.environ.get('CLS_HOST_NAME')
 CLS_API_KEY = os.environ.get('CLS_API_KEY')
 CLS_VERIFY = os.environ.get('CLS_VERIFY')
+
+#Start Modification for Web Services
+INSTALLED_APPS += ['rest_framework','rest_framework.authtoken','supmgn']
+#ROOT_URLCONF = 'bpr.urls'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ]
+}
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+BPG_ADMIN_GRP_NAME = 'NAT_AZURE_BPG_ILE_ADM' +'_' + ENVIRONMENT
+#End Modification for Web Services

@@ -1,13 +1,6 @@
-from django.http import HttpResponse
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from .graph import get_access_token, get_bpg_group_id
+from .graph import fetch_access_token
 from .models import UserDetails
-from django.conf import settings
-import json
-from time import sleep
-import os
-import random
+
 
 import requests
 # import the logging library
@@ -21,12 +14,9 @@ def search_users(UserDetails):
     logger.info('Searching User')
     logger.warning('Searching User - Warning Log Level')
     response_body = []
-    access_token = ""
+    access_token = fetch_access_token()
     invitation_count = 0
-    
-    if access_token == "":
-        access_token = get_access_token(str(settings.AZURE_TENANT_ID), str(
-            settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
+       
        # print(access_token)
 
         #return response_body    

@@ -2994,10 +2994,11 @@ table.msp-indicator-table td:not(:first-child) {
         height: auto
     }
 }
+
 input.search-form:placeholder-shown {
-        font-size: 10px;
-    }
-	
+    font-size: 10px;
+}
+
 /* The switch - the box around the slider */
 .switch {
     position: relative;
@@ -3040,6 +3041,10 @@ input.search-form:placeholder-shown {
 
 input:checked+.slider {
     background-color: #2196F3;
+}
+
+input:disabled+.slider {
+    background-color: #e09d9d;
 }
 
 input:focus+.slider {

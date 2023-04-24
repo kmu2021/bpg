@@ -23,7 +23,7 @@ def fetch_invitation_access_token():
         G_INVITATION_ACCESS_TOKEN = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_INVITATION_CLIENT_ID), str(settings.AZURE_INVITATION_CLIENT_SECRET))
     return G_INVITATION_ACCESS_TOKEN
 
-
+#Get Access Token - Called by fetch_access_token and fetch_invitation_access_token only
 def get_access_token(tenant_id, client_id, client_secret):
 #    global G_ACCESS_TOKEN
     scope = 'https://graph.microsoft.com/.default'
@@ -52,7 +52,7 @@ def get_access_token(tenant_id, client_id, client_secret):
 
     return access_token
 
-
+#Get User ID for a given Email Address
 def get_user_id(email, access_token):    
     url = 'https://graph.microsoft.com/v1.0/users'
     req_params = {'$select': 'id', '$filter': 'mail eq \''+email+'\''}
@@ -75,7 +75,7 @@ def get_user_id(email, access_token):
 
     return user_id
 
-
+#Send User Invitation
 def invite_user(email, display_name, redirect_url, access_token):
     
     url = 'https://graph.microsoft.com/v1.0/invitations'        
@@ -116,13 +116,14 @@ def invite_user(email, display_name, redirect_url, access_token):
 
     return user_id
 
-
+#Update User Details
 def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, access_token, extension_attributes):
    # global G_ACCESS_TOKEN
     access_token = fetch_access_token()
     print('update_user_details user_id:'+user_id)
     print("access_token"+access_token)
     url = 'https://graph.microsoft.com/v1.0/users/'+user_id
+    return_message = ""
 
     req_body = {
         "givenName": given_name,
@@ -132,26 +133,27 @@ def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, 
 
     req_header = {'Content-Type': 'application/json',
                   'Authorization': 'Bearer ' + access_token}
-    response = requests.patch(url, json=req_body, headers=req_header)
-    print('Sent Data')
-    print(response)
-
-    print('User Update Result')
-    if (response.status_code < 200 or response.status_code > 229):
-        print('User Update Fail')
-        try:
-            print(response.json())
-        except Exception as e:
-            print('Exception while parsing JSON')
-
-        '''if "error" in response_json:
-            print(response_json["error"]["code"])
-            print(response.status_code)'''
-        return 'Error in Updating User'
-    else:
-        print('User Update Pass')
-        if bpg_grp_id != "":
-            add_to_group(user_id, bpg_grp_id, access_token)
+    #Try 10 times
+    for count in range (10):
+        print("Updating User: Iteration#"+str(count))
+        response = requests.patch(url, json=req_body, headers=req_header)
+        print('Sent Data')
+        print(response)
+        
+        if (response.status_code < 200 or response.status_code > 229):
+            print('User Update Fail')
+            try:
+                print(response.json())
+            except Exception as e:
+                print('Exception while parsing JSON')
+            return_message = 'Error in Updating User'
+        else:
+            print('User Update Pass')
+            if bpg_grp_id != "":
+                add_to_group(user_id, bpg_grp_id, access_token)
+            return_message = 'User Update Passed'
+            break
+        sleep(6)
     
     
     if len(extension_attributes)>0:
@@ -161,12 +163,13 @@ def update_user_details(user_id, given_name, surname, company_name, bpg_grp_id, 
         print(response)
         if (response.status_code < 200 or response.status_code > 229):
             print('Extension Attribute Update Fail')
-        try:
-            print(response.json())
-        except Exception as e:
-            print('Exception while parsing JSON')
+            return_message = "Extension Attribute Update Fail"
+            try:
+                print(response.json())
+            except Exception as e:
+                print('Exception while parsing JSON')
 
-    return 'User Attributes Updated'
+    return return_message
 
 def get_bpg_group_id (BPG_GRP_NAME,access_token):
     url = 'https://graph.microsoft.com/v1.0/groups'
@@ -222,7 +225,7 @@ def add_to_group(user_id, bpg_grp_id, access_token):
 
 #Check if User Exists or Not
 def does_user_exists(user_details):
-    access_token = fetch_access_token()
+    access_token = fetch_invitation_access_token()
     #if access_token == "":
      #   access_token = get_access_token(str(settings.AZURE_TENANT_ID), str( settings.AZURE_CLIENT_ID), str(settings.AZURE_CLIENT_SECRET))
         

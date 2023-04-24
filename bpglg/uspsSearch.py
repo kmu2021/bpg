@@ -1,4 +1,4 @@
-from .graph import fetch_access_token
+from .graph import fetch_invitation_access_token
 from .models import UserDetails
 
 
@@ -14,7 +14,7 @@ def search_users(UserDetails):
     logger.info('Searching User')
     logger.warning('Searching User - Warning Log Level')
     response_body = []
-    access_token = fetch_access_token()
+    access_token = fetch_invitation_access_token()
     invitation_count = 0
        
        # print(access_token)

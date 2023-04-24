@@ -1,4 +1,3 @@
-
 from django.conf import settings
 import json
 from time import sleep
@@ -321,7 +320,7 @@ def add_groups_to_user(user_id,group_id_list):
         print(req_body)
         for ctr in range(5):
             response = requests.post(post_url, data=json.dumps(req_body), headers=req_header)   
-            print(ctr)
+            print("Iteration#"+str(ctr))
             print(int(response.status_code) )
             if (int(response.status_code) == 204 or int(response.status_code) == 400 ):
                 print('Assigning Group Passed')
